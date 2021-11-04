@@ -23,8 +23,8 @@ export default function Home() {
               <div class="d-flex">
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                   <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">Setting</a>
-                    <a class="nav-link" href="#">Login</a>
+                    <a class="nav-link active" aria-current="page" href="#">SETTING</a>
+                    <a class="nav-link" href="#">LOGIN</a>
                   </div>
                 </div>
               </div>
