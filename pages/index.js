@@ -60,11 +60,8 @@ export default function Home() {
             <div className="my-2 text-purple fs-4 fw-bold">Shuffle</div>
           </div>
         </form>
-          
-        
+                  
         <div className="m-5">
-
-
 
         <div className="row ">
           <div className="col-6">
@@ -252,9 +249,14 @@ export default function Home() {
           </div>
         </div>
 
-
         </div>
-        
+        <div className="row">
+          <div className="col-8 mx-auto">
+            <div className="fw-bold fs-5 text-center">
+            Welcome to the most interactive and fun website for picking names,making unbaised decisions and spin a wheel interaction
+            </div>
+          </div>
+        </div>
       </main>
       <footer className={styles.footer}>
       </footer>
