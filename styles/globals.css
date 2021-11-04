@@ -30,10 +30,41 @@ a {
 .wheel-img {
   max-width: 60%;
 }
-.btn-purple {
-  background: #4f56a5;
+.btn-radius {
   border-radius: 20px;
-  color: white;
   font-weight: bold;
   font-size: 16px;
+}
+.bg-purple{
+  background: #4f56a5;
+}
+
+.icon{
+  background: #4f56a5;
+  color:white;
+  padding: 20px;
+}
+.text-purple{
+  color: #4f56a5;
+}
+
+
+.mycustom {
+  position: relative;
+  border-radius:28px;
+  box-shadow: 2px 2px 2px gray;
+}
+.mycustom input[type=text] {
+  width: 100%;
+  border-radius: 28px;
+  width: 500px;
+  height: 50px;
+  border-top-right-radius: 28px !important;
+  border-bottom-right-radius: 28px !important;
+}
+.mycustom .input-group-prepend {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;z-index:9;
 }

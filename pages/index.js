@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 export default function Home() {
   return (
     <div className="container">
@@ -39,17 +40,32 @@ export default function Home() {
           </div>
         </div>
         <div className="row">
-          <div className="col-12">
-            <br />
-            <button className="btn btn-purple btn-lg">3D MODE</button>
+          <div className="col-12 m-5">
+            <button className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg">3D MODE</button>
           </div>
         </div>
-       
-
+        <div className="row">
+          <div >
+            <form className="row">
+              <div class="col-10 ">
+                <div class="input-group mycustom ">
+                  <input type="text" class="form-control" id="validationDefaultUsername" placeholder="Username" aria-describedby="inputGroupPrepend2" required />
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-radius btn-sm" id="inputGroupPrepend2">
+                      {/* <FontAwesomeIcon icon={faPlus} className="icon" /> */}
+                      <img src="plus.png" width="25" className="m-1"/>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div className="my-2 text-purple fs-4 fw-bold">Shuffle</div>
+              </div>
+            </form>
+          </div>
+        </div>
       </main>
-
       <footer className={styles.footer}>
-      
       </footer>
     </div>
   )
