@@ -12,10 +12,10 @@ export default function Home() {
       </Head>
       <header className="row">
         <div class="col-12 ">
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
               <a class="navbar-brand" href="#">
-              <img src="logo.svg" width="150"/>
+              <img src="logo.jpg" width="150"/>
               </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,18 +23,29 @@ export default function Home() {
               <div class="d-flex">
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                   <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">SETTING</a>
-                    <a class="nav-link" href="#">LOGIN</a>
+                    <a class="nav-link active px-4" aria-current="page" href="#">SETTING</a>
+                    <a class="nav-link px-4" href="#">LOGIN</a>
                   </div>
                 </div>
               </div>
-              
             </div>
           </nav>
         </div>
       </header>
       <main className={styles.main}>
+        <div className="row">
+          <div className="col-12">
+            <img src="spinwheel.png" className="img-fluid wheel-img mx-auto d-block" />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <br />
+            <button className="btn btn-purple btn-lg">3D MODE</button>
+          </div>
+        </div>
        
+
       </main>
 
       <footer className={styles.footer}>
