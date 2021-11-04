@@ -68,3 +68,9 @@ a {
   top: 4px;
   bottom: 4px;z-index:9;
 }
+
+.name-card {
+  max-width: 340px;
+  box-shadow: 5px 5px 5px silver;
+  border-radius: 15px;
+}

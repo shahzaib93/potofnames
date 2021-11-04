@@ -1,8 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 export default function Home() {
   return (
     <div className="container">
@@ -44,26 +43,218 @@ export default function Home() {
             <button className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg">3D MODE</button>
           </div>
         </div>
-        <div className="row">
-          <div >
-            <form className="row">
-              <div class="col-10 ">
-                <div class="input-group mycustom ">
-                  <input type="text" class="form-control" id="validationDefaultUsername" placeholder="Username" aria-describedby="inputGroupPrepend2" required />
-                  <div class="input-group-prepend">
-                    <button type="submit" class="btn btn-radius btn-sm" id="inputGroupPrepend2">
-                      {/* <FontAwesomeIcon icon={faPlus} className="icon" /> */}
-                      <img src="plus.png" width="25" className="m-1"/>
-                    </button>
+        
+        <form className="row">
+          <div class="col-10 ">
+            <div class="input-group mycustom ">
+              <input type="text" class="form-control" id="validationDefaultUsername" placeholder="Username" aria-describedby="inputGroupPrepend2" required />
+              <div class="input-group-prepend">
+                <button type="submit" class="btn btn-radius btn-sm" id="inputGroupPrepend2">
+                  {/* <FontAwesomeIcon icon={faPlus} className="icon" /> */}
+                  <img src="plus.png" width="25" className="m-1"/>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-2">
+            <div className="my-2 text-purple fs-4 fw-bold">Shuffle</div>
+          </div>
+        </form>
+          
+        
+        <div className="m-5">
+
+
+
+        <div className="row ">
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
                   </div>
                 </div>
               </div>
-              <div class="col-2">
-                <div className="my-2 text-purple fs-4 fw-bold">Shuffle</div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
               </div>
-            </form>
+            </div>
           </div>
         </div>
+
+        <div className="row">
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row ">
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row ">
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row ">
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row ">
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div class="card mb-3 name-card">
+              <div class="row g-0">
+                <div class="col-md-4">
+                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">John Adam</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        </div>
+        
       </main>
       <footer className={styles.footer}>
       </footer>
