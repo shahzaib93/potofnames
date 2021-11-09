@@ -5,7 +5,6 @@ export const getServerSideProps = async () => {
   const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
 
-
   return{
       props: {participants: data}
   }
@@ -32,9 +31,15 @@ export default function Home({participants}) {
   const router = useRouter();
   // Call this function whenever you want to
   // refresh props!
+
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
   const refreshData = () => {
     router.replace(router.asPath);
-  }
+    setIsRefreshing(true);
+  };
+  React.useEffect(() => {
+    setIsRefreshing(false);
+  }, [theData]);
   // Call this function whenever you want to
   // refresh props!
   // const refreshData = () => {
