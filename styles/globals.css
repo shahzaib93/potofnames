@@ -48,6 +48,7 @@ a {
   color: #4f56a5;
 }
 
+
 .mycustom {
   position: relative;
   border-radius:28px;
@@ -69,10 +70,7 @@ a {
 }
 
 .name-card {
-  width: 100%;
+  max-width: 340px;
   box-shadow: 5px 5px 5px silver;
   border-radius: 15px;
-}
-.test {
-  padding: 0 15% 0 15%;
 }
