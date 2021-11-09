@@ -36,8 +36,7 @@ export default async function handler (req, res) {
         //   // saved!
         // });
         const participant = await Participant.create(req.body)
-        const participants = await Participant.find({})
-        res.status(201).json({ success: true, data: participants })
+        res.status(201).json({ success: true, data: participant })
       } catch (error) {
         res.status(400).json({ success: false })
       }
