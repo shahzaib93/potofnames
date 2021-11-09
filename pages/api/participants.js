@@ -38,11 +38,6 @@ export default async function handler (req, res) {
         const participant = await Participant.create(req.body)
         const participants = await Participant.find({})
         res.status(201).json({ success: true, data: participants })
-
-       
-        if (res.status < 300) {
-          refreshData();
-        }
       } catch (error) {
         res.status(400).json({ success: false })
       }

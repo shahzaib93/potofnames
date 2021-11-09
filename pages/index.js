@@ -13,7 +13,7 @@ export const getServerSideProps = async () => {
   }
 }
 export default function Home({participants}) {
-  // const router = useRouter();
+  const router = useRouter();
   const addParticipant = async event => {
     event.preventDefault()
     
@@ -29,7 +29,7 @@ export default function Home({participants}) {
 
     participants = await res.json()
     console.log(participants);
-    // router.replace(router.asPath);
+    router.replace(router.asPath);
   }
  
   // Call this function whenever you want to
