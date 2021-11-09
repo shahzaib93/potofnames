@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-
-<<<<<<< HEAD
+import { useRouter } from 'next/router';
 export const getServerSideProps = async () => {
   const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
@@ -28,11 +27,15 @@ export default function Home({participants}) {
 
     participants = await res.json()
     console.log(participants);
+    const router = useRouter();
+    router.replace(router.asPath);
   }
-
-=======
-export default function Home() {
->>>>>>> parent of fc0abb3 (mongodb connected)
+  
+  // Call this function whenever you want to
+  // refresh props!
+  // const refreshData = () => {
+  //   router.replace(router.asPath);
+  // }
   return (
     <div className="container">
       <Head>
@@ -41,20 +44,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header className="row">
-        <div class="col-12 ">
-          <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="#">
+        <div className="col-12 ">
+          <nav className="navbar navbar-expand-lg navbar-light">
+            <div className="container-fluid">
+              <a className="navbar-brand" href="#">
               <img src="logo.jpg" width="150"/>
               </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+              <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
               </button>
-              <div class="d-flex">
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                  <div class="navbar-nav">
-                    <a class="nav-link active px-4" aria-current="page" href="#">SETTING</a>
-                    <a class="nav-link px-4" href="#">LOGIN</a>
+              <div className="d-flex">
+                <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div className="navbar-nav">
+                    <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a>
+                    <a className="nav-link px-4" href="#">LOGIN</a>
                   </div>
                 </div>
               </div>
@@ -68,225 +71,50 @@ export default function Home() {
             <img src="spinwheel.png" className="img-fluid wheel-img mx-auto d-block" />
           </div>
         </div>
-        <div className="row">
-          <div className="col-12 m-5">
+        <div className="row justify-content-md-center">
+          <div className="col-2 m-5">
             <button className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg">3D MODE</button>
           </div>
         </div>
         
-        <form className="row">
-          <div class="col-10 ">
-            <div class="input-group mycustom ">
-              <input type="text" class="form-control" id="validationDefaultUsername" placeholder="Username" aria-describedby="inputGroupPrepend2" required />
-              <div class="input-group-prepend">
-                <button type="submit" class="btn btn-radius btn-sm" id="inputGroupPrepend2">
-                  {/* <FontAwesomeIcon icon={faPlus} className="icon" /> */}
+        <form className="row justify-content-md-center" method="post" onSubmit={addParticipant}>
+          <div className="col-5 ">
+            <div className="input-group mycustom ">
+              <input type="text" className="form-control" placeholder="Username" required name="participantName" />
+              <div className="input-group-prepend">
+                <button type="submit" className="btn btn-radius btn-sm" id="inputGroupPrepend2">
                   <img src="plus.png" width="25" className="m-1"/>
                 </button>
               </div>
             </div>
           </div>
-          <div class="col-2">
+          <div className="col-2">
             <div className="my-2 text-purple fs-4 fw-bold">Shuffle</div>
           </div>
         </form>
-                  
-        <div className="m-5">
 
+        <div className="m-5 test">
         <div className="row ">
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row ">
-<<<<<<< HEAD
             {participants.map(participant =>(
             <div className="col-12 col-md-6">
               <div className="card mb-3 name-card">
                 <div className="row g-0">
                   <div className="col-md-4">
                     <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-=======
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
->>>>>>> parent of fc0abb3 (mongodb connected)
+                  </div>
+                  <div className="col-md-8">
+                    <div className="card-body">
+                      <div key={participant._id}>
+                          <h5 className="card-title">{participant.name}</h5>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            ))}
+            
           </div>
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row ">
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row ">
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row ">
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-6">
-            <div class="card mb-3 name-card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">John Adam</h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         </div>
         <div className="row">

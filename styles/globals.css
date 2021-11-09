@@ -70,7 +70,10 @@ a {
 }
 
 .name-card {
-  max-width: 340px;
   box-shadow: 5px 5px 5px silver;
   border-radius: 15px;
+}
+
+.test{
+  padding:0 200px 0 200px ;
 }
