@@ -10,7 +10,7 @@ export const getServerSideProps = async () => {
   }
 }
 export default function Home({participants}) {
-
+  const router = useRouter();
   const addParticipant = async event => {
     event.preventDefault()
 
@@ -26,24 +26,16 @@ export default function Home({participants}) {
 
     participants = await res.json()
     console.log(participants);
-   
+    router.replace(router.asPath);
   }
-  const router = useRouter();
+ 
   // Call this function whenever you want to
   // refresh props!
 
-  const [isRefreshing, setIsRefreshing] = React.useState(false);
-  const refreshData = () => {
-    router.replace(router.asPath);
-    setIsRefreshing(true);
-  };
-  React.useEffect(() => {
-    setIsRefreshing(false);
-  }, [theData]);
   // Call this function whenever you want to
   // refresh props!
   // const refreshData = () => {
-  //   router.replace(router.asPath);
+     
   // }
   return (
     <div className="container">
