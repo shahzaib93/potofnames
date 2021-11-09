@@ -6,6 +6,7 @@ export const getServerSideProps = async () => {
   const res = await fetch('/api/participants');
   const data = await res.json();
 
+  
   return{
       props: {participants: data}
   }
