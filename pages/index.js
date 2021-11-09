@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 
 export const getServerSideProps = async () => {
   const res = await fetch('https://potofnames.com/api/participants');
@@ -59,7 +58,7 @@ export default function Home({participants}) {
           </nav>
         </div>
       </header>
-      <main className={styles.main}>
+      <main>
         <div className="row">
           <div className="col-12">
             <img src="spinwheel.png" className="img-fluid wheel-img mx-auto d-block" />
@@ -90,7 +89,7 @@ export default function Home({participants}) {
         <div className="m-5 test">
         <div className="row ">
             {participants.map(participant =>(
-            <div className="col-6">
+            <div className="col-12 col-md-6">
               <div className="card mb-3 name-card">
                 <div className="row g-0">
                   <div className="col-md-4">
@@ -119,7 +118,7 @@ export default function Home({participants}) {
           </div>
         </div>
       </main>
-      <footer className={styles.footer}>
+      <footer>
       </footer>
     </div>
   )
