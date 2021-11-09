@@ -3,10 +3,10 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 export const getServerSideProps = async () => {
-  const res = await fetch('/api/participants');
+  const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
 
-  
+
   return{
       props: {participants: data}
   }
@@ -16,7 +16,7 @@ export default function Home({participants}) {
   const addParticipant = async event => {
     event.preventDefault()
 
-    const res = await fetch('/api/participants', {
+    const res = await fetch('https://potofnames.com/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
