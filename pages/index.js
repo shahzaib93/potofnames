@@ -1,6 +1,9 @@
 import Head from 'next/head'
 import Image from 'next/image'
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
+
+// http://localhost:3000/api/participants
+// https://potofnames.com/api/participants
 export const getServerSideProps = async () => {
   const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
@@ -10,10 +13,10 @@ export const getServerSideProps = async () => {
   }
 }
 export default function Home({participants}) {
-  // const router = useRouter();
+  const router = useRouter();
   const addParticipant = async event => {
     event.preventDefault()
-
+    
     const res = await fetch('https://potofnames.com/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
@@ -26,7 +29,7 @@ export default function Home({participants}) {
 
     participants = await res.json()
     console.log(participants);
-    // router.replace(router.asPath);
+    router.replace(router.asPath);
   }
  
   // Call this function whenever you want to
