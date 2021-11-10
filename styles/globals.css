@@ -47,8 +47,6 @@ a {
 .text-purple{
   color: #4f56a5;
 }
-
-
 .mycustom {
   position: relative;
   border-radius:28px;
@@ -76,4 +74,24 @@ a {
 
 .test{
   padding:0 200px 0 200px ;
+}
+.footer-card {
+  border: 0;
+}
+.footer-card img {
+  width: 50%;
+}
+.footer-social-icons {
+  list-style: none;
+  text-align: center;
+}
+.footer-social-icons li {
+  display: inline;
+  margin-right: 30px;
+}
+.fontawesome-icon {
+  width:20px;
+}
+.facebook-icon {
+  width:15px;
 }

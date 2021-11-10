@@ -2,6 +2,9 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { fab, faFacebookF, faInstagramSquare, faLinkedinIn, faPinterest, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
+
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 export const getServerSideProps = async () => {
@@ -121,7 +124,7 @@ export default function Home({participants}) {
           </div>
 
         </div>
-        <div className="row">
+        <div className="row my-5">
           <div className="col-8 mx-auto">
             <div className="fw-bold fs-5 text-center">
             Welcome to the most interactive and fun website for picking names,making unbaised decisions and spin a wheel interaction
@@ -130,6 +133,51 @@ export default function Home({participants}) {
         </div>
       </main>
       <footer>
+        <div className="row my-5 justify-content-center">
+          <div className="col-3">
+            <div class="card footer-card text-center" >
+              <img src="unlimitednames.png" class="card-img-top mx-auto d-block" />
+              <div class="card-body">
+              <h5 class="card-title">Unlimited Names</h5>
+                <p class="card-text"><small>Enter over 250 names without any glitch or hassel.</small></p>
+              </div>
+            </div>
+          </div>
+          <div className="col-3">
+            <div class="card footer-card text-center" >
+              <img src="checkicon.png" class="card-img-top mx-auto d-block" />
+              <div class="card-body">
+              <h5 class="card-title">Top Security</h5>
+                <p class="card-text"><small>We are committed to protecting and respecting your privacy and the security of your data.</small></p>
+              </div>
+            </div>
+          </div>
+          <div className="col-3">
+            <div class="card footer-card text-center" >
+              <img src="speechicon.png" class="card-img-top mx-auto d-block" />
+              <div class="card-body">
+              <h5 class="card-title">How to use Pot of Names</h5>
+                <p class="card-text"><small>Type in your entries in the textbox to the right of the wheel. Click the wheel to spin it and get a random winner.</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div className="col-12">
+            <ul className="footer-social-icons">
+              <li><FontAwesomeIcon icon={fab, faTwitter} className="fontawesome-icon"/></li>
+              <li><FontAwesomeIcon icon={fab, faFacebookF} className="fontawesome-icon facebook-icon"/></li>
+              <li><FontAwesomeIcon icon={fab, faPinterestP} className="fontawesome-icon"/></li>
+              <li><FontAwesomeIcon icon={fab, faLinkedinIn} className="fontawesome-icon"/></li>
+              <li><FontAwesomeIcon icon={fab, faInstagramSquare} className="fontawesome-icon"/></li>
+            </ul>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <p className="text-center">&copy; 2021 POTOFNAMES LLC. ALL RIGHT RESERVED.</p>
+          </div>
+        </div>
       </footer>
     </div>
   )
