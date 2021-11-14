@@ -95,3 +95,15 @@ a {
 .facebook-icon {
   width:15px;
 }
+
+.wheel-css {
+  width:500px;
+}
+/* canvas {
+  transform:
+    rotate3d(.5,-.866,0,49deg) rotate(0deg)
+} */
+
+#spinBtn {
+  cursor: pointer;
+}

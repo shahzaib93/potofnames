@@ -1,0 +1,12 @@
+{
+  "name": "react-wheel-shahzaib",
+  "version": "1.1.0",
+  "description": "It is a spin wheel game build using reactjs",
+  "author": "shahzaib",
+  "main": "dist/index.js",
+  "module": "dist/index.modern.js",
+  "source": "src/index.js",
+  "files": [
+    "dist"
+  ]
+}
