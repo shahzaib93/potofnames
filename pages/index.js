@@ -21,7 +21,7 @@ export default function Home({participants}) {
   const addParticipant = async event => {
     event.preventDefault()
     
-    const res = await fetch('http://localhost:3000/api/participants', {
+    const res = await fetch('https://potofnames.com/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -138,7 +138,6 @@ export default function Home({participants}) {
               </div>
             </div>
             ))}
-            
           </div>
 
         </div>
