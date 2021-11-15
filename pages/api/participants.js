@@ -16,13 +16,14 @@ export default async function handler (req, res) {
     case 'POST':
       try {
         // const participant = await Participant.create(req.body)
-        var participant = new Participant(req.body);
-        participant.save(function (err) {
+        var addParticipant = new Participant(req.body);
+        addParticipant.save(function (err) {
             if (err) return handleError(err);
             // saved!
         })
-        res.status(201).json({ success: true, data: participant })
-        console.log();
+        res.status(201).json({ success: true, data: addParticipant })
+        // participants = Participant.find({})
+        // console.log();
       } catch (error) {
         res.status(400).json({ success: false })
       }

@@ -7,29 +7,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
-// export const getServerSideProps = async () => {
-//   const res = await fetch('https://potofnames.com/api/participants');
-//   const data = await res.json();
 
-//   return{
-//       props: {participants: data}
-//   }
-// }
-
-export const getServerSideProps = () => {
-  const res =  fetch('https://potofnames.com/api/participants');
-  const data = res.json();
-
+export const getStaticProps = async () => {
+  const res = await fetch('https://potofnames.com/api/participants');
+  const data = await res.json();
   return{
       props: {participants: data}
   }
 }
 export default function Home({participants}) {
+  console.log(participants);
   const seg = [], segCol = [];
   const router = useRouter();
   const addParticipant = async event => {
+    console.log(participants);
     event.preventDefault()
-    const res = await fetch('http://localhost:3000/api/participants', {
+    console.log(event.target.participantName.value);
+    participants.push(event.target.participantName.value);
+    const res = await fetch('https://potofnames.com/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -38,12 +33,9 @@ export default function Home({participants}) {
       },
       method: 'POST'
     })
-    const newParticipant = await res.json()
-    // router.replace(router.asPath);
+    // const newParticipant = await res.json()
+    router.replace(router.asPath);
     // console.log(newParticipant);
-    console.log(participants);
-    // participants.push(newParticipant);
-    console.log(participants);
   }
   const onFinished = (winner) => {
     console.log(winner)
