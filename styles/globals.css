@@ -99,10 +99,12 @@ a {
 .wheel-css {
   width:500px;
 }
-/* canvas {
-  transform:
-    rotate3d(.5,-.866,0,49deg) rotate(0deg)
-} */
+canvas {
+  /* transform:
+    rotate3d(.5,-.866,0,49deg) rotate(0deg) */
+    width: 600px;
+    height: 600px;
+}
 
 #spinBtn {
   cursor: pointer;
