@@ -3,27 +3,33 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import WheelComponent from '../plugins/amazing-spin-wheel-game/dist'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
-export const getServerSideProps = async () => {
-  const res = await fetch('https://potofnames.com/api/participants');
-  const data = await res.json();
+// export const getServerSideProps = async () => {
+//   const res = await fetch('https://potofnames.com/api/participants');
+//   const data = await res.json();
+
+//   return{
+//       props: {participants: data}
+//   }
+// }
+
+export const getServerSideProps = () => {
+  const res =  fetch('https://potofnames.com/api/participants');
+  const data = res.json();
 
   return{
       props: {participants: data}
   }
 }
-
 export default function Home({participants}) {
   const seg = [], segCol = [];
   const router = useRouter();
   const addParticipant = async event => {
     event.preventDefault()
-    
-    const res = await fetch('https://potofnames.com/api/participants', {
+    const res = await fetch('http://localhost:3000/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -32,8 +38,12 @@ export default function Home({participants}) {
       },
       method: 'POST'
     })
-    participants = await res.json()
-    router.replace(router.asPath);
+    const newParticipant = await res.json()
+    // router.replace(router.asPath);
+    // console.log(newParticipant);
+    console.log(participants);
+    // participants.push(newParticipant);
+    console.log(participants);
   }
   const onFinished = (winner) => {
     console.log(winner)
@@ -74,7 +84,7 @@ export default function Home({participants}) {
         </div>
       </header>
       <main>
-      <div className="row justify-content-center">
+        <div className="row justify-content-center">
           <div className="col-6">
             <WheelComponent
               segments={seg}
@@ -89,9 +99,8 @@ export default function Home({participants}) {
               downDuration={1000}
               fontFamily='Arial'
             />
-          <div className="clearfix"></div>
+            <div className="clearfix"></div>
           </div>
-          
         </div>
         <div className="row justify-content-md-center">
           <div className="col-2 m-5 text-center">
@@ -102,7 +111,7 @@ export default function Home({participants}) {
         <form className="row justify-content-md-center" method="post" onSubmit={addParticipant}>
           <div className="col-5 ">
             <div className="input-group mycustom ">
-              <input type="text" className="form-control" placeholder="Username" required name="participantName" />
+              <input type="text" className="form-control" placeholder="Username" name="participantName" required />
               <div className="input-group-prepend">
                 <button type="submit" className="btn btn-radius btn-sm" id="inputGroupPrepend2">
                   <img src="plus.png" width="25" className="m-1"/>
