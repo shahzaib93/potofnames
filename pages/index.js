@@ -32,7 +32,7 @@ export default function Home({participants}) {
     router.replace(router.asPath);
     seg.push(event.target.participantName.value);
 
-    const res = await fetch('http://localhost:3000/api/participants', {
+    const res = await fetch('https://potofnames.com/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
