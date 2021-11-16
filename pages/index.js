@@ -62,7 +62,7 @@ export default function Home({participants}) {
     event.preventDefault()
     router.replace(router.asPath);
     // seg.push(event.target.participantName.value);
-    const res = await fetch('http://localhost:3000/api/participants', {
+    const res = await fetch('https://potofnames.com/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -147,6 +147,7 @@ export default function Home({participants}) {
         <div className="m-5 test">
         <div className="row " id="dataa">
             { items.map(item =>(
+            // eslint-disable-next-line react/jsx-key
             <div className="col-12 col-md-6">
               <div className="card mb-3 name-card">
                 <div className="row g-0">
