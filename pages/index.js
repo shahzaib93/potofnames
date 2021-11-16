@@ -2,8 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
-import WheelComponent from '../plugins/amazing-spin-wheel-game/dist'
-import React, {useState, useEffect} from 'react'
+import WheelComponent from '../plugins/amazing-spin-wheel-game'
+import React, {useEffect, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
 // http://localhost:3000/api/participants
@@ -17,50 +17,66 @@ export const getStaticProps = async () => {
   }
 }
 export default function Home({participants}) {
+
   const router = useRouter();
-  const seg = [], segCol = [];
-  const [items, setItems] = useState(participants)
-  console.log(items);
-  const addParticipant = async event => {
-    event.preventDefault()
-      
+  const segSam = [], segCol = [];
+  
 
-    // console.log(event.target.participantName.value);
-    // participants.push(event.target.participantName.value);
-    var dataa = document.getElementById("dataa");
-    var wheelCom = document.getElementById("wheelCom");
-    router.replace(router.asPath);
-    seg.push(event.target.participantName.value);
+  const [seg, setSeg] = useState([])
+  // console.log(seg);
+  const [items, setItems] = useState([])
 
-    const res = await fetch('https://potofnames.com/api/participants', {
-      body: JSON.stringify({
-        name: event.target.participantName.value
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST'
+  useEffect(() => {
+    setItems([...participants])
+    let temp = [];
+    participants.map((participant)=>{
+      // seg.push(participant.name);
+      temp.push(participant.name);
     })
-    const newParticipant = await res.json()
-    console.log(newParticipant.addParticipant);
-   
-    setItems([...items, newParticipant.addParticipant]);
+    setSeg([...temp])
+  }, [])
+
+  useEffect(() => {
     console.log(items);
-    // console.log(newParticipant);
-  }
-  const onFinished = (winner) => {
-    console.log(winner)
-    alert(winner);
-  }
-  participants.map((participant)=>{
-    seg.push(participant.name);
-  })
+  }, [items])
+
+  // useEffect(() => {
+  //   let temp = [];
+  //   items.map((participant)=>{
+  //     // seg.push(participant.name);
+  //     temp.push(participant.name);
+  //   })
+  //   setSeg([...temp])
+  // }, [items])
+
+    
   for (let i = 0; i < seg.length; i++) {
     if (i % 2 === 0) {
       segCol.push("#4f56a5");
     } else {
       segCol.push("#dfdede");
     }
+  }
+  // console.log(items);
+  const addParticipant = async event => {
+    event.preventDefault()
+    router.replace(router.asPath);
+    // seg.push(event.target.participantName.value);
+    const res = await fetch('http://localhost:3000/api/participants', {
+      body: JSON.stringify({
+        name: event.target.participantName.value
+      }),
+      headers: {'Content-Type': 'application/json'},
+      method: 'POST'
+    })
+    const newParticipant = await res.json()
+    console.log(newParticipant.addParticipant);
+    setItems([...items, newParticipant.addParticipant]);
+    setSeg([...seg, newParticipant.addParticipant.name]);
+  }
+  const onFinished = (winner) => {
+    console.log(winner)
+    alert(winner);
   }
   return (
     <div className={styles.container}>
@@ -89,19 +105,20 @@ export default function Home({participants}) {
       <main>
         <div className="row justify-content-center">
           <div className="col-6" id="wheelCom">
+            {seg.length > 0 && 
             <WheelComponent
-              segments={seg}
-              segColors={segCol}
-              onFinished={(winner) => onFinished(winner)}
-              primaryColor='gray'
-              contrastColor='white'
-              buttonText=''
-              isOnlyOnce={false}
-              size={290}
-              upDuration={100}
-              downDuration={1000}
-              fontFamily='Arial'
+            segments={seg}
+            segColors={segCol}
+            onFinished={(winner) => onFinished(winner)}
+            primaryColor='gray'
+            contrastColor='white'
+            isOnlyOnce={false}
+            size={290}
+            upDuration={100}
+            downDuration={1000}
+            fontFamily='Arial'
             />
+          }
             <div className="clearfix"></div>
           </div>
         </div>

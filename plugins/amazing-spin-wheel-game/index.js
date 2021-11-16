@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var React = require('react');
+var React__default = _interopDefault(React);
 
 var WheelComponent = function WheelComponent(_ref) {
+  // console.log(_ref.segments);
   var segments = _ref.segments,
       segColors = _ref.segColors,
       winningSegment = _ref.winningSegment,
@@ -9,8 +13,6 @@ var WheelComponent = function WheelComponent(_ref) {
       primaryColor = _ref$primaryColor === void 0 ? 'black' : _ref$primaryColor,
       _ref$contrastColor = _ref.contrastColor,
       contrastColor = _ref$contrastColor === void 0 ? 'white' : _ref$contrastColor,
-      _ref$buttonText = _ref.buttonText,
-      buttonText = _ref$buttonText === void 0 ? 'Spin' : _ref$buttonText,
       _ref$isOnlyOnce = _ref.isOnlyOnce,
       isOnlyOnce = _ref$isOnlyOnce === void 0 ? true : _ref$isOnlyOnce,
       _ref$size = _ref.size,
@@ -24,7 +26,7 @@ var WheelComponent = function WheelComponent(_ref) {
   var currentSegment = '';
   var isStarted = false;
 
-  var _useState = useState(false),
+  var _useState = React.useState(false),
       isFinished = _useState[0],
       setFinished = _useState[1];
 
@@ -40,12 +42,13 @@ var WheelComponent = function WheelComponent(_ref) {
   var frames = 0;
   var centerX = 300;
   var centerY = 300;
-  useEffect(function () {
+
+  React.useEffect(function () {
     wheelInit();
     setTimeout(function () {
       window.scrollTo(0, 1);
     }, 0);
-  }, []);
+  });
 
   var wheelInit = function wheelInit() {
     initCanvas();
@@ -54,17 +57,18 @@ var WheelComponent = function WheelComponent(_ref) {
 
   var initCanvas = function initCanvas() {
     var canvas = document.getElementById('canvas');
+    var spinBtn = document.getElementById('spinBtn');
     console.log(navigator);
-
     if (navigator.userAgent.indexOf('MSIE') !== -1) {
       canvas = document.createElement('canvas');
       canvas.setAttribute('width', 1000);
-      canvas.setAttribute('height', 600);
+      canvas.setAttribute('height', 800);
       canvas.setAttribute('id', 'canvas');
-      document.getElementById('wheel').appendChild(canvas);
+      var wheel = document.getElementById('wheel')
+      wheel.appendChild(canvas);
     }
-
-    canvas.addEventListener('click', spin, false);
+    spinBtn.addEventListener('click', spin, false);
+    // canvas.addEventListener('click', spin, false);
     canvasContext = canvas.getContext('2d');
   };
 
@@ -182,7 +186,7 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.font = 'bold 1em ' + fontFamily;
     ctx.fillStyle = contrastColor;
     ctx.textAlign = 'center';
-    ctx.fillText(buttonText, centerX, centerY + 3);
+    // ctx.fillText(buttonText, centerX, centerY + 3);
     ctx.stroke();
     ctx.beginPath();
     ctx.arc(centerX, centerY, size, 0, PI2, false);
@@ -194,15 +198,15 @@ var WheelComponent = function WheelComponent(_ref) {
 
   var drawNeedle = function drawNeedle() {
     var ctx = canvasContext;
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = contrastColor;
-    ctx.fileStyle = contrastColor;
-    ctx.beginPath();
-    ctx.moveTo(centerX + 20, centerY - 50);
-    ctx.lineTo(centerX - 20, centerY - 50);
-    ctx.lineTo(centerX, centerY - 70);
-    ctx.closePath();
-    ctx.fill();
+    // ctx.lineWidth = 1;
+    // ctx.strokeStyle = contrastColor;
+    // ctx.fileStyle = contrastColor;
+    // ctx.beginPath();
+    // ctx.moveTo(centerX + 20, centerY - 50);
+    // ctx.lineTo(centerX - 20, centerY - 50);
+    // ctx.lineTo(centerX, centerY - 70);
+    // ctx.closePath();
+    // ctx.fill();
     var change = angleCurrent + Math.PI / 2;
     var i = segments.length - Math.floor(change / (Math.PI * 2) * segments.length) - 1;
     if (i < 0) i = i + segments.length;
@@ -219,17 +223,16 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.clearRect(0, 0, 1000, 800);
   };
 
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/React__default.createElement("div", {
     id: "wheel"
-  }, /*#__PURE__*/React.createElement("canvas", {
+  }, /*#__PURE__*/React__default.createElement("canvas", {
     id: "canvas",
-    width: "1000",
-    height: "800",
+    width: "600",
+    height: "600",
     style: {
       pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto'
     }
   }));
 };
 
-export default WheelComponent;
-//# sourceMappingURL=index.modern.js.map
+module.exports = WheelComponent;

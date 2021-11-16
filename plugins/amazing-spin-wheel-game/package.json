@@ -2,11 +2,5 @@
   "name": "amazin-spin-wheel-game",
   "version": "1.1.0",
   "description": "It is a spin wheel game build using reactjs",
-  "author": "Shahzaib Kamal",
-  "main": "dist/index.js",
-  "module": "dist/index.modern.js",
-  "source": "src/index.js",
-  "files": [
-    "dist"
-  ]
+  "author": "Shahzaib Kamal"
 }
