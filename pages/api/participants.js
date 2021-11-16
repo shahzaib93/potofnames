@@ -21,9 +21,7 @@ export default async function handler (req, res) {
             if (err) return handleError(err);
             // saved!
         })
-        res.status(201).json({ success: true, data: addParticipant })
-        // participants = Participant.find({})
-        // console.log();
+        res.status(201).json({addParticipant})
       } catch (error) {
         res.status(400).json({ success: false })
       }

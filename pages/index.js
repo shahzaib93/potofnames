@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import WheelComponent from '../plugins/amazing-spin-wheel-game/dist'
+import React, {useState, useEffect} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
 // http://localhost:3000/api/participants
@@ -16,15 +17,22 @@ export const getStaticProps = async () => {
   }
 }
 export default function Home({participants}) {
-  console.log(participants);
-  const seg = [], segCol = [];
   const router = useRouter();
+  const seg = [], segCol = [];
+  const [items, setItems] = useState(participants)
+  console.log(items);
   const addParticipant = async event => {
-    console.log(participants);
     event.preventDefault()
-    console.log(event.target.participantName.value);
-    participants.push(event.target.participantName.value);
-    const res = await fetch('https://potofnames.com/api/participants', {
+      
+
+    // console.log(event.target.participantName.value);
+    // participants.push(event.target.participantName.value);
+    var dataa = document.getElementById("dataa");
+    var wheelCom = document.getElementById("wheelCom");
+    router.replace(router.asPath);
+    seg.push(event.target.participantName.value);
+
+    const res = await fetch('http://localhost:3000/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -33,8 +41,11 @@ export default function Home({participants}) {
       },
       method: 'POST'
     })
-    // const newParticipant = await res.json()
-    router.replace(router.asPath);
+    const newParticipant = await res.json()
+    console.log(newParticipant.addParticipant);
+   
+    setItems([...items, newParticipant.addParticipant]);
+    console.log(items);
     // console.log(newParticipant);
   }
   const onFinished = (winner) => {
@@ -77,7 +88,7 @@ export default function Home({participants}) {
       </header>
       <main>
         <div className="row justify-content-center">
-          <div className="col-6">
+          <div className="col-6" id="wheelCom">
             <WheelComponent
               segments={seg}
               segColors={segCol}
@@ -117,8 +128,8 @@ export default function Home({participants}) {
         </form>
 
         <div className="m-5 test">
-        <div className="row ">
-            {participants.map(participant =>(
+        <div className="row " id="dataa">
+            { items.map(item =>(
             <div className="col-12 col-md-6">
               <div className="card mb-3 name-card">
                 <div className="row g-0">
@@ -127,8 +138,8 @@ export default function Home({participants}) {
                   </div>
                   <div className="col-md-8">
                     <div className="card-body">
-                      <div key={participant._id}>
-                          <h5 className="card-title">{participant.name}</h5>
+                      <div key={item._id}>
+                          <h5 className="card-title">{item.name}</h5>
                       </div>
                     </div>
                   </div>
