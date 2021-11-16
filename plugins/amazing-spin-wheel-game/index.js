@@ -46,7 +46,7 @@ var WheelComponent = function WheelComponent(_ref) {
   React.useEffect(function () {
     wheelInit();
     setTimeout(function () {
-      window.scrollTo(0, 1);
+      // window.scrollTo(0, 1);
     }, 0);
   });
 
