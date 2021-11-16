@@ -58,7 +58,6 @@ var WheelComponent = function WheelComponent(_ref) {
   var initCanvas = function initCanvas() {
     var canvas = document.getElementById('canvas');
     var spinBtn = document.getElementById('spinBtn');
-    console.log(navigator);
     if (navigator.userAgent.indexOf('MSIE') !== -1) {
       canvas = document.createElement('canvas');
       canvas.setAttribute('width', 1000);
@@ -68,7 +67,6 @@ var WheelComponent = function WheelComponent(_ref) {
       wheel.appendChild(canvas);
     }
     spinBtn.addEventListener('click', spin, false);
-    // canvas.addEventListener('click', spin, false);
     canvasContext = canvas.getContext('2d');
   };
 
@@ -224,11 +222,14 @@ var WheelComponent = function WheelComponent(_ref) {
   };
 
   return /*#__PURE__*/React__default.createElement("div", {
-    id: "wheel"
+    id: "wheel",
+    width: "600",
+    height: "600",
   }, /*#__PURE__*/React__default.createElement("canvas", {
     id: "canvas",
     width: "600",
     height: "600",
+    className:"mx-auto d-block",
     style: {
       pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto'
     }

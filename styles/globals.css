@@ -72,9 +72,7 @@ a {
   border-radius: 15px;
 }
 
-.test{
-  padding:0 200px 0 200px ;
-}
+
 .footer-card {
   border: 0;
 }
@@ -108,4 +106,17 @@ canvas {
 
 #spinBtn {
   cursor: pointer;
+}
+
+
+@media screen and (max-width: 400px) {
+  .container-sm {
+    width: 600px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .test{
+    padding:0 200px 0 200px ;
+  }
 }
