@@ -108,7 +108,9 @@ canvas {
   cursor: pointer;
 }
 
-
+.sponsor-img {
+  cursor: pointer;
+}
 @media screen and (max-width: 400px) {
   .container-sm {
     width: 600px;

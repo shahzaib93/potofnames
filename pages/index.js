@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Link from 'next/link';
 import WheelComponent from '../plugins/amazing-spin-wheel-game'
 import React, {useEffect, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -202,19 +202,10 @@ export default function Home({participants}) {
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+            <Link href="https://potofnames.com/"><img src="logo.jpg" className="img-fluid sponsor-img" alt="..." /></Link>
           </div>
           <div className="col-2">
-            <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-          </div>
-          <div className="col-2">
-            <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-          </div>
-          <div className="col-2">
-            <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
-          </div>
-          <div className="col-2">
-            <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
+            <Link href="https://pickapot.com/"><img src="paplogo.png" className="img-fluid sponsor-img" alt="..." /></Link>
           </div>
         </div>
         <div className="row">
