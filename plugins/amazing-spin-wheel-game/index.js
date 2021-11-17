@@ -1,8 +1,5 @@
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var React = require('react');
-var React__default = _interopDefault(React);
-
 var WheelComponent = function WheelComponent(_ref) {
   // console.log(_ref.segments);
   var segments = _ref.segments,
@@ -58,14 +55,14 @@ var WheelComponent = function WheelComponent(_ref) {
   var initCanvas = function initCanvas() {
     var canvas = document.getElementById('canvas');
     var spinBtn = document.getElementById('spinBtn');
-    if (navigator.userAgent.indexOf('MSIE') !== -1) {
-      canvas = document.createElement('canvas');
-      canvas.setAttribute('width', 1000);
-      canvas.setAttribute('height', 800);
-      canvas.setAttribute('id', 'canvas');
-      var wheel = document.getElementById('wheel')
-      wheel.appendChild(canvas);
-    }
+    // if (navigator.userAgent.indexOf('MSIE') !== -1) {
+    //   canvas = document.createElement('canvas');
+    //   canvas.setAttribute('width', 1000);
+    //   canvas.setAttribute('height', 800);
+    //   canvas.setAttribute('id', 'canvas');
+    //   var wheel = document.getElementById('wheel')
+    //   wheel.appendChild(canvas);
+    // }
     spinBtn.addEventListener('click', spin, false);
     canvasContext = canvas.getContext('2d');
   };
@@ -221,15 +218,15 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.clearRect(0, 0, 1000, 800);
   };
 
-  return /*#__PURE__*/React__default.createElement("div", {
+  return React.createElement("div", {
     id: "wheel",
     width: "600",
     height: "600",
-  }, /*#__PURE__*/React__default.createElement("canvas", {
+  }, React.createElement("canvas", {
     id: "canvas",
     width: "600",
     height: "600",
-    className:"mx-auto d-block",
+    className:"mx-auto d-block canvas",
     style: {
       pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto'
     }

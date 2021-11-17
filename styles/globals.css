@@ -103,7 +103,12 @@ canvas {
     width: 600px;
     height: 600px;
 }
-
+.canvas {
+  /* transform:
+    rotate3d(.5,-.866,0,49deg) rotate(0deg) */
+    width: 600px;
+    height: 600px;
+}
 #spinBtn {
   cursor: pointer;
 }
@@ -111,7 +116,7 @@ canvas {
 .sponsor-img {
   cursor: pointer;
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   .container-sm {
     width: 600px;
   }
