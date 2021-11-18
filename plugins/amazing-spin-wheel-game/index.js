@@ -54,17 +54,14 @@ var WheelComponent = function WheelComponent(_ref) {
 
   var initCanvas = function initCanvas() {
     var canvas = document.getElementById('canvas');
-    var spinBtn = document.getElementById('spinBtn');
-    // if (navigator.userAgent.indexOf('MSIE') !== -1) {
-    //   canvas = document.createElement('canvas');
-    //   canvas.setAttribute('width', 1000);
-    //   canvas.setAttribute('height', 800);
-    //   canvas.setAttribute('id', 'canvas');
-    //   var wheel = document.getElementById('wheel')
-    //   wheel.appendChild(canvas);
-    // }
-    spinBtn.addEventListener('click', spin, false);
     canvasContext = canvas.getContext('2d');
+
+    var background = new Image();
+    background.src = "../wheel_frame.png";
+    canvasContext.drawImage(background,100,100,4000,2770);  
+
+    var spinBtn = document.getElementById('spinBtn');
+    spinBtn.addEventListener('click', spin, false);
   };
 
   var spin = function spin() {
