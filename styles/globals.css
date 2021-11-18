@@ -113,7 +113,7 @@ canvas {
   cursor: pointer;
 }
 
-.sponsor-img {
+.pointer {
   cursor: pointer;
 }
 @media screen and (max-width: 500px) {

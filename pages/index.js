@@ -1,10 +1,11 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link';
-import WheelComponent from '../plugins/amazing-spin-wheel-game'
+import Link from 'next/link'
 import React, {useEffect, useState} from 'react'
+import WheelComponent from '../plugins/amazing-spin-wheel-game'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
+import{faTimes} from '@fortawesome/free-solid-svg-icons'
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 
@@ -16,7 +17,7 @@ export const getStaticProps = async () => {
   }
 }
 export default function Home({participants}) {
-  
+  // var participantName = ""
   const segCol = [];
   const [seg, setSeg] = useState([])
   const [items, setItems] = useState([])
@@ -49,7 +50,8 @@ export default function Home({participants}) {
   const addParticipant = async event => {
     event.preventDefault()
     // router.replace(router.asPath);
-    const res = await fetch('https://potofnames.com/api/participants', {
+    console.log(event.target.participantName.value);
+    const res = await fetch('http://localhost:3000/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -60,6 +62,7 @@ export default function Home({participants}) {
     console.log(newParticipant.addParticipant);
     setItems([...items, newParticipant.addParticipant]);
     setSeg([...seg, newParticipant.addParticipant.name]);
+    event.target.participantName.value = "";
   }
   const deleteParticipant = async (deleleId, index) => {
     
@@ -68,14 +71,11 @@ export default function Home({participants}) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
     })
-    // console.log(deleleId);
     const delParticipant = await res.json()
-    // console.log(delParticipant);
     function checkAdult(age) {
       return age == index;
     }
     setItems(items.filter((checkAdult, i)=> i !== index));
-
     // setSeg([...seg, newParticipant.addParticipant.name]);
     console.log(seg);
   }
@@ -120,6 +120,7 @@ export default function Home({participants}) {
                 fontFamily='Arial'
               />
             }
+            <img src="wheel_stand.png" width="200"/>
             <div className="clearfix"></div>
           </div>
         </div>
@@ -131,7 +132,7 @@ export default function Home({participants}) {
         <form className="row justify-content-center" method="post" onSubmit={addParticipant}>
           <div className="col-8 col-md-5 ">
             <div className="input-group mycustom ">
-              <input type="text" className="form-control" placeholder="Username" name="participantName" required />
+              <input type="text" className="form-control" placeholder="Participant Name" name="participantName" required />
               <div className="input-group-prepend">
                 <button type="submit" className="btn btn-radius btn-sm" id="inputGroupPrepend2">
                   <img src="plus.png" width="25" className="m-1"/>
@@ -140,7 +141,7 @@ export default function Home({participants}) {
             </div>
           </div>
           <div className="col-2 col-md-1">
-            <div id="spinBtn" className="my-2 text-purple fs-4 fw-bold">Shuffle</div>
+            <div id="spinBtn" className="my-2 text-purple fs-4 fw-bold">spin</div>
           </div>
         </form>
 
@@ -162,7 +163,7 @@ export default function Home({participants}) {
                     </div>
                   </div>
                   <div className="col-1">
-                  <div onClick={()=>deleteParticipant(item._id, index)}>x</div>
+                  <div className="pointer" onClick={()=>deleteParticipant(item._id, index)}>x</div>
                   </div>
                 </div>
               </div>
@@ -223,10 +224,10 @@ export default function Home({participants}) {
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <Link href="https://potofnames.com/"><img src="logo.jpg" className="img-fluid sponsor-img" alt="..." /></Link>
+            <Link href="https://potofnames.com/"><img src="logo.jpg" className="img-fluid pointer" alt="..." /></Link>
           </div>
           <div className="col-2">
-            <Link href="https://pickapot.com/"><img src="paplogo.png" className="img-fluid sponsor-img" alt="..." /></Link>
+            <Link href="https://pickapot.com/"><img src="paplogo.png" className="img-fluid pointer" alt="..." /></Link>
           </div>
         </div>
         <div className="row">
