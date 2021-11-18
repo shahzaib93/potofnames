@@ -49,7 +49,7 @@ export default function Home({participants}) {
   const addParticipant = async event => {
     event.preventDefault()
     // router.replace(router.asPath);
-    const res = await fetch('https://potofnames.com/api/participants', {
+    const res = await fetch('http://localhost:3000/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -60,6 +60,7 @@ export default function Home({participants}) {
     console.log(newParticipant.addParticipant);
     setItems([...items, newParticipant.addParticipant]);
     setSeg([...seg, newParticipant.addParticipant.name]);
+    event.target.participantName.value = ""
   }
   const deleteParticipant = async (deleleId, index) => {
     
@@ -131,7 +132,7 @@ export default function Home({participants}) {
         <form className="row justify-content-center" method="post" onSubmit={addParticipant}>
           <div className="col-8 col-md-5 ">
             <div className="input-group mycustom ">
-              <input type="text" className="form-control" placeholder="Username" name="participantName" required />
+              <input type="text" className="form-control" placeholder="Participant Name" name="participantName" required />
               <div className="input-group-prepend">
                 <button type="submit" className="btn btn-radius btn-sm" id="inputGroupPrepend2">
                   <img src="plus.png" width="25" className="m-1"/>
@@ -140,7 +141,7 @@ export default function Home({participants}) {
             </div>
           </div>
           <div className="col-2 col-md-1">
-            <div id="spinBtn" className="my-2 text-purple fs-4 fw-bold">Shuffle</div>
+            <div id="spinBtn" className="my-2 text-purple fs-4 fw-bold">Spin</div>
           </div>
         </form>
 
