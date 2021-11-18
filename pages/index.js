@@ -41,6 +41,11 @@ export default function Home({participants}) {
       segCol.push("#dfdede");
     }
   }
+  const onFinished = (winner) => {
+    console.log(winner)
+    alert(winner);
+  }
+
   const addParticipant = async event => {
     event.preventDefault()
     // router.replace(router.asPath);
@@ -56,9 +61,23 @@ export default function Home({participants}) {
     setItems([...items, newParticipant.addParticipant]);
     setSeg([...seg, newParticipant.addParticipant.name]);
   }
-  const onFinished = (winner) => {
-    console.log(winner)
-    alert(winner);
+  const deleteParticipant = async (deleleId, index) => {
+    
+    const res = await fetch('https://potofnames.com/api/participants', {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(deleleId),
+    })
+    // console.log(deleleId);
+    const delParticipant = await res.json()
+    // console.log(delParticipant);
+    function checkAdult(age) {
+      return age == index;
+    }
+    setItems(items.filter((checkAdult, i)=> i !== index));
+
+    // setSeg([...seg, newParticipant.addParticipant.name]);
+    console.log(seg);
   }
   return (
     <div className="container container-sm container-md mb-5">
@@ -72,7 +91,7 @@ export default function Home({participants}) {
           <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container-fluid">
               <a className="navbar-brand" href="#">
-              <img src="logo.jpg" width="150"/>
+               <img src="logo.jpg" width="150"/>
               </a>
               <div className="d-flex">
                   <div className="navbar-nav">
@@ -89,16 +108,16 @@ export default function Home({participants}) {
           <div className="col-12 col-md-6">
             {seg.length > 0 && 
               <WheelComponent
-              segments={seg}
-              segColors={segCol}
-              onFinished={(winner) => onFinished(winner)}
-              primaryColor='gray'
-              contrastColor='white'
-              isOnlyOnce={false}
-              size={290}
-              upDuration={100}
-              downDuration={1000}
-              fontFamily='Arial'
+                segments={seg}
+                segColors={segCol}
+                onFinished={(winner) => onFinished(winner)}
+                primaryColor='gray'
+                contrastColor='white'
+                isOnlyOnce={false}
+                size={290}
+                upDuration={100}
+                downDuration={1000}
+                fontFamily='Arial'
               />
             }
             <div className="clearfix"></div>
@@ -109,7 +128,6 @@ export default function Home({participants}) {
             <button className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg">3D MODE</button>
           </div>
         </div>
-        
         <form className="row justify-content-center" method="post" onSubmit={addParticipant}>
           <div className="col-8 col-md-5 ">
             <div className="input-group mycustom ">
@@ -127,8 +145,8 @@ export default function Home({participants}) {
         </form>
 
         <div className="m-5 test">
-        <div className="row">
-            { items.map(item =>(
+          <div className="row">
+            { items.map((item, index) =>(
             // eslint-disable-next-line react/jsx-key
             <div className="col-6 col-md-6">
               <div className="card mb-3 name-card">
@@ -136,12 +154,15 @@ export default function Home({participants}) {
                   <div className=" col-4 col-md-4">
                     <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
                   </div>
-                  <div className="col-8 col-md-8">
+                  <div className="col-7 col-md-7">
                     <div className="card-body">
                       <div key={item._id}>
                           <h5 className="card-title">{item.name}</h5>
                       </div>
                     </div>
+                  </div>
+                  <div className="col-1">
+                  <div onClick={()=>deleteParticipant(item._id, index)}>x</div>
                   </div>
                 </div>
               </div>

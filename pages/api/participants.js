@@ -26,6 +26,18 @@ export default async function handler (req, res) {
         res.status(400).json({ success: false })
       }
       break
+      case 'DELETE':
+      try {
+ 
+        Participant.deleteOne({ _id: req.body },function (err) {
+            if (err) return handleError(err);
+            // saved!
+        })
+        res.status(201).json({ success: true })
+      } catch (error) {
+        res.status(400).json({ success: false })
+      }
+      break
     default:
       res.status(400).json({ success: false })
       break
