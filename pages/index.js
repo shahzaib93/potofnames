@@ -1,8 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
-import WheelComponent from '../plugins/amazing-spin-wheel-game'
+import jwt from 'jsonwebtoken'
 import React, {useEffect, useState} from 'react'
+import { useSession, signIn, signOut } from "next-auth/react"
+import WheelComponent from '../plugins/amazing-spin-wheel-game'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
 // http://localhost:3000/api/participants
@@ -17,30 +19,49 @@ export const getStaticProps = async () => {
 }
 export default function Home({participants}) {
   
-  const segCol = [];
-  const [seg, setSeg] = useState([])
-  const [items, setItems] = useState([])
+  const segCol = []
+  const [webState, setWebState] = useState({items: [], seg: []});
+  const { data: session } = useSession()
+  const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
+
+  console.log(tempParticipants)
+  console.log(participants)
+  if(session){
+    console.log(`You're signed in`)
+    console.log(session) 
+  } else {
+    console.log(`You are signed out`)
+  }
 
   useEffect(() => {
-    setItems([...participants])
     let temp = [];
-    participants.map((participant)=>{
-      temp.push(participant.name);
-    })
-    setSeg([...temp])
-  }, [])
+    if(session){
+      participants.map((participant)=>{
+        temp.push(participant.name);
+      })
+      setWebState({items:[...participants], seg: temp})
+    } else {
+      let tempo = [];
+      tempParticipants.map((tempParticipant)=>{
+        tempo.push(tempParticipant.name);
+      })
+      setWebState({items:[...tempParticipants], seg: tempo})
+    }
+  }, [session])
 
   useEffect(() => {
-    console.log(items);
-  }, [items])
-    
-  for (let i = 0; i < seg.length; i++) {
+    console.log(webState);
+    console.log("Coming from useEffects");
+  }, [webState])
+
+  for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
       segCol.push("#4f56a5");
     } else {
       segCol.push("#dfdede");
     }
   }
+
   const onFinished = (winner) => {
     console.log(winner)
     alert(winner);
@@ -58,28 +79,51 @@ export default function Home({participants}) {
     })
     const newParticipant = await res.json()
     console.log(newParticipant.addParticipant);
-    setItems([...items, newParticipant.addParticipant]);
-    setSeg([...seg, newParticipant.addParticipant.name]);
+    setWebState({
+      items: [...webState.items, newParticipant.addParticipant],
+      seg: [...webState.seg, newParticipant.addParticipant.name]
+    })
     event.target.participantName.value = ""
   }
+
   const deleteParticipant = async (deleleId, index) => {
-    
-    const res = await fetch('https://potofnames.com/api/participants', {
+    const deletedVal = items[index]
+    console.log(deletedVal)
+    const res = await fetch('1', {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
     })
-    // console.log(deleleId);
     const delParticipant = await res.json()
-    // console.log(delParticipant);
     function checkAdult(age) {
       return age == index;
     }
-    setItems(items.filter((checkAdult, i)=> i !== index));
-
+    // setItems(items.filter((checkAdult, i)=> i !== index));
+    setWebState({
+      items: items.filter((checkAdult, i)=> i !== index)
+    })
     // setSeg([...seg, newParticipant.addParticipant.name]);
+
     console.log(seg);
   }
+
+  const loginAuth = async event => {
+    event.preventDefault()
+    // router.replace(router.asPath);
+    const res = await fetch('http://localhost:3000/api/login', {
+      body: JSON.stringify({
+        username: event.target.username.value,
+        password: event.target.password.value
+      }),
+      headers: {'Content-Type': 'application/json'},
+      method: 'POST'
+    })
+    const loginReturned = await res.json()
+    console.log(loginReturned.token )
+    const json = jwt.decode(loginReturned.token)
+    console.log(json);
+  }
+
   return (
     <div className="container container-sm container-md mb-5">
       <Head>
@@ -92,12 +136,16 @@ export default function Home({participants}) {
           <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container-fluid">
               <a className="navbar-brand" href="#">
-               <img src="logo.jpg" width="150"/>
+               <img src="logo.jpg" width="150" />
               </a>
               <div className="d-flex">
                   <div className="navbar-nav">
                     <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a>
-                    <a className="nav-link px-4" href="#">LOGIN</a>
+                    {
+                      (session ? 
+                      <a className="nav-link px-4" href="#" onClick={() => signOut()}>LOGOUT</a> :
+                      <a className="nav-link px-4" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>)
+                    }
                   </div>
               </div>
             </div>
@@ -107,9 +155,9 @@ export default function Home({participants}) {
       <main>
         <div className="row justify-content-center">
           <div className="col-12 col-md-6">
-            {seg.length > 0 && 
+            {webState.seg.length > 0 && 
               <WheelComponent
-                segments={seg}
+                segments={webState.seg}
                 segColors={segCol}
                 onFinished={(winner) => onFinished(winner)}
                 primaryColor='gray'
@@ -121,7 +169,6 @@ export default function Home({participants}) {
                 fontFamily='Arial'
               />
             }
-         
             <div className="clearfix"></div>
           </div>
         </div>
@@ -148,7 +195,7 @@ export default function Home({participants}) {
 
         <div className="m-5 test">
           <div className="row">
-            { items.map((item, index) =>(
+            { webState.items.map((item, index) =>(
             // eslint-disable-next-line react/jsx-key
             <div className="col-6 col-md-6">
               <div className="card mb-3 name-card">
@@ -171,7 +218,41 @@ export default function Home({participants}) {
             </div>
             ))}
           </div>
+        </div>
+        <div className="row">
+          <div className="col-12">
+            <div className="modal fade login-modal" id="loginModal" tabIndex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="loginModalLabel">Login to your account</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div className="modal-body">
+                    <form onSubmit={loginAuth}>
+                      <div className="mb-3">
+                        <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                        <input type="text" name="username" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                        <input type="password" name="password" className="form-control" id="exampleInputPassword1" />
+                      </div>
+                      <div className="d-grid gap-2">
+                        <button type="submit" className="btn btn-primary btn-block">Login</button>
+                        <button className="btn btn-outline-secondary" onClick={() => signIn()}>Sign in with Google</button>
+                      </div>
+                    </form>
+                  </div>
+                  {/* <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-primary">Save changes</button>
+                  </div> */}
+                </div>
+              </div>
+            </div>
 
+          </div>
         </div>
         <div className="row my-5">
           <div className="col-8 mx-auto">

@@ -56,9 +56,9 @@ var WheelComponent = function WheelComponent(_ref) {
     var canvas = document.getElementById('canvas');
     canvasContext = canvas.getContext('2d');
 
-    var background = new Image();
-    background.src = "../wheel_frame.png";
-    canvasContext.drawImage(background,100,100,4000,2770);  
+    // var background = new Image();
+    // background.src = "../wheel_frame.png";
+    // canvasContext.drawImage(background,100,100,4000,2770);  
 
     var spinBtn = document.getElementById('spinBtn');
     spinBtn.addEventListener('click', spin, false);

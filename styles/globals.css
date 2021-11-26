@@ -14,7 +14,8 @@ a {
 * {
   box-sizing: border-box;
 }
-.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .nav-link.active {
+.navbar-light .navbar-nav .show > .nav-link,
+.navbar-light .navbar-nav .nav-link.active {
   background: #4f56a5;
   border-radius: 20px;
   color: white;
@@ -35,24 +36,24 @@ a {
   font-weight: bold;
   font-size: 16px;
 }
-.bg-purple{
+.bg-purple {
   background: #4f56a5;
 }
 
-.icon{
+.icon {
   background: #4f56a5;
-  color:white;
+  color: white;
   padding: 20px;
 }
-.text-purple{
+.text-purple {
   color: #4f56a5;
 }
 .mycustom {
   position: relative;
-  border-radius:28px;
+  border-radius: 28px;
   box-shadow: 2px 2px 2px gray;
 }
-.mycustom input[type=text] {
+.mycustom input[type="text"] {
   width: 100%;
   border-radius: 28px;
   width: 500px;
@@ -64,14 +65,14 @@ a {
   position: absolute;
   right: 4px;
   top: 4px;
-  bottom: 4px;z-index:9;
+  bottom: 4px;
+  z-index: 9;
 }
 
 .name-card {
   box-shadow: 5px 5px 5px silver;
   border-radius: 15px;
 }
-
 
 .footer-card {
   border: 0;
@@ -88,26 +89,26 @@ a {
   margin-right: 30px;
 }
 .fontawesome-icon {
-  width:20px;
+  width: 20px;
 }
 .facebook-icon {
-  width:15px;
+  width: 15px;
 }
 
 .wheel-css {
-  width:500px;
+  width: 500px;
 }
 canvas {
   /* transform:
     rotate3d(.5,-.866,0,49deg) rotate(0deg) */
-    width: 600px;
-    height: 600px;
+  width: 600px;
+  height: 600px;
 }
 .canvas {
   /* transform:
     rotate3d(.5,-.866,0,49deg) rotate(0deg) */
-    width: 600px;
-    height: 600px;
+  width: 600px;
+  height: 600px;
 }
 #spinBtn {
   cursor: pointer;
@@ -116,6 +117,10 @@ canvas {
 .sponsor-img {
   cursor: pointer;
 }
+
+.login-modal .modal-header {
+  border: 0;
+}
 @media screen and (max-width: 500px) {
   .container-sm {
     width: 600px;
@@ -123,7 +128,7 @@ canvas {
 }
 
 @media screen and (min-width: 1200px) {
-  .test{
-    padding:0 200px 0 200px ;
+  .test {
+    padding: 0 200px 0 200px;
   }
 }
