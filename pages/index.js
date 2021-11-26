@@ -10,7 +10,6 @@ import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } 
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 
-
 export const getStaticProps = async () => {
   const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
@@ -230,7 +229,7 @@ export default function Home({participants}) {
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div className="modal-body">
-                    <form onSubmit={loginAuth}>
+                    <form >
                       <div className="mb-3">
                         <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
                         <input type="text" name="username" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
