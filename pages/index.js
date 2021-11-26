@@ -35,19 +35,19 @@ export default function Home({participants}) {
 
   useEffect(() => {
     let temp = [];
-    if(session){
+    // if(session){
       participants.map((participant)=>{
         temp.push(participant.name);
       })
       setWebState({items:[...participants], seg: temp})
-    } else {
+    // } else {
       let tempo = [];
       tempParticipants.map((tempParticipant)=>{
         tempo.push(tempParticipant.name);
       })
       setWebState({items:[...tempParticipants], seg: tempo})
-    }
-  }, [session])
+    // }
+  }, [])
 
   useEffect(() => {
     console.log(webState);
