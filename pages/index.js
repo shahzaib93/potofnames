@@ -141,11 +141,11 @@ export default function Home({participants}) {
               <div className="d-flex">
                   <div className="navbar-nav">
                     <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a>
-                    {
+                    {/* {
                       (session ? 
                       <a className="nav-link px-4" href="#" onClick={() => signOut()}>LOGOUT</a> :
                       <a className="nav-link px-4" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>)
-                    }
+                    } */}
                   </div>
               </div>
             </div>
