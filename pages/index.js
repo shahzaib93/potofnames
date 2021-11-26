@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link';
 import jwt from 'jsonwebtoken'
 import React, {useEffect, useState} from 'react'
-import { useSession, signIn, signOut } from "next-auth/react"
+// import { useSession, signIn, signOut } from "next-auth/react"
 import WheelComponent from '../plugins/amazing-spin-wheel-game'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -21,17 +21,17 @@ export default function Home({participants}) {
   
   const segCol = []
   const [webState, setWebState] = useState({items: [], seg: []});
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
   const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
 
   console.log(tempParticipants)
   console.log(participants)
-  if(session){
-    console.log(`You're signed in`)
-    console.log(session) 
-  } else {
-    console.log(`You are signed out`)
-  }
+    // if(session){
+    //   console.log(`You're signed in`)
+    //   console.log(session) 
+    // } else {
+    //   console.log(`You are signed out`)
+    // }
 
   useEffect(() => {
     let temp = [];
