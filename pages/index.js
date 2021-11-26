@@ -10,6 +10,7 @@ import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } 
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 
+
 export const getStaticProps = async () => {
   const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
