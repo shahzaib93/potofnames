@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 import React, {useEffect, useState} from 'react'
-// import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signIn, signOut } from "next-auth/react"
 import WheelComponent from '../plugins/amazing-spin-wheel-game'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -11,7 +11,7 @@ import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } 
 // https://potofnames.com/api/participants
 
 export const getStaticProps = async () => {
-  const res = await fetch('https://potofnames.com/api/participants');
+  const res = await fetch('http://localhost:3000/api/participants');
   const data = await res.json();
   return{
       props: {participants: data}
@@ -20,34 +20,37 @@ export const getStaticProps = async () => {
 export default function Home({participants}) {
   
   const segCol = []
-  const [webState, setWebState] = useState({items: [], seg: []});
-  // const { data: session } = useSession()
+  const [webState, setWebState] = useState({items: [], seg: []})
+  const { data: session } = useSession()
+  const [shouldWeSpin, setShouldWeSpin] = useState(false)
   const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
 
-  console.log(tempParticipants)
-  console.log(participants)
-    // if(session){
-    //   console.log(`You're signed in`)
-    //   console.log(session) 
-    // } else {
-    //   console.log(`You are signed out`)
-    // }
+  // console.log(tempParticipants)
+  // console.log(participants)
+    if(session){
+      console.log(`You're signed in`)
+      console.log(session) 
+    } else {
+      console.log(`You are signed out`)
+    }
 
   useEffect(() => {
     let temp = [];
-    // if(session){
+    if(session){
       participants.map((participant)=>{
         temp.push(participant.name);
       })
       setWebState({items:[...participants], seg: temp})
-    // } else {
+    } else {
       let tempo = [];
       tempParticipants.map((tempParticipant)=>{
         tempo.push(tempParticipant.name);
       })
+      
       setWebState({items:[...tempParticipants], seg: tempo})
-    // }
-  }, [])
+      // setShouldWeSpin(true)
+    }
+  }, [participants, session])
 
   useEffect(() => {
     console.log(webState);
@@ -70,7 +73,7 @@ export default function Home({participants}) {
   const addParticipant = async event => {
     event.preventDefault()
     // router.replace(router.asPath);
-    const res = await fetch('https://potofnames.com/api/participants', {
+    const res = await fetch('http://localhost:3000/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -87,9 +90,10 @@ export default function Home({participants}) {
   }
 
   const deleteParticipant = async (deleleId, index) => {
-    const deletedVal = items[index]
+    const deletedVal = webState.items[index]
+    console.log("Delete function data");
     console.log(deletedVal)
-    const res = await fetch('1', {
+    const res = await fetch('http://localhost:3000/api/participants', {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -98,32 +102,13 @@ export default function Home({participants}) {
     function checkAdult(age) {
       return age == index;
     }
-    // setItems(items.filter((checkAdult, i)=> i !== index));
     setWebState({
-      items: items.filter((checkAdult, i)=> i !== index)
+      items: webState.items.filter((checkAdult, i)=> i !== index),
+      seg: webState.seg.filter((checkAdult, i)=> i !== index)
     })
-    // setSeg([...seg, newParticipant.addParticipant.name]);
 
-    console.log(seg);
+    console.log(delParticipant);
   }
-
-  // const loginAuth = async event => {
-  //   event.preventDefault()
-  //   // router.replace(router.asPath);
-  //   const res = await fetch('http://localhost:3000/api/login', {
-  //     body: JSON.stringify({
-  //       username: event.target.username.value,
-  //       password: event.target.password.value
-  //     }),
-  //     headers: {'Content-Type': 'application/json'},
-  //     method: 'POST'
-  //   })
-  //   const loginReturned = await res.json()
-  //   console.log(loginReturned.token )
-  //   const json = jwt.decode(loginReturned.token)
-  //   console.log(json);
-  // }
-
   return (
     <div className="container container-sm container-md mb-5">
       <Head>
@@ -141,17 +126,18 @@ export default function Home({participants}) {
               <div className="d-flex">
                   <div className="navbar-nav">
                     <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a>
-                    {/* {
+                    {
                       (session ? 
                       <a className="nav-link px-4" href="#" onClick={() => signOut()}>LOGOUT</a> :
                       <a className="nav-link px-4" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>)
-                    } */}
+                    }
                   </div>
               </div>
             </div>
           </nav>
         </div>
       </header>
+      {/* <Header onLogoutClick={() => signOut()} session={session} /> */}
       <main>
         <div className="row justify-content-center">
           <div className="col-12 col-md-6">
@@ -166,6 +152,8 @@ export default function Home({participants}) {
                 size={290}
                 upDuration={100}
                 downDuration={1000}
+                shouldWeSpin={shouldWeSpin}
+                setShouldWeSpin={setShouldWeSpin}
                 fontFamily='Arial'
               />
             }
@@ -189,7 +177,7 @@ export default function Home({participants}) {
             </div>
           </div>
           <div className="col-2 col-md-1">
-            <div id="spinBtn" className="my-2 text-purple fs-4 fw-bold">Spin</div>
+            <div id="spinBtn" onClick={() => setShouldWeSpin(true)} className="my-2 text-purple fs-4 fw-bold">Spin</div>
           </div>
         </form>
 

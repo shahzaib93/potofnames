@@ -1,7 +1,8 @@
-
 var React = require('react');
 var WheelComponent = function WheelComponent(_ref) {
   // console.log(_ref.segments);
+  const {shouldWeSpin, setShouldWeSpin} = _ref;
+
   var segments = _ref.segments,
       segColors = _ref.segColors,
       winningSegment = _ref.winningSegment,
@@ -42,10 +43,19 @@ var WheelComponent = function WheelComponent(_ref) {
 
   React.useEffect(function () {
     wheelInit();
-    // setTimeout(function () {
-    //   // window.scrollTo(0, 1);
-    // }, 0);
-  });
+  }, [segments]);
+
+  React.useEffect(() => {
+    if(shouldWeSpin) {
+      wheelInit();
+      spin();
+      setShouldWeSpin(false);
+    }
+  }, [shouldWeSpin])
+
+  // React.useEffect(() => {
+  //     wheelInit();
+  // },[])
 
   var wheelInit = function wheelInit() {
     initCanvas();
@@ -60,8 +70,9 @@ var WheelComponent = function WheelComponent(_ref) {
     // background.src = "../wheel_frame.png";
     // canvasContext.drawImage(background,100,100,4000,2770);  
 
-    var spinBtn = document.getElementById('spinBtn');
-    spinBtn.addEventListener('click', spin, false);
+    // var spinBtn = document.getElementById('spinBtn');
+    // console.log("33333");
+    // spinBtn.addEventListener('click', spin, false);
   };
 
   var spin = function spin() {
@@ -230,4 +241,4 @@ var WheelComponent = function WheelComponent(_ref) {
   }));
 };
 
-module.exports = WheelComponent;
+module.exports = React.memo(WheelComponent);
