@@ -11,7 +11,7 @@ import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } 
 // https://potofnames.com/api/participants
 
 export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:3000/api/participants');
+  const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
   return{
       props: {participants: data}
@@ -73,7 +73,7 @@ export default function Home({participants}) {
   const addParticipant = async event => {
     event.preventDefault()
     // router.replace(router.asPath);
-    const res = await fetch('http://localhost:3000/api/participants', {
+    const res = await fetch('https://potofnames.com/api/participants', {
       body: JSON.stringify({
         name: event.target.participantName.value
       }),
@@ -93,7 +93,7 @@ export default function Home({participants}) {
     const deletedVal = webState.items[index]
     console.log("Delete function data");
     console.log(deletedVal)
-    const res = await fetch('http://localhost:3000/api/participants', {
+    const res = await fetch('https://potofnames.com/api/participants', {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
