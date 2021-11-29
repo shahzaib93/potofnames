@@ -228,7 +228,7 @@ export default function Home({participants}) {
                       </div>
                       <div className="d-grid gap-2">
                         <button type="submit" className="btn btn-primary btn-block">Login</button>
-                        <button className="btn btn-outline-secondary" onClick={() => signIn()}>Sign in with Google</button>
+                        <button className="btn btn-outline-secondary" onClick={() => signIn()} type="button">Sign in with Google</button>
                       </div>
                     </form>
                   </div>
