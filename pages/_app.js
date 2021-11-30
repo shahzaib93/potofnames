@@ -7,7 +7,6 @@ if (typeof window !== "undefined") {
 }
 
 function MyApp({ Component, pageProps:{ session, ...pageProps }}) {
-  // return <Component {...pageProps} />
   
   return (
     <SessionProvider session={session}>

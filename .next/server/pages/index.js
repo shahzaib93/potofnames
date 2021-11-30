@@ -5,7 +5,7 @@ exports.id = 405;
 exports.ids = [405];
 exports.modules = {
 
-/***/ 6748:
+/***/ 748:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -23,15 +23,15 @@ var jsx_runtime_ = __webpack_require__(997);
 const head_namespaceObject = require("next/head");
 var head_default = /*#__PURE__*/__webpack_require__.n(head_namespaceObject);
 // EXTERNAL MODULE: ./node_modules/next/image.js
-var next_image = __webpack_require__(5675);
+var next_image = __webpack_require__(675);
 // EXTERNAL MODULE: ./node_modules/next/link.js
-var next_link = __webpack_require__(1664);
+var next_link = __webpack_require__(664);
 // EXTERNAL MODULE: external "react"
-var external_react_ = __webpack_require__(6689);
+var external_react_ = __webpack_require__(689);
 // EXTERNAL MODULE: external "next-auth/react"
-var react_ = __webpack_require__(1649);
+var react_ = __webpack_require__(649);
 // EXTERNAL MODULE: ./plugins/amazing-spin-wheel-game/index.js
-var amazing_spin_wheel_game = __webpack_require__(1379);
+var amazing_spin_wheel_game = __webpack_require__(379);
 var amazing_spin_wheel_game_default = /*#__PURE__*/__webpack_require__.n(amazing_spin_wheel_game);
 ;// CONCATENATED MODULE: external "@fortawesome/react-fontawesome"
 const react_fontawesome_namespaceObject = require("@fortawesome/react-fontawesome");
@@ -688,11 +688,11 @@ function Home({ participants  }) {
 
 /***/ }),
 
-/***/ 1379:
+/***/ 379:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 
-var React = __webpack_require__(6689);
+var React = __webpack_require__(689);
 var WheelComponent = function WheelComponent(_ref) {
     // console.log(_ref.segments);
     const { shouldWeSpin , setShouldWeSpin  } = _ref;
@@ -897,7 +897,7 @@ module.exports = React.memo(WheelComponent);
 
 /***/ }),
 
-/***/ 1649:
+/***/ 649:
 /***/ ((module) => {
 
 module.exports = require("next-auth/react");
@@ -911,63 +911,63 @@ module.exports = require("next/dist/server/denormalize-page-path.js");
 
 /***/ }),
 
-/***/ 8028:
+/***/ 28:
 /***/ ((module) => {
 
 module.exports = require("next/dist/server/image-config.js");
 
 /***/ }),
 
-/***/ 4957:
+/***/ 957:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/head.js");
 
 /***/ }),
 
-/***/ 4014:
+/***/ 14:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/i18n/normalize-locale-path.js");
 
 /***/ }),
 
-/***/ 8020:
+/***/ 20:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/mitt.js");
 
 /***/ }),
 
-/***/ 4964:
+/***/ 964:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router-context.js");
 
 /***/ }),
 
-/***/ 9565:
+/***/ 565:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router/utils/get-asset-path-from-route.js");
 
 /***/ }),
 
-/***/ 4365:
+/***/ 365:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router/utils/get-middleware-regex.js");
 
 /***/ }),
 
-/***/ 1428:
+/***/ 428:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router/utils/is-dynamic.js");
 
 /***/ }),
 
-/***/ 1292:
+/***/ 292:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router/utils/parse-relative-url.js");
@@ -981,42 +981,42 @@ module.exports = require("next/dist/shared/lib/router/utils/querystring.js");
 
 /***/ }),
 
-/***/ 6052:
+/***/ 52:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router/utils/resolve-rewrites.js");
 
 /***/ }),
 
-/***/ 4226:
+/***/ 226:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router/utils/route-matcher.js");
 
 /***/ }),
 
-/***/ 5052:
+/***/ 422:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/router/utils/route-regex.js");
 
 /***/ }),
 
-/***/ 3018:
+/***/ 18:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/to-base-64.js");
 
 /***/ }),
 
-/***/ 9232:
+/***/ 232:
 /***/ ((module) => {
 
 module.exports = require("next/dist/shared/lib/utils.js");
 
 /***/ }),
 
-/***/ 6689:
+/***/ 689:
 /***/ ((module) => {
 
 module.exports = require("react");
@@ -1037,7 +1037,7 @@ module.exports = require("react/jsx-runtime");
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [730,61], () => (__webpack_exec__(6748)));
+var __webpack_exports__ = __webpack_require__.X(0, [730,61], () => (__webpack_exec__(748)));
 module.exports = __webpack_exports__;
 
 })();

@@ -3,11 +3,11 @@ exports.id = 617;
 exports.ids = [617];
 exports.modules = {
 
-/***/ 9832:
+/***/ 832:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 
-var _mongoose = _interopRequireDefault(__webpack_require__(1185));
+var _mongoose = _interopRequireDefault(__webpack_require__(185));
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -21,13 +21,13 @@ module.exports = _mongoose.default.models.Participant || _mongoose.default.model
 
 /***/ }),
 
-/***/ 2845:
+/***/ 845:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1185);
+/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(185);
 /* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongoose__WEBPACK_IMPORTED_MODULE_0__);
 
 const MONGODB_URI = "mongodb+srv://shahzaib:Daata321@cluster0.tosar.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";

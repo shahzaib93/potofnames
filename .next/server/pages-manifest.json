@@ -1,8 +1,6 @@
 {
   "/_app": "pages/_app.js",
   "/api/auth/[...nextauth]": "pages/api/auth/[...nextauth].js",
-  "/api/auth/signinOld": "pages/api/auth/signinOld.js",
-  "/api/login": "pages/api/login.js",
   "/api/participantdelete": "pages/api/participantdelete.js",
   "/api/participants": "pages/api/participants.js",
   "/components/header": "pages/components/header.html",
