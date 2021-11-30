@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link';
 // import jwt from 'jsonwebtoken'
 import React, {useEffect, useState} from 'react'
-import { useSession, signIn, signOut } from "next-auth/client"
+import { useSession, signIn, signOut } from "next-auth/react"
 import WheelComponent from '../plugins/amazing-spin-wheel-game'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'

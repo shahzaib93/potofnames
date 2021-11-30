@@ -28,8 +28,8 @@ var next_image = __webpack_require__(5675);
 var next_link = __webpack_require__(1664);
 // EXTERNAL MODULE: external "react"
 var external_react_ = __webpack_require__(6689);
-// EXTERNAL MODULE: external "next-auth/client"
-var client_ = __webpack_require__(427);
+// EXTERNAL MODULE: external "next-auth/react"
+var react_ = __webpack_require__(1649);
 // EXTERNAL MODULE: ./plugins/amazing-spin-wheel-game/index.js
 var amazing_spin_wheel_game = __webpack_require__(1379);
 var amazing_spin_wheel_game_default = /*#__PURE__*/__webpack_require__.n(amazing_spin_wheel_game);
@@ -65,7 +65,7 @@ function Home({ participants  }) {
         items: [],
         seg: []
     });
-    const { data: session  } = (0,client_.useSession)();
+    const { data: session  } = (0,react_.useSession)();
     const { 0: shouldWeSpin , 1: setShouldWeSpin  } = (0,external_react_.useState)(false);
     const tempParticipants = [
         {
@@ -245,7 +245,7 @@ function Home({ participants  }) {
                                             session ? /*#__PURE__*/ jsx_runtime_.jsx("a", {
                                                 className: "nav-link px-4",
                                                 href: "#",
-                                                onClick: ()=>(0,client_.signOut)()
+                                                onClick: ()=>(0,react_.signOut)()
                                                 ,
                                                 children: "LOGOUT"
                                             }) : /*#__PURE__*/ jsx_runtime_.jsx("a", {
@@ -471,7 +471,7 @@ function Home({ participants  }) {
                                                                 }),
                                                                 /*#__PURE__*/ jsx_runtime_.jsx("button", {
                                                                     className: "btn btn-outline-secondary",
-                                                                    onClick: ()=>(0,client_.signIn)()
+                                                                    onClick: ()=>(0,react_.signIn)()
                                                                     ,
                                                                     type: "button",
                                                                     children: "Sign in with Google"
@@ -897,10 +897,10 @@ module.exports = React.memo(WheelComponent);
 
 /***/ }),
 
-/***/ 427:
+/***/ 1649:
 /***/ ((module) => {
 
-module.exports = require("next-auth/client");
+module.exports = require("next-auth/react");
 
 /***/ }),
 
