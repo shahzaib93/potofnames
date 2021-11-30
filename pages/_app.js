@@ -1,18 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import '../styles/globals.css'
-import { SessionProvider } from "next-auth/react"
+import { Provider } from "next-auth/client";
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap.bundle")
 }
 
-function MyApp({ Component, pageProps: { session, ...pageProps }}) {
+function MyApp({ Component, pageProps}) {
   // return <Component {...pageProps} />
   
   return (
-  <SessionProvider session={session}>
+    <Provider session={pageProps.session}>
       <Component {...pageProps} />
-  </SessionProvider>
+    </Provider>
     )
 }
 

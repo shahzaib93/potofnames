@@ -1,5 +1,12 @@
 {
   "/_app": "pages/_app.js",
+  "/api/[...nextauth]": "pages/api/[...nextauth].js",
+  "/api/login": "pages/api/login.js",
+  "/api/participantdelete": "pages/api/participantdelete.js",
+  "/api/participants": "pages/api/participants.js",
+  "/components/header": "pages/components/header.html",
+  "/": "pages/index.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
 }

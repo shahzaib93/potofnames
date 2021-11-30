@@ -1,55 +1,86 @@
 "use strict";
-/*
- * ATTENTION: An "eval-source-map" devtool has been used.
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file with attached SourceMaps in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 (() => {
 var exports = {};
-exports.id = "pages/api/participants";
-exports.ids = ["pages/api/participants"];
+exports.id = 270;
+exports.ids = [270];
 exports.modules = {
 
-/***/ "mongoose":
-/*!***************************!*\
-  !*** external "mongoose" ***!
-  \***************************/
+/***/ 1185:
 /***/ ((module) => {
 
 module.exports = require("mongoose");
 
 /***/ }),
 
-/***/ "./models/Participant.js":
-/*!*******************************!*\
-  !*** ./models/Participant.js ***!
-  \*******************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-eval("\nvar _mongoose = _interopRequireDefault(__webpack_require__(/*! mongoose */ \"mongoose\"));\nfunction _interopRequireDefault(obj) {\n    return obj && obj.__esModule ? obj : {\n        default: obj\n    };\n}\nconst ParticipantSchema = new _mongoose.default.Schema({\n    name: String\n});\nmodule.exports = _mongoose.default.models.Participant || _mongoose.default.model('Participant', ParticipantSchema);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9tb2RlbHMvUGFydGljaXBhbnQuanMuanMiLCJtYXBwaW5ncyI6IjtBQUFxQixHQUFVLENBQVYsU0FBVTs7Ozs7O0FBRS9CLEtBQUssQ0FBQ0EsaUJBQWlCLEdBQUcsR0FBRyxDQUZSLFNBQVUsU0FFUUMsTUFBTSxDQUFDLENBQUM7SUFDN0NDLElBQUksRUFBRUMsTUFBTTtBQUNkLENBQUM7QUFFREMsTUFBTSxDQUFDQyxPQUFPLEdBTk8sU0FBVSxTQU1MQyxNQUFNLENBQUNDLFdBQVcsSUFOdkIsU0FBVSxTQU0wQkMsS0FBSyxDQUFDLENBQWEsY0FBRVIsaUJBQWlCIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vcG90b2ZuYW1lcy8uL21vZGVscy9QYXJ0aWNpcGFudC5qcz85ZTY1Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBtb25nb29zZSBmcm9tICdtb25nb29zZSdcblxuY29uc3QgUGFydGljaXBhbnRTY2hlbWEgPSBuZXcgbW9uZ29vc2UuU2NoZW1hKHtcbiAgbmFtZTogU3RyaW5nLFxufSlcblxubW9kdWxlLmV4cG9ydHMgPSBtb25nb29zZS5tb2RlbHMuUGFydGljaXBhbnQgfHwgbW9uZ29vc2UubW9kZWwoJ1BhcnRpY2lwYW50JywgUGFydGljaXBhbnRTY2hlbWEpXG4iXSwibmFtZXMiOlsiUGFydGljaXBhbnRTY2hlbWEiLCJTY2hlbWEiLCJuYW1lIiwiU3RyaW5nIiwibW9kdWxlIiwiZXhwb3J0cyIsIm1vZGVscyIsIlBhcnRpY2lwYW50IiwibW9kZWwiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./models/Participant.js\n");
-
-/***/ }),
-
-/***/ "./pages/api/participants.js":
-/*!***********************************!*\
-  !*** ./pages/api/participants.js ***!
-  \***********************************/
+/***/ 6162:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ handler)\n/* harmony export */ });\n/* harmony import */ var _utils_dbConnect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/dbConnect */ \"./utils/dbConnect.js\");\n/* harmony import */ var _models_Participant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../models/Participant */ \"./models/Participant.js\");\n/* harmony import */ var _models_Participant__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_models_Participant__WEBPACK_IMPORTED_MODULE_1__);\n\n\nasync function handler(req, res) {\n    const { method  } = req;\n    await (0,_utils_dbConnect__WEBPACK_IMPORTED_MODULE_0__[\"default\"])();\n    switch(method){\n        case 'GET':\n            try {\n                const participants = await _models_Participant__WEBPACK_IMPORTED_MODULE_1___default().find({\n                });\n                res.status(200).json(participants);\n            } catch (error) {\n                res.status(400).json({\n                    success: false\n                });\n            }\n            break;\n        case 'POST':\n            try {\n                // const participant = await Participant.create(req.body)\n                var addParticipant = new (_models_Participant__WEBPACK_IMPORTED_MODULE_1___default())(req.body);\n                addParticipant.save(function(err) {\n                    if (err) return handleError(err);\n                // saved!\n                });\n                res.status(201).json({\n                    addParticipant\n                });\n            } catch (error1) {\n                res.status(400).json({\n                    success: false\n                });\n            }\n            break;\n        case 'DELETE':\n            try {\n                _models_Participant__WEBPACK_IMPORTED_MODULE_1___default().deleteOne({\n                    _id: req.body\n                }, function(err) {\n                    if (err) return handleError(err);\n                // saved!\n                });\n                res.status(201).json({\n                    success: true\n                });\n            } catch (error2) {\n                res.status(400).json({\n                    success: false\n                });\n            }\n            break;\n        default:\n            res.status(400).json({\n                success: false\n            });\n            break;\n    }\n};\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9wYWdlcy9hcGkvcGFydGljaXBhbnRzLmpzLmpzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7QUFBNkM7QUFDSztBQUVuQyxlQUFlRSxPQUFPLENBQUVDLEdBQUcsRUFBRUMsR0FBRyxFQUFFLENBQUM7SUFDaEQsS0FBSyxDQUFDLENBQUMsQ0FBQ0MsTUFBTSxFQUFDLENBQUMsR0FBR0YsR0FBRztJQUN0QixLQUFLLENBQUNILDREQUFTO0lBQ2YsTUFBTSxDQUFFSyxNQUFNO1FBQ1osSUFBSSxDQUFDLENBQUs7WUFDUixHQUFHLENBQUMsQ0FBQztnQkFDSCxLQUFLLENBQUNDLFlBQVksR0FBRyxLQUFLLENBQUNMLCtEQUFnQixDQUFDLENBQUM7Z0JBQUEsQ0FBQztnQkFDOUNHLEdBQUcsQ0FBQ0ksTUFBTSxDQUFDLEdBQUcsRUFBRUMsSUFBSSxDQUFDSCxZQUFZO1lBQ25DLENBQUMsQ0FBQyxLQUFLLEVBQUVJLEtBQUssRUFBRSxDQUFDO2dCQUNmTixHQUFHLENBQUNJLE1BQU0sQ0FBQyxHQUFHLEVBQUVDLElBQUksQ0FBQyxDQUFDO29CQUFDRSxPQUFPLEVBQUUsS0FBSztnQkFBQyxDQUFDO1lBQ3pDLENBQUM7WUFDRCxLQUFLO1FBQ1AsSUFBSSxDQUFDLENBQU07WUFDVCxHQUFHLENBQUMsQ0FBQztnQkFDSCxFQUF5RDtnQkFDekQsR0FBRyxDQUFDQyxjQUFjLEdBQUcsR0FBRyxDQUFDWCw0REFBVyxDQUFDRSxHQUFHLENBQUNVLElBQUk7Z0JBQzdDRCxjQUFjLENBQUNFLElBQUksQ0FBQyxRQUFRLENBQUVDLEdBQUcsRUFBRSxDQUFDO29CQUNoQyxFQUFFLEVBQUVBLEdBQUcsRUFBRSxNQUFNLENBQUNDLFdBQVcsQ0FBQ0QsR0FBRztnQkFDL0IsRUFBUztnQkFDYixDQUFDO2dCQUNEWCxHQUFHLENBQUNJLE1BQU0sQ0FBQyxHQUFHLEVBQUVDLElBQUksQ0FBQyxDQUFDRztvQkFBQUEsY0FBYztnQkFBQSxDQUFDO1lBQ3ZDLENBQUMsQ0FBQyxLQUFLLEVBQUVGLE1BQUssRUFBRSxDQUFDO2dCQUNmTixHQUFHLENBQUNJLE1BQU0sQ0FBQyxHQUFHLEVBQUVDLElBQUksQ0FBQyxDQUFDO29CQUFDRSxPQUFPLEVBQUUsS0FBSztnQkFBQyxDQUFDO1lBQ3pDLENBQUM7WUFDRCxLQUFLO1FBQ0wsSUFBSSxDQUFDLENBQVE7WUFDYixHQUFHLENBQUMsQ0FBQztnQkFFSFYsb0VBQXFCLENBQUMsQ0FBQztvQkFBQ2lCLEdBQUcsRUFBRWYsR0FBRyxDQUFDVSxJQUFJO2dCQUFDLENBQUMsRUFBQyxRQUFRLENBQUVFLEdBQUcsRUFBRSxDQUFDO29CQUNwRCxFQUFFLEVBQUVBLEdBQUcsRUFBRSxNQUFNLENBQUNDLFdBQVcsQ0FBQ0QsR0FBRztnQkFDL0IsRUFBUztnQkFDYixDQUFDO2dCQUNEWCxHQUFHLENBQUNJLE1BQU0sQ0FBQyxHQUFHLEVBQUVDLElBQUksQ0FBQyxDQUFDO29CQUFDRSxPQUFPLEVBQUUsSUFBSTtnQkFBQyxDQUFDO1lBQ3hDLENBQUMsQ0FBQyxLQUFLLEVBQUVELE1BQUssRUFBRSxDQUFDO2dCQUNmTixHQUFHLENBQUNJLE1BQU0sQ0FBQyxHQUFHLEVBQUVDLElBQUksQ0FBQyxDQUFDO29CQUFDRSxPQUFPLEVBQUUsS0FBSztnQkFBQyxDQUFDO1lBQ3pDLENBQUM7WUFDRCxLQUFLOztZQUVMUCxHQUFHLENBQUNJLE1BQU0sQ0FBQyxHQUFHLEVBQUVDLElBQUksQ0FBQyxDQUFDO2dCQUFDRSxPQUFPLEVBQUUsS0FBSztZQUFDLENBQUM7WUFDdkMsS0FBSzs7QUFFWCxDQUFDIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vcG90b2ZuYW1lcy8uL3BhZ2VzL2FwaS9wYXJ0aWNpcGFudHMuanM/ZDBkNyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgZGJDb25uZWN0IGZyb20gJy4uLy4uL3V0aWxzL2RiQ29ubmVjdCdcbmltcG9ydCBQYXJ0aWNpcGFudCBmcm9tICcuLi8uLi9tb2RlbHMvUGFydGljaXBhbnQnXG5cbmV4cG9ydCBkZWZhdWx0IGFzeW5jIGZ1bmN0aW9uIGhhbmRsZXIgKHJlcSwgcmVzKSB7XG4gIGNvbnN0IHsgbWV0aG9kIH0gPSByZXFcbiAgYXdhaXQgZGJDb25uZWN0KClcbiAgc3dpdGNoIChtZXRob2QpIHtcbiAgICBjYXNlICdHRVQnOlxuICAgICAgdHJ5IHtcbiAgICAgICAgY29uc3QgcGFydGljaXBhbnRzID0gYXdhaXQgUGFydGljaXBhbnQuZmluZCh7fSlcbiAgICAgICAgcmVzLnN0YXR1cygyMDApLmpzb24ocGFydGljaXBhbnRzKVxuICAgICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgICAgcmVzLnN0YXR1cyg0MDApLmpzb24oeyBzdWNjZXNzOiBmYWxzZSB9KVxuICAgICAgfVxuICAgICAgYnJlYWtcbiAgICBjYXNlICdQT1NUJzpcbiAgICAgIHRyeSB7XG4gICAgICAgIC8vIGNvbnN0IHBhcnRpY2lwYW50ID0gYXdhaXQgUGFydGljaXBhbnQuY3JlYXRlKHJlcS5ib2R5KVxuICAgICAgICB2YXIgYWRkUGFydGljaXBhbnQgPSBuZXcgUGFydGljaXBhbnQocmVxLmJvZHkpO1xuICAgICAgICBhZGRQYXJ0aWNpcGFudC5zYXZlKGZ1bmN0aW9uIChlcnIpIHtcbiAgICAgICAgICAgIGlmIChlcnIpIHJldHVybiBoYW5kbGVFcnJvcihlcnIpO1xuICAgICAgICAgICAgLy8gc2F2ZWQhXG4gICAgICAgIH0pXG4gICAgICAgIHJlcy5zdGF0dXMoMjAxKS5qc29uKHthZGRQYXJ0aWNpcGFudH0pXG4gICAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgICByZXMuc3RhdHVzKDQwMCkuanNvbih7IHN1Y2Nlc3M6IGZhbHNlIH0pXG4gICAgICB9XG4gICAgICBicmVha1xuICAgICAgY2FzZSAnREVMRVRFJzpcbiAgICAgIHRyeSB7XG4gXG4gICAgICAgIFBhcnRpY2lwYW50LmRlbGV0ZU9uZSh7IF9pZDogcmVxLmJvZHkgfSxmdW5jdGlvbiAoZXJyKSB7XG4gICAgICAgICAgICBpZiAoZXJyKSByZXR1cm4gaGFuZGxlRXJyb3IoZXJyKTtcbiAgICAgICAgICAgIC8vIHNhdmVkIVxuICAgICAgICB9KVxuICAgICAgICByZXMuc3RhdHVzKDIwMSkuanNvbih7IHN1Y2Nlc3M6IHRydWUgfSlcbiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgc3VjY2VzczogZmFsc2UgfSlcbiAgICAgIH1cbiAgICAgIGJyZWFrXG4gICAgZGVmYXVsdDpcbiAgICAgIHJlcy5zdGF0dXMoNDAwKS5qc29uKHsgc3VjY2VzczogZmFsc2UgfSlcbiAgICAgIGJyZWFrXG4gIH1cbn0iXSwibmFtZXMiOlsiZGJDb25uZWN0IiwiUGFydGljaXBhbnQiLCJoYW5kbGVyIiwicmVxIiwicmVzIiwibWV0aG9kIiwicGFydGljaXBhbnRzIiwiZmluZCIsInN0YXR1cyIsImpzb24iLCJlcnJvciIsInN1Y2Nlc3MiLCJhZGRQYXJ0aWNpcGFudCIsImJvZHkiLCJzYXZlIiwiZXJyIiwiaGFuZGxlRXJyb3IiLCJkZWxldGVPbmUiLCJfaWQiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./pages/api/participants.js\n");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ handler)
+/* harmony export */ });
+/* harmony import */ var _utils_dbConnect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2845);
+/* harmony import */ var _models_Participant__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9832);
+/* harmony import */ var _models_Participant__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_models_Participant__WEBPACK_IMPORTED_MODULE_1__);
 
-/***/ }),
 
-/***/ "./utils/dbConnect.js":
-/*!****************************!*\
-  !*** ./utils/dbConnect.js ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+async function handler(req, res) {
+    const { method  } = req;
+    await (0,_utils_dbConnect__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)();
+    switch(method){
+        case 'GET':
+            try {
+                const participants = await _models_Participant__WEBPACK_IMPORTED_MODULE_1___default().find({
+                });
+                res.status(200).json(participants);
+            } catch (error) {
+                res.status(400).json({
+                    success: false
+                });
+            }
+            break;
+        case 'POST':
+            try {
+                // const participant = await Participant.create(req.body)
+                var addParticipant = new (_models_Participant__WEBPACK_IMPORTED_MODULE_1___default())(req.body);
+                addParticipant.save(function(err) {
+                    if (err) return handleError(err);
+                // saved!
+                });
+                res.status(201).json({
+                    addParticipant
+                });
+            } catch (error1) {
+                res.status(400).json({
+                    success: false
+                });
+            }
+            break;
+        case 'DELETE':
+            try {
+                _models_Participant__WEBPACK_IMPORTED_MODULE_1___default().deleteOne({
+                    _id: req.body
+                }, function(err) {
+                    if (err) return handleError(err);
+                // saved!
+                });
+                res.status(201).json({
+                    success: true
+                });
+            } catch (error2) {
+                res.status(400).json({
+                    success: false
+                });
+            }
+            break;
+        default:
+            res.status(400).json({
+                success: false
+            });
+            break;
+    }
+};
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mongoose */ \"mongoose\");\n/* harmony import */ var mongoose__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mongoose__WEBPACK_IMPORTED_MODULE_0__);\n\nconst MONGODB_URI = \"mongodb+srv://shahzaib:Daata321@cluster0.tosar.mongodb.net/myFirstDatabase?retryWrites=true&w=majority\";\nif (!MONGODB_URI) {\n    throw new Error('Please define the MONGODB_URI environment variable inside .env.local');\n}\nlet cached = global.mongoose;\nif (!cached) {\n    cached = global.mongoose = {\n        conn: null,\n        promise: null\n    };\n}\nasync function dbConnect() {\n    if (cached.conn) {\n        return cached.conn;\n    }\n    if (!cached.promise) {\n        const opts = {\n            bufferCommands: false\n        };\n        cached.promise = mongoose__WEBPACK_IMPORTED_MODULE_0___default().connect(MONGODB_URI, opts).then((mongoose)=>{\n            return mongoose;\n        });\n    }\n    cached.conn = await cached.promise;\n    return cached.conn;\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (dbConnect);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi91dGlscy9kYkNvbm5lY3QuanMuanMiLCJtYXBwaW5ncyI6Ijs7Ozs7O0FBQStCO0FBRS9CLEtBQUssQ0FBQ0MsV0FBVyxHQUFHQyx3R0FBdUI7QUFFM0MsRUFBRSxHQUFHRCxXQUFXLEVBQUUsQ0FBQztJQUNqQixLQUFLLENBQUMsR0FBRyxDQUFDRyxLQUFLLENBQ2IsQ0FBc0U7QUFFMUUsQ0FBQztBQUVELEdBQUcsQ0FBQ0MsTUFBTSxHQUFHQyxNQUFNLENBQUNOLFFBQVE7QUFFNUIsRUFBRSxHQUFHSyxNQUFNLEVBQUUsQ0FBQztJQUNaQSxNQUFNLEdBQUdDLE1BQU0sQ0FBQ04sUUFBUSxHQUFHLENBQUM7UUFBQ08sSUFBSSxFQUFFLElBQUk7UUFBRUMsT0FBTyxFQUFFLElBQUk7SUFBQyxDQUFDO0FBQzFELENBQUM7ZUFFY0MsU0FBUyxHQUFJLENBQUM7SUFDM0IsRUFBRSxFQUFFSixNQUFNLENBQUNFLElBQUksRUFBRSxDQUFDO1FBQ2hCLE1BQU0sQ0FBQ0YsTUFBTSxDQUFDRSxJQUFJO0lBQ3BCLENBQUM7SUFFRCxFQUFFLEdBQUdGLE1BQU0sQ0FBQ0csT0FBTyxFQUFFLENBQUM7UUFDcEIsS0FBSyxDQUFDRSxJQUFJLEdBQUcsQ0FBQztZQUNaQyxjQUFjLEVBQUUsS0FBSztRQUN2QixDQUFDO1FBRUROLE1BQU0sQ0FBQ0csT0FBTyxHQUFHUix1REFBZ0IsQ0FBQ0MsV0FBVyxFQUFFUyxJQUFJLEVBQUVHLElBQUksRUFBQ2IsUUFBUSxHQUFJLENBQUM7WUFDckUsTUFBTSxDQUFDQSxRQUFRO1FBQ2pCLENBQUM7SUFDSCxDQUFDO0lBQ0RLLE1BQU0sQ0FBQ0UsSUFBSSxHQUFHLEtBQUssQ0FBQ0YsTUFBTSxDQUFDRyxPQUFPO0lBQ2xDLE1BQU0sQ0FBQ0gsTUFBTSxDQUFDRSxJQUFJO0FBQ3BCLENBQUM7QUFFRCxpRUFBZUUsU0FBUyIsInNvdXJjZXMiOlsid2VicGFjazovL3BvdG9mbmFtZXMvLi91dGlscy9kYkNvbm5lY3QuanM/YzNjZSJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgbW9uZ29vc2UgZnJvbSAnbW9uZ29vc2UnXG5cbmNvbnN0IE1PTkdPREJfVVJJID0gcHJvY2Vzcy5lbnYuTU9OR09EQl9VUklcblxuaWYgKCFNT05HT0RCX1VSSSkge1xuICB0aHJvdyBuZXcgRXJyb3IoXG4gICAgJ1BsZWFzZSBkZWZpbmUgdGhlIE1PTkdPREJfVVJJIGVudmlyb25tZW50IHZhcmlhYmxlIGluc2lkZSAuZW52LmxvY2FsJ1xuICApXG59XG5cbmxldCBjYWNoZWQgPSBnbG9iYWwubW9uZ29vc2VcblxuaWYgKCFjYWNoZWQpIHtcbiAgY2FjaGVkID0gZ2xvYmFsLm1vbmdvb3NlID0geyBjb25uOiBudWxsLCBwcm9taXNlOiBudWxsIH1cbn1cblxuYXN5bmMgZnVuY3Rpb24gZGJDb25uZWN0ICgpIHtcbiAgaWYgKGNhY2hlZC5jb25uKSB7XG4gICAgcmV0dXJuIGNhY2hlZC5jb25uXG4gIH1cblxuICBpZiAoIWNhY2hlZC5wcm9taXNlKSB7XG4gICAgY29uc3Qgb3B0cyA9IHtcbiAgICAgIGJ1ZmZlckNvbW1hbmRzOiBmYWxzZSxcbiAgICB9XG5cbiAgICBjYWNoZWQucHJvbWlzZSA9IG1vbmdvb3NlLmNvbm5lY3QoTU9OR09EQl9VUkksIG9wdHMpLnRoZW4obW9uZ29vc2UgPT4ge1xuICAgICAgcmV0dXJuIG1vbmdvb3NlXG4gICAgfSlcbiAgfVxuICBjYWNoZWQuY29ubiA9IGF3YWl0IGNhY2hlZC5wcm9taXNlXG4gIHJldHVybiBjYWNoZWQuY29ublxufVxuXG5leHBvcnQgZGVmYXVsdCBkYkNvbm5lY3QiXSwibmFtZXMiOlsibW9uZ29vc2UiLCJNT05HT0RCX1VSSSIsInByb2Nlc3MiLCJlbnYiLCJFcnJvciIsImNhY2hlZCIsImdsb2JhbCIsImNvbm4iLCJwcm9taXNlIiwiZGJDb25uZWN0Iiwib3B0cyIsImJ1ZmZlckNvbW1hbmRzIiwiY29ubmVjdCIsInRoZW4iXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./utils/dbConnect.js\n");
 
 /***/ })
 
@@ -60,7 +91,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 var __webpack_require__ = require("../../webpack-api-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = (__webpack_exec__("./pages/api/participants.js"));
+var __webpack_exports__ = __webpack_require__.X(0, [617], () => (__webpack_exec__(6162)));
 module.exports = __webpack_exports__;
 
 })();
