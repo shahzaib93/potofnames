@@ -121,6 +121,17 @@ canvas {
 .login-modal .modal-header {
   border: 0;
 }
+
+.wheel_frame {
+  width: 660px;
+  position: absolute;
+  margin: -29px;
+  z-index: -100;
+}
+.range {
+  width: 100%;
+  height: 20px;
+}
 @media screen and (max-width: 500px) {
   .container-sm {
     width: 600px;

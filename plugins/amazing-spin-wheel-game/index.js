@@ -4,6 +4,7 @@ var WheelComponent = function WheelComponent(_ref) {
   const {shouldWeSpin, setShouldWeSpin} = _ref;
 
   var segments = _ref.segments,
+      spinSeconds = _ref.spinSeconds,
       segColors = _ref.segColors,
       winningSegment = _ref.winningSegment,
       onFinished = _ref.onFinished,
@@ -28,18 +29,27 @@ var WheelComponent = function WheelComponent(_ref) {
       isFinished = _useState[0],
       setFinished = _useState[1];
 
-  var timerHandle = 0;
-  var timerDelay = segments.length;
-  var angleCurrent = 0;
-  var angleDelta = 0;
-  var canvasContext = null;
-  var maxSpeed = Math.PI / ("" + segments.length);
-  var upTime = segments.length * upDuration;
-  var downTime = segments.length * downDuration;
-  var spinStart = 0;
-  var frames = 0;
-  var centerX = 300;
-  var centerY = 300;
+  var timerHandle = 0
+  var timerManualDelay = 50
+  if(spinSeconds > 60){
+    timerManualDelay = 60
+  }
+  // spinSeconds
+  var timerDelay = (segments.length < timerManualDelay  ? timerManualDelay : segments.length);
+  var angleCurrent = 0
+  var angleDelta = 0
+  var canvasContext = null
+  // var maxSpeed = Math.PI / (segments.length);
+  var maxSpeed = 4
+  console.log(`Total segments ${segments.length}`)
+  console.log(`Max speed ${maxSpeed}`)
+  console.log(`Timer delay ${timerManualDelay}`)
+  var upTime = segments.length * upDuration
+  var downTime = segments.length * downDuration
+  var spinStart = 0
+  var frames = 0
+  var centerX = 300
+  var centerY = 300
 
   React.useEffect(function () {
     wheelInit();
@@ -90,12 +100,16 @@ var WheelComponent = function WheelComponent(_ref) {
     frames++;
     draw();
     var duration = new Date().getTime() - spinStart;
+    console.log(`duration ${duration}`);
     var progress = 0;
     var finished = false;
 
     if (duration < upTime) {
+
       progress = duration / upTime;
-      angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2);
+      console.log(`progress ${progress}`)
+      console.log(`upTime ${upTime}`)
+      angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2)
     } else {
       if (winningSegment) {
         if (currentSegment === winningSegment && frames > segments.length) {
@@ -112,10 +126,10 @@ var WheelComponent = function WheelComponent(_ref) {
       }
 
       if (progress >= 1) finished = true;
+      console.log(`progress ${progress}`);
     }
 
     angleCurrent += angleDelta;
-
     while (angleCurrent >= Math.PI * 2) {
       angleCurrent -= Math.PI * 2;
     }
@@ -191,12 +205,12 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.textAlign = 'center';
     // ctx.fillText(buttonText, centerX, centerY + 3);
     ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, size, 0, PI2, false);
-    ctx.closePath();
-    ctx.lineWidth = 10;
-    ctx.strokeStyle = primaryColor;
-    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.arc(centerX, centerY, size, 0, PI2, false);
+    // ctx.closePath();
+    // ctx.lineWidth = 10;
+    // ctx.strokeStyle = primaryColor;
+    // ctx.stroke();
   };
 
   var drawNeedle = function drawNeedle() {

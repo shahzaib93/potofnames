@@ -2,38 +2,56 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
 // import jwt from 'jsonwebtoken'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState} from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
 import WheelComponent from '../plugins/amazing-spin-wheel-game'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
+
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 
 export const getStaticProps = async () => {
-  const res = await fetch('https://potofnames.com/api/participants');
+  const res = await fetch('http://localhost:3000/api/participants');
   const data = await res.json();
   return{
       props: {participants: data}
   }
 }
+
 export default function Home({participants}) {
-  
-  const segCol = []
-  const [webState, setWebState] = useState({items: [], seg: []})
+
   const { data: session } = useSession()
+  const [webState, setWebState] = useState({items: [], seg: []})
   const [shouldWeSpin, setShouldWeSpin] = useState(false)
+
+  const [totalEntries, setTotalEntries] = useState(225)
+  const [wheelSpeed, setWheelSpeed] = useState(1)
+  const [spinTime, setSpinTime] = useState(10)
+
+  const segCol = []
   const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
+  
+  if(session){
+    console.log(`You're signed in`)
+    console.log(session) 
+  } else {
+    console.log(`You are signed out`)
+  }
+  const getEntriesValue = (event) => {
+    setTotalEntries(event.target.value);
+    console.log(totalEntries);
+  }
+  const getWheelSpeed = (event) => {
+    setWheelSpeed(event.target.value);
+    console.log(wheelSpeed);
+  }
+  const getSpinTime = (event) => {
+    setSpinTime(event.target.value);
+    console.log(spinTime * 125);
+    console.log(event.target.value * 125);
 
-  // console.log(tempParticipants)
-  // console.log(participants)
-    if(session){
-      console.log(`You're signed in`)
-      console.log(session) 
-    } else {
-      console.log(`You are signed out`)
-    }
-
+  }
   useEffect(() => {
     let temp = [];
     if(session){
@@ -72,20 +90,24 @@ export default function Home({participants}) {
 
   const addParticipant = async event => {
     event.preventDefault()
-    // router.replace(router.asPath);
-    const res = await fetch('https://potofnames.com/api/participants', {
-      body: JSON.stringify({
-        name: event.target.participantName.value
-      }),
-      headers: {'Content-Type': 'application/json'},
-      method: 'POST'
-    })
-    const newParticipant = await res.json()
-    console.log(newParticipant.addParticipant);
-    setWebState({
-      items: [...webState.items, newParticipant.addParticipant],
-      seg: [...webState.seg, newParticipant.addParticipant.name]
-    })
+    console.log(webState.items.length);
+    if(webState.items.length < totalEntries){
+      const res = await fetch('http://localhost:3000/api/participants', {
+        body: JSON.stringify({
+          name: event.target.participantName.value
+        }),
+        headers: {'Content-Type': 'application/json'},
+        method: 'POST'
+      })
+      const newParticipant = await res.json()
+      console.log(newParticipant.addParticipant);
+      setWebState({
+        items: [...webState.items, newParticipant.addParticipant],
+        seg: [...webState.seg, newParticipant.addParticipant.name]
+      })
+    } else {
+      alert("You can't add more.");
+    }
     event.target.participantName.value = ""
   }
 
@@ -124,14 +146,20 @@ export default function Home({participants}) {
                <img src="logo.jpg" width="150" />
               </a>
               <div className="d-flex">
-                  <div className="navbar-nav">
-                    <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a>
-                    {
-                      (session ? 
-                      <a className="nav-link px-4" href="#" onClick={() => signOut()}>LOGOUT</a> :
-                      <a className="nav-link px-4" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">LOGIN</a>)
-                    }
-                  </div>
+                <div className="navbar-nav">
+                  {/* <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a> */}
+                  <button type="button" className="active px-4 nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                  SETTINGS
+                    </button>
+                  {
+                    (session ? 
+                    <button className="nav-link px-4 btn btn-link" type="button" onClick={() => signOut()}>LOGOUT</button> :
+                    <button type="button" className="px-4 nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#loginModal">
+                      LOGIN
+                    </button>
+                    )
+                  }
+                </div>
               </div>
             </div>
           </nav>
@@ -141,6 +169,8 @@ export default function Home({participants}) {
       <main>
         <div className="row justify-content-center">
           <div className="col-12 col-md-6">
+          <img src="/wheel_frame.png" className="wheel_frame" />
+          
             {webState.seg.length > 0 && 
               <WheelComponent
                 segments={webState.seg}
@@ -150,14 +180,25 @@ export default function Home({participants}) {
                 contrastColor='white'
                 isOnlyOnce={false}
                 size={290}
-                upDuration={100}
-                downDuration={1000}
+                upDuration={1000}
+                // downDuration={22500}
+                // 125 for 1 seconds
+                // 625 for 5 seconds
+                // 1250 for 10 seconds
+                // 2500 for 20 seconds
+                // 5000 for 40 seconds
+                // 10000 for 80 seconds
+                // 22500 for 3 minutes
+                  
+                downDuration={spinTime * 125}
+                spinSeconds={spinTime}
                 shouldWeSpin={shouldWeSpin}
                 setShouldWeSpin={setShouldWeSpin}
                 fontFamily='Arial'
               />
             }
             <div className="clearfix"></div>
+            
           </div>
         </div>
         <div className="row justify-content-center">
@@ -231,6 +272,49 @@ export default function Home({participants}) {
                         <button className="btn btn-outline-secondary" onClick={() => signIn()} type="button">Sign in with Google</button>
                       </div>
                     </form>
+                  </div>
+                  {/* <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-primary">Save changes</button>
+                  </div> */}
+                </div>
+              </div>
+            </div>
+
+            <div className="modal fade login-modal" id="settingsModal" tabIndex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+              <div className="modal-dialog modal-fullscreen">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div className="modal-body">
+                    <div className="row justify-content-center">
+                      <div className="col-6">
+                        <div className="row my-4">
+                          <div className="col-3"><strong># OF ENTRIES</strong></div>
+                          <div className="col-8">
+                            <input type="range" min="1" max="225" className="range" onChange={getEntriesValue} />
+                          </div>
+                          <div className="col-1">{totalEntries}</div>
+                        </div>
+                        <div className="row my-4">
+                          <div className="col-3"><strong>WHEEL SPEED</strong></div>
+                          <div className="col-8">
+                            <input type="range" min="1" max="5" className="range" onChange={getWheelSpeed} />
+                          </div>
+                          <div className="col-1">{wheelSpeed}</div>
+                        </div>
+                        <div className="row my-4">
+                          <div className="col-3"><strong>SPIN TIME</strong></div>
+                          <div className="col-8">
+                            <input type="range" min="3" max="180" className="range" onChange={getSpinTime} />
+                          </div>
+                          <div className="col-1">{spinTime}</div>
+                        </div>
+                      </div>
+                    </div>
+                  
                   </div>
                   {/* <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
