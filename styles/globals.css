@@ -94,40 +94,21 @@ a {
 .facebook-icon {
   width: 15px;
 }
-
-.wheel-css {
-  width: 500px;
-}
-canvas {
-  /* transform:
-    rotate3d(.5,-.866,0,49deg) rotate(0deg) */
-  width: 600px;
-  height: 600px;
-}
-.canvas {
-  /* transform:
-    rotate3d(.5,-.866,0,49deg) rotate(0deg) */
-  width: 600px;
-  height: 600px;
-}
 #spinBtn {
   cursor: pointer;
 }
-
 .sponsor-img {
   cursor: pointer;
 }
-
 .login-modal .modal-header {
   border: 0;
 }
-
 .wheel_frame {
-  width: 660px;
+  width: 680px;
   position: absolute;
-  margin-top: -30px;
-  margin-left: -15px;
   z-index: -100;
+  margin: auto;
+  padding: 10px;
 }
 .range {
   width: 100%;

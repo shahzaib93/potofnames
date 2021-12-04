@@ -242,14 +242,13 @@ var WheelComponent = function WheelComponent(_ref) {
 
   return React.createElement("div", {
     id: "wheel",
-    width: "600",
-    height: "600",
   }, React.createElement("canvas", {
     id: "canvas",
-    width: "600",
-    height: "600",
-    className:"mx-auto d-block canvas",
+    width: "590",
+    height: "590",
     style: {
+      marginTop: "42px",
+      marginLeft: "39px",
       pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto'
     }
   }));
