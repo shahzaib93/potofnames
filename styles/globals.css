@@ -125,7 +125,8 @@ canvas {
 .wheel_frame {
   width: 660px;
   position: absolute;
-  margin: -29px;
+  margin-top: -30px;
+  margin-left: -15px;
   z-index: -100;
 }
 .range {
