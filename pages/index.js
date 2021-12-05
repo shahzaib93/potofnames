@@ -25,6 +25,8 @@ export default function Home({participants}) {
   const [webState, setWebState] = useState({items: [], seg: []})
   const [shouldWeSpin, setShouldWeSpin] = useState(false)
   
+  const [shakeAnimateClass, setShakeAnimateClass] = useState("")
+
   const [threeDMode, setThreeDMode] = useState(0)
   const [totalEntries, setTotalEntries] = useState(225)
   const [wheelSpeed, setWheelSpeed] = useState(1)
@@ -60,6 +62,13 @@ export default function Home({participants}) {
     console.log(spinTime * 125);
     console.log(event.target.value * 125);
 
+  }
+  const shakeBtn = () => {
+    const random = Math.floor(Math.random() * webState.seg.length);
+    console.log(random, webState.seg[random]);
+    console.log(webState.seg)
+    // const [shakeAnimateClass, setShakeAnimateClass] = useState("")
+    setShakeAnimateClass("shake-animation");
   }
   useEffect(() => {
     let temp = [];
@@ -181,8 +190,6 @@ export default function Home({participants}) {
       <main>
         <div className="row justify-content-center">
           <div className="col-12 col-md-6">
-          
-          
             {webState.seg.length > 0 && 
               gameType == 'wheel' &&
                 <div>
@@ -215,8 +222,8 @@ export default function Home({participants}) {
             }
             {webState.seg.length > 0 && 
               gameType == 'pot' &&
-                <>
-                  <img src="/pot_img.png" className="position-absolute wheel_frame threeDRotate" />
+                <div className={`pot-group ${shakeAnimateClass}`}>
+                  <img src="/pot_img.png" className="position-absolute wheel_frame threeDRotate pot-img" />
                   <div className="row opacity-50 position-relative" style={{top:"350px", left: "100px"}} >
                     { webState.items.map((item, index) =>{
                        return index % 2 === 0 ?
@@ -250,7 +257,7 @@ export default function Home({participants}) {
                     })}
                   </div>
                   <div style={{margin: "500px"}}></div>
-                </>
+                </div>
             }
             <div className="clearfix"></div>
             
@@ -280,7 +287,16 @@ export default function Home({participants}) {
             </div>
           </div>
           <div className="col-2 col-md-1">
-            <div id="spinBtn" onClick={() => setShouldWeSpin(true)} className="my-2 text-purple fs-4 fw-bold">Spin</div>
+            {gameType == 'pot' &&
+              <>
+                <div id="spinBtn" onClick={shakeBtn} className="my-2 text-purple fs-4 fw-bold">Shake</div>
+              </>
+            }
+            {!gameType == 'pot' &&
+              <>
+                <div id="spinBtn" onClick={() => setShouldWeSpin(true)} className="my-2 text-purple fs-4 fw-bold">Spin</div>
+              </>
+            }
           </div>
         </form>
 
