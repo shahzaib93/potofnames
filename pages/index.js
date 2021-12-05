@@ -12,7 +12,7 @@ import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } 
 // https://potofnames.com/api/participants
 
 export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:3000/api/participants');
+  const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
   return{
       props: {participants: data}
@@ -112,7 +112,7 @@ export default function Home({participants}) {
     event.preventDefault()
     console.log(webState.items.length);
     if(webState.items.length < totalEntries){
-      const res = await fetch('http://localhost:3000/api/participants', {
+      const res = await fetch('https://potofnames.com/api/participants', {
         body: JSON.stringify({
           name: event.target.participantName.value
         }),
