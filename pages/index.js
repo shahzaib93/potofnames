@@ -12,7 +12,7 @@ import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } 
 // https://potofnames.com/api/participants
 
 export const getStaticProps = async () => {
-  const res = await fetch('https://potofnames.com/api/participants');
+  const res = await fetch('http://localhost:3000/api/participants');
   const data = await res.json();
   return{
       props: {participants: data}
@@ -29,10 +29,14 @@ export default function Home({participants}) {
   const [totalEntries, setTotalEntries] = useState(225)
   const [wheelSpeed, setWheelSpeed] = useState(1)
   const [spinTime, setSpinTime] = useState(10)
-
+  const gameType = "pot"
   const segCol = []
   const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
-  
+  var css = `
+    canvas, .threeDRotate{
+      transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
+    }
+  `
   if(session){
     console.log(`You're signed in`)
     console.log(session) 
@@ -96,7 +100,7 @@ export default function Home({participants}) {
     event.preventDefault()
     console.log(webState.items.length);
     if(webState.items.length < totalEntries){
-      const res = await fetch('https://potofnames.com/api/participants', {
+      const res = await fetch('http://localhost:3000/api/participants', {
         body: JSON.stringify({
           name: event.target.participantName.value
         }),
@@ -119,7 +123,7 @@ export default function Home({participants}) {
     const deletedVal = webState.items[index]
     console.log("Delete function data");
     console.log(deletedVal)
-    const res = await fetch('https://potofnames.com/api/participants', {
+    const res = await fetch('http://localhost:3000/api/participants', {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -135,11 +139,7 @@ export default function Home({participants}) {
 
     console.log(delParticipant);
   }
-  var css = `
-    canvas, .threeDRotate{
-      transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
-    }
-  `
+  
   return (
     <div className="container container-sm container-md mb-5">
       <Head>
@@ -181,33 +181,76 @@ export default function Home({participants}) {
       <main>
         <div className="row justify-content-center">
           <div className="col-12 col-md-6">
-          <img src="/wheel_frame.png" className="wheel_frame threeDRotate" />
+          
           
             {webState.seg.length > 0 && 
-              <WheelComponent
-                segments={webState.seg}
-                segColors={segCol}
-                onFinished={(winner) => onFinished(winner)}
-                primaryColor='gray'
-                contrastColor='white'
-                isOnlyOnce={false}
-                size={290}
-                upDuration={1000}
-                // downDuration={22500}
-                // 125 for 1 seconds
-                // 625 for 5 seconds
-                // 1250 for 10 seconds
-                // 2500 for 20 seconds
-                // 5000 for 40 seconds
-                // 10000 for 80 seconds
-                // 22500 for 3 minutes
-                  
-                downDuration={spinTime * 125}
-                spinSeconds={spinTime}
-                shouldWeSpin={shouldWeSpin}
-                setShouldWeSpin={setShouldWeSpin}
-                fontFamily='Arial'
-              />
+              gameType == 'wheel' &&
+                <div>
+                  <img src="/wheel_frame.png" className="position-absolute wheel_frame threeDRotate" />
+                  <WheelComponent
+                  segments={webState.seg}
+                  segColors={segCol}
+                  onFinished={(winner) => onFinished(winner)}
+                  primaryColor='gray'
+                  contrastColor='white'
+                  isOnlyOnce={false}
+                  size={290}
+                  upDuration={1000}
+                  // downDuration={22500}
+                  // 125 for 1 seconds
+                  // 625 for 5 seconds
+                  // 1250 for 10 seconds
+                  // 2500 for 20 seconds
+                  // 5000 for 40 seconds
+                  // 10000 for 80 seconds
+                  // 22500 for 3 minutes
+                    
+                  downDuration={spinTime * 125}
+                  spinSeconds={spinTime}
+                  shouldWeSpin={shouldWeSpin}
+                  setShouldWeSpin={setShouldWeSpin}
+                  fontFamily='Arial'
+                />
+                </div>
+            }
+            {webState.seg.length > 0 && 
+              gameType == 'pot' &&
+                <>
+                  <img src="/pot_img.png" className="position-absolute wheel_frame threeDRotate" />
+                  <div className="row opacity-50 position-relative" style={{top:"350px", left: "100px"}} >
+                    { webState.items.map((item, index) =>{
+                       return index % 2 === 0 ?
+                       <div className="col-4 ">
+                          <div className="card name-card transform2 position-relative">
+                            <div className="row g-0">
+                              <div className="col-12">
+                                <div className="card-body">
+                                  <div key={item._id}>
+                                    <h5 className="card-title">{item.name}</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        :
+                        <div className="col-3">
+                          <div className="card name-card transform position-relative">
+                            <div className="row g-0">
+                              <div className="col-12">
+                                <div className="card-body">
+                                  <div key={item._id}>
+                                    <h5 className="card-title">{item.name}</h5>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    })}
+                  </div>
+                  <div style={{margin: "500px"}}></div>
+                </>
             }
             <div className="clearfix"></div>
             
