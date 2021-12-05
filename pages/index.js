@@ -69,6 +69,9 @@ export default function Home({participants}) {
     console.log(webState.seg)
     // const [shakeAnimateClass, setShakeAnimateClass] = useState("")
     setShakeAnimateClass("shake-animation");
+    setTimeout(function() {
+      alert(webState.seg[random]);
+    }, 5000);
   }
   useEffect(() => {
     let temp = [];
