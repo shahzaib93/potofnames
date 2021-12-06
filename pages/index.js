@@ -24,7 +24,6 @@ export default function Home({participants}) {
   const { data: session } = useSession()
   const [webState, setWebState] = useState({items: [], seg: []})
   const [shouldWeSpin, setShouldWeSpin] = useState(false)
-  
   const [shakeAnimateClass, setShakeAnimateClass] = useState("")
 
   const [threeDMode, setThreeDMode] = useState(0)
@@ -39,6 +38,9 @@ export default function Home({participants}) {
       transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
     }
   `
+  var itemsForPot = [...webState.items]
+  itemsForPot.length = 10
+  console.log(itemsForPot)
   if(session){
     console.log(`You're signed in`)
     console.log(session) 
@@ -226,11 +228,12 @@ export default function Home({participants}) {
             {webState.seg.length > 0 && 
               gameType == 'pot' &&
                 <div className={`pot-group ${shakeAnimateClass}`}>
-                  <img src="/pot_img.png" className="position-absolute wheel_frame threeDRotate pot-img" />
-                  <div className="row opacity-50 position-relative" style={{top:"350px", left: "100px"}} >
-                    { webState.items.map((item, index) =>{
+                  <img src="/pot_img.png" className=" wheel_frame pot-img position-absolute" />
+                  <div className="row opacity-50 position-relative" style={{ top:"300px", left: "100px" }} >
+                    { itemsForPot.map((item, index) =>{
+                        
                        return index % 2 === 0 ?
-                       <div className="col-4 ">
+                       <div className="col-4" >
                           <div className="card name-card transform2 position-relative">
                             <div className="row g-0">
                               <div className="col-12">
@@ -259,7 +262,7 @@ export default function Home({participants}) {
                         </div>
                     })}
                   </div>
-                  <div style={{margin: "500px"}}></div>
+                  {/* <div style={{margin: "500px"}}></div> */}
                 </div>
             }
             <div className="clearfix"></div>
