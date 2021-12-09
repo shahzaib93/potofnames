@@ -284,18 +284,21 @@ export default function Home({participants}) {
             
           </div>
         </div>
-        <div className="row justify-content-center">
-          <div className="col-6 col-md-2 m-5 text-center">
-            {/* <button className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg" >3D MODE</button> */}
-            <button
-              type="button"
-              className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg"
-              data-bs-toggle="modal"
-              data-bs-target="#threeDModeModal">
-                3D MODE
-            </button>
+        {
+          gameType == 'wheel' &&
+          <div className="row justify-content-center">
+            <div className="col-6 col-md-2 m-5 text-center">
+              <button
+                type="button"
+                className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target="#threeDModeModal">
+                  3D MODE
+              </button>
+            </div>
           </div>
-        </div>
+        }
+        
         <form className="row justify-content-center" method="post" onSubmit={addParticipant}>
           <div className="col-8 col-md-5 ">
             <div className="input-group mycustom ">
