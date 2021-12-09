@@ -129,12 +129,7 @@ a {
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
-.shake-animation {
-  /* Start the shake animation and make the animation last for 0.5 seconds */
-  animation: shake 0.1s;
-  /* When the animation is finished, start again */
-  animation-iteration-count: 40;
-}
+
 @keyframes animation {
   from {
     top: 10px;

@@ -25,17 +25,23 @@ export default function Home({participants}) {
   const [webState, setWebState] = useState({items: [], seg: []})
   const [shouldWeSpin, setShouldWeSpin] = useState(false)
   const [shakeAnimateClass, setShakeAnimateClass] = useState("")
-
   const [threeDMode, setThreeDMode] = useState(0)
-  const [totalEntries, setTotalEntries] = useState(225)
+  const [totalEntries, setTotalEntries] = useState(100)
   const [wheelSpeed, setWheelSpeed] = useState(1)
-  const [spinTime, setSpinTime] = useState(10)
-  const gameType = "pot"
+  const [spinTime, setSpinTime] = useState(3)
+  const [shakeTime, setShakeTime] = useState(1)
+  const [gameType, setGameType] = useState("pot")
   const segCol = []
   const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
   var css = `
     canvas, .threeDRotate{
       transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
+    }
+    .shake-animation {
+      /* Start the shake animation and make the animation last for 0.5 seconds */
+      animation: shake 0.1s;
+      /* When the animation is finished, start again */
+      animation-iteration-count: ${shakeTime * 10};
     }
   `
   var itemsForPot = [...webState.items]
@@ -63,17 +69,26 @@ export default function Home({participants}) {
     setSpinTime(event.target.value);
     console.log(spinTime * 125);
     console.log(event.target.value * 125);
-
+  }
+  const getShakeTime = (event) => {
+    setShakeTime(event.target.value);
+    console.log(`shake Time ${shakeTime * 10}`);
+    console.log(event.target.value);
+    
+  }
+  const togglePotWheel = (event, value) => {
+    console.log(value)
+    setGameType(value)
   }
   const shakeBtn = () => {
     const random = Math.floor(Math.random() * webState.seg.length);
     console.log(random, webState.seg[random]);
     console.log(webState.seg)
-    // const [shakeAnimateClass, setShakeAnimateClass] = useState("")
     setShakeAnimateClass("shake-animation");
     setTimeout(function() {
       alert(webState.seg[random]);
-    }, 5000);
+      setShakeAnimateClass("");
+    }, shakeTime * 1000);
   }
   useEffect(() => {
     let temp = [];
@@ -95,7 +110,7 @@ export default function Home({participants}) {
   useEffect(() => {
     console.log(webState);
     console.log("Coming from useEffects");
-  }, [webState])
+  }, [webState, gameType, shakeTime])
 
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
@@ -137,7 +152,7 @@ export default function Home({participants}) {
     const deletedVal = webState.items[index]
     console.log("Delete function data");
     console.log(deletedVal)
-    const res = await fetch('http://localhost:3000/api/participants', {
+    const res = await fetch('https://potofnames.com/api/participants', {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -298,7 +313,7 @@ export default function Home({participants}) {
                 <div id="spinBtn" onClick={shakeBtn} className="my-2 text-purple fs-4 fw-bold">Shake</div>
               </>
             }
-            {!gameType == 'pot' &&
+            {gameType == 'wheel' &&
               <>
                 <div id="spinBtn" onClick={() => setShouldWeSpin(true)} className="my-2 text-purple fs-4 fw-bold">Spin</div>
               </>
@@ -366,7 +381,7 @@ export default function Home({participants}) {
             </div>
 
             <div className="modal fade login-modal" id="settingsModal" tabIndex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
-              <div className="modal-dialog modal-fullscreen">
+              <div className="modal-dialog ">
                 <div className="modal-content">
                   <div className="modal-header">
                     
@@ -374,11 +389,19 @@ export default function Home({participants}) {
                   </div>
                   <div className="modal-body">
                     <div className="row justify-content-center">
-                      <div className="col-6">
+                      <div className="col-12">
+                        <div className="row">
+                          <div className="col-12 text-center">
+                            <div className="btn-group " role="group" aria-label="Basic example">
+                              <button type="button" className="btn btn-primary" onClick={(e)=> togglePotWheel(e, "pot")}>POT</button>
+                              <button type="button" className="btn btn-secondary" onClick={(e)=> togglePotWheel(e, "wheel")}>WHEEL</button>
+                            </div>
+                          </div>
+                        </div>
                         <div className="row my-4">
                           <div className="col-3"><strong># OF ENTRIES</strong></div>
                           <div className="col-8">
-                            <input type="range" min="1" max="225" className="range" onChange={getEntriesValue} />
+                            <input type="range" min="1" max="225" className="range" defaultValue="100" onChange={getEntriesValue} />
                           </div>
                           <div className="col-1">{totalEntries}</div>
                         </div>
@@ -392,9 +415,16 @@ export default function Home({participants}) {
                         <div className="row my-4">
                           <div className="col-3"><strong>SPIN TIME</strong></div>
                           <div className="col-8">
-                            <input type="range" min="3" max="180" className="range" value="3" onChange={getSpinTime} />
+                            <input type="range" min="3" max="180" className="range" defaultValue="3" onChange={getSpinTime} />
                           </div>
                           <div className="col-1">{spinTime}</div>
+                        </div>
+                        <div className="row my-4">
+                          <div className="col-3"><strong>SHAKE TIME</strong></div>
+                          <div className="col-8">
+                            <input type="range" min="3" max="180" className="range" defaultValue="3" onChange={getShakeTime} />
+                          </div>
+                          <div className="col-1">{shakeTime}</div>
                         </div>
                       </div>
                     </div>
