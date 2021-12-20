@@ -33,6 +33,19 @@ export default function Home({participants}) {
   const [gameType, setGameType] = useState("pot")
   const segCol = []
   const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
+  // if (typeof window !== "undefined") {
+    // var elem = document.getElementById("wheelId");
+    const openFullscreen = (elem) => {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    }
+  // }
+ 
   var css = `
     canvas, .threeDRotate{
       transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
@@ -74,7 +87,6 @@ export default function Home({participants}) {
     setShakeTime(event.target.value);
     console.log(`shake Time ${shakeTime * 10}`);
     console.log(event.target.value);
-    
   }
   const togglePotWheel = (event, value) => {
     console.log(value)
@@ -183,7 +195,7 @@ export default function Home({participants}) {
         <div className="col-12 ">
           <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container-fluid">
-              <a className="navbar-brand" href="#">
+              <a className="navbar-brand" href="#" onClick={openFullscreen}>
                <img src="logo.jpg" width="150" />
               </a>
               <div className="d-flex">
@@ -212,7 +224,7 @@ export default function Home({participants}) {
           <div className="col-12 col-md-6">
             {webState.seg.length > 0 && 
               gameType == 'wheel' &&
-                <div>
+                <div id="wheelId">
                   <img src="/wheel_frame.png" className="position-absolute wheel_frame threeDRotate" />
                   <WheelComponent
                   segments={webState.seg}
