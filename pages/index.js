@@ -1,13 +1,17 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
+import {useRouter} from 'next/router'
+import ReactHowler from 'react-howler';
 // import jwt from 'jsonwebtoken'
 import React, { useEffect, useState} from 'react'
 import { useSession, signIn, signOut } from "next-auth/react"
 import WheelComponent from '../plugins/amazing-spin-wheel-game'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
-
+import Confetti from 'react-confetti' 
+import Modal from 'react-modal';
+// import claps from "../public/applause-01.mp3"
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 
@@ -20,32 +24,38 @@ export const getStaticProps = async () => {
 }
 
 export default function Home({participants}) {
-
+  // const audio = new Audio("/mixkit-clapping-male-crowd-439.wav")
+  const router = useRouter()
+  console.log("location",router.pathname)
+  const [modalIsOpen, setIsOpen] = useState(false)
   const { data: session } = useSession()
   const [webState, setWebState] = useState({items: [], seg: []})
+  const [showWinnerModal, setshowWinnerModal] = useState(false)
   const [shouldWeSpin, setShouldWeSpin] = useState(false)
+  const [soundplay, setsoundplay] = useState(false)
+  const customStyles = {
+    content: {
+      width:"30%",
+      height:"30%",
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
+  const [thewinner, setthewinner] = useState("")
+
   const [shakeAnimateClass, setShakeAnimateClass] = useState("")
   const [threeDMode, setThreeDMode] = useState(0)
-  const [totalEntries, setTotalEntries] = useState(100)
+  const [totalEntries, setTotalEntries] = useState(10)
   const [wheelSpeed, setWheelSpeed] = useState(1)
-  const [spinTime, setSpinTime] = useState(3)
-  const [shakeTime, setShakeTime] = useState(1)
+  const [spinTime, setSpinTime] = useState(5)
+  const [shakeTime, setShakeTime] = useState(5)
   const [gameType, setGameType] = useState("pot")
   const segCol = []
   const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
-  // if (typeof window !== "undefined") {
-    // var elem = document.getElementById("wheelId");
-    const openFullscreen = (elem) => {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) { /* Safari */
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { /* IE11 */
-        elem.msRequestFullscreen();
-      }
-    }
-  // }
- 
   var css = `
     canvas, .threeDRotate{
       transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
@@ -58,8 +68,9 @@ export default function Home({participants}) {
     }
   `
   var itemsForPot = [...webState.items]
-  itemsForPot.length = 10
+  // const showParticipants = 18
   console.log(itemsForPot)
+
   if(session){
     console.log(`You're signed in`)
     console.log(session) 
@@ -70,39 +81,75 @@ export default function Home({participants}) {
     setTotalEntries(event.target.value);
     console.log(totalEntries);
   }
-  const getWheelSpeed = (event) => {
-    setWheelSpeed(event.target.value);
-    console.log(wheelSpeed);
+  // const getWheelSpeed = (event) => {
+  //   setWheelSpeed(event.target.value);
+  //   console.log(wheelSpeed);
+  // }
+
+  function openModal() {
+    setIsOpen(true);
   }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+
   const getThreeDMode = (event) => {
     setThreeDMode(event.target.value);
     console.log(threeDMode);
   }
+
+  const settheShouldWeSpin = () => {
+    if(localStorage.getItem("SpinTime") != undefined){
+          setSpinTime(parseInt(localStorage.getItem("SpinTime")))}
+          console.log("SpinTime",typeof(spinTime))
+          setShouldWeSpin(true)
+  }
+
   const getSpinTime = (event) => {
-    setSpinTime(event.target.value);
-    console.log(spinTime * 125);
-    console.log(event.target.value * 125);
+    // if(localStorage.getItem("SpinTime") != undefined){
+    //   setSpinTime(parseInt(localStorage.getItem("SpinTime")))}
+    // setSpinTime(event.target.value);
+    // console.log(spinTime * 125);
+    // console.log(event.target.value * 125);
   }
+
   const getShakeTime = (event) => {
-    setShakeTime(event.target.value);
-    console.log(`shake Time ${shakeTime * 10}`);
-    console.log(event.target.value);
+    // setShakeTime(event.target.value);
+    // console.log(`shake Time ${shakeTime * 10}`);
+    // console.log(event.target.value);
+    
   }
+
   const togglePotWheel = (event, value) => {
     console.log(value)
     setGameType(value)
   }
-  const shakeBtn = () => {
+  const shakeBtn = async () => {
+    if(localStorage.getItem("ShakeTime") != undefined){
+    
+     await setShakeTime(parseInt(localStorage.getItem("ShakeTime")))
+    
+    }
+
+    console.log("shake",shakeTime)
     const random = Math.floor(Math.random() * webState.seg.length);
     console.log(random, webState.seg[random]);
     console.log(webState.seg)
     setShakeAnimateClass("shake-animation");
     setTimeout(function() {
-      alert(webState.seg[random]);
+      onFinished(webState.seg[random])
+      // alert(webState.seg[random]);
       setShakeAnimateClass("");
     }, shakeTime * 1000);
   }
   useEffect(() => {
+    if(localStorage.getItem("Entries") !=undefined){
+    setTotalEntries(parseInt(localStorage.getItem("Entries")))
+  }
+   
+    console.log("Entries",totalEntries)
     let temp = [];
     if(session){
       participants.map((participant)=>{
@@ -117,12 +164,15 @@ export default function Home({participants}) {
       
       setWebState({items:[...tempParticipants], seg: tempo})
     }
-  }, [participants, session])
+  }, [participants, session,totalEntries])
 
   useEffect(() => {
     console.log(webState);
     console.log("Coming from useEffects");
-  }, [webState, gameType, shakeTime])
+  }, [webState, gameType])
+
+
+
 
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
@@ -133,11 +183,17 @@ export default function Home({participants}) {
   }
 
   const onFinished = (winner) => {
+    setthewinner(winner)
+    setsoundplay(true)
+    openModal()
     console.log(winner)
-    alert(winner);
+    // alert(winner);
   }
 
   const addParticipant = async event => {
+    if(localStorage.getItem("Entries") !=undefined){
+     await setTotalEntries(parseInt(localStorage.getItem("Entries")))
+    }
     event.preventDefault()
     console.log(webState.items.length);
     if(webState.items.length < totalEntries){
@@ -180,7 +236,9 @@ export default function Home({participants}) {
 
     console.log(delParticipant);
   }
-  
+
+
+
   return (
     <div className="container container-sm container-md mb-5">
       <Head>
@@ -192,16 +250,17 @@ export default function Home({participants}) {
         </style>
       </Head>
       <header className="row">
+        
         <div className="col-12 ">
           <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container-fluid">
-              <a className="navbar-brand" href="#" onClick={openFullscreen}>
+              <a className="navbar-brand" href="#">
                <img src="logo.jpg" width="150" />
               </a>
-              <div className="d-flex">
+              <div style={{marginLeft:"10%"}} className="d-flex">
                 <div className="navbar-nav">
                   {/* <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a> */}
-                  <button type="button" className="active px-4 nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                  <button type="button" className="active px-4 nav-link btn btn-link" onClick={()=>router.push("/settings")}>
                   SETTINGS
                     </button>
                   {
@@ -212,6 +271,10 @@ export default function Home({participants}) {
                     </button>
                     )
                   }
+
+
+                  
+
                 </div>
               </div>
             </div>
@@ -224,7 +287,7 @@ export default function Home({participants}) {
           <div className="col-12 col-md-6">
             {webState.seg.length > 0 && 
               gameType == 'wheel' &&
-                <div id="wheelId">
+                <div>
                   <img src="/wheel_frame.png" className="position-absolute wheel_frame threeDRotate" />
                   <WheelComponent
                   segments={webState.seg}
@@ -244,25 +307,29 @@ export default function Home({participants}) {
                   // 10000 for 80 seconds
                   // 22500 for 3 minutes
                     
-                  downDuration={spinTime * 125}
-                  spinSeconds={spinTime}
+                  downDuration={parseInt(spinTime) * 125}
+                  spinSeconds={parseInt(spinTime)}
                   shouldWeSpin={shouldWeSpin}
                   setShouldWeSpin={setShouldWeSpin}
                   fontFamily='Arial'
                 />
                 </div>
             }
+            {console.log("participants",itemsForPot.length)}
             {webState.seg.length > 0 && 
+            
               gameType == 'pot' &&
                 <div className={`pot-group ${shakeAnimateClass}`}>
                   <img src="/pot_img.png" className=" wheel_frame pot-img position-absolute" />
-                  <div className="row opacity-50 position-relative" style={{ top:"300px", left: "100px" }} >
-                    { itemsForPot.map((item, index) =>{
+                  <div className="row opacity-50 position-relative" style={{ top:`${3000/itemsForPot.length}px`, left: "100px" }} >
+                   
+                    {itemsForPot.reverse().map((item, index) =>{
+                      
                         
-                       return index % 2 === 0 ?
+                       return item.name.length > 5 ?
                        <div className="col-4" >
                           <div className="card name-card transform2 position-relative">
-                            <div className="row g-0">
+                           
                               <div className="col-12">
                                 <div className="card-body">
                                   <div key={item._id}>
@@ -270,26 +337,26 @@ export default function Home({participants}) {
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                   
                           </div>
                         </div>
                         :
                         <div className="col-3">
                           <div className="card name-card transform position-relative">
-                            <div className="row g-0">
+                            
                               <div className="col-12">
                                 <div className="card-body">
                                   <div key={item._id}>
                                     <h5 className="card-title">{item.name}</h5>
                                   </div>
                                 </div>
-                              </div>
+                            
                             </div>
                           </div>
                         </div>
                     })}
                   </div>
-                  {/* <div style={{margin: "500px"}}></div> */}
+                  
                 </div>
             }
             <div className="clearfix"></div>
@@ -300,9 +367,11 @@ export default function Home({participants}) {
           gameType == 'wheel' &&
           <div className="row justify-content-center">
             <div className="col-6 col-md-2 m-5 text-center">
+            
               <button
+              
                 type="button"
-                className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg"
+                className="ThreeD-mode btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg"
                 data-bs-toggle="modal"
                 data-bs-target="#threeDModeModal">
                   3D MODE
@@ -311,7 +380,7 @@ export default function Home({participants}) {
           </div>
         }
         
-        <form className="row justify-content-center" method="post" onSubmit={addParticipant}>
+        <form style={{marginLeft:"17%"}} className="row justify-content-center mt-3" method="post" onSubmit={addParticipant}>
           <div className="col-8 col-md-5 ">
             <div className="input-group mycustom ">
               <input type="text" className="form-control" placeholder="Participant Name" name="participantName" required />
@@ -323,19 +392,28 @@ export default function Home({participants}) {
             </div>
           </div>
           <div className="col-2 col-md-1">
+            
             {gameType == 'pot' &&
               <>
-                <div id="spinBtn" onClick={shakeBtn} className="my-2 text-purple fs-4 fw-bold">Shake</div>
+                <div id="shakeBtn" onClick={shakeBtn} className="my-2 text-purple fs-4 fw-bold">Shake</div>
               </>
             }
             {gameType == 'wheel' &&
               <>
-                <div id="spinBtn" onClick={() => setShouldWeSpin(true)} className="my-2 text-purple fs-4 fw-bold">Spin</div>
+                <div id="spinBtn" onClick={() => settheShouldWeSpin(true)} className="my-2 text-purple fs-4 fw-bold">Spin</div>
               </>
             }
           </div>
         </form>
-
+        {showWinnerModal? 
+        <WinnerModal/>
+       :null}
+        <div  className="Pot-or-Wheel col-12 text-center m-3">
+                            <div className="btn-group " role="group" aria-label="Basic example">
+                              <button type="button" className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg" onClick={(e)=> togglePotWheel(e, "pot")}>POT</button>
+                              <button type="button" className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg" onClick={(e)=> togglePotWheel(e, "wheel")}>WHEEL</button>
+                            </div>
+                          </div>
         <div className="m-5 test">
           <div className="row">
             { webState.items.map((item, index) =>(
@@ -394,6 +472,25 @@ export default function Home({participants}) {
                 </div>
               </div>
             </div>
+            
+{modalIsOpen?
+<Confetti width="2000%" height="2000%" numberOfPieces={1000} gravity={0.3}/>
+:null}
+<ReactHowler src="/applause-01.mp3" playing={modalIsOpen}/>
+
+<Modal 
+style={customStyles}
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+      >
+        <div style={{textAlign:"center"}}>
+        <h1 style={{textAlign:"center"}}>Winner</h1>
+        <h3 style={{textAlign:"center",marginBottom:"5%",fontFamily:"auto"}}>{thewinner}</h3>
+        <button onClick={closeModal}>close</button>
+
+        </div>
+      </Modal>
 
             <div className="modal fade login-modal" id="settingsModal" tabIndex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
               <div className="modal-dialog ">
@@ -445,10 +542,10 @@ export default function Home({participants}) {
                     </div>
                   
                   </div>
-                  {/* <div className="modal-footer">
+                  <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" className="btn btn-primary">Save changes</button>
-                  </div> */}
+                  </div>
                 </div>
               </div>
             </div>

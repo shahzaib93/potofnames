@@ -6,6 +6,11 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+[data-theme='dark'] {
+  --background: black;
+  --foreground: white;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -117,6 +122,16 @@ a {
   width: 600px;
   height: 680px;
 }
+
+.pot-group .row{
+  width: 90% !important;
+}
+
+.pot-group .row .col-3 ,.col-4{
+  padding: 0% !important;
+  
+}
+
 .transform {
   transform: rotate3d(0.5, -0.866, 0, 55deg) rotate(20deg);
   animation-name: animation;
@@ -184,7 +199,7 @@ a {
 }
 @media screen and (max-width: 500px) {
   .container-sm {
-    width: 600px;
+    width: 700px;
   }
 }
 
@@ -192,4 +207,17 @@ a {
   .test {
     padding: 0 200px 0 200px;
   }
+}
+
+
+.test{
+  margin-left: 15% !important;
+}
+
+.Pot-or-Wheel{
+  margin-left: 5% !important;
+}
+
+.ThreeD-mode{
+  margin-left: 20% !important;
 }

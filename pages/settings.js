@@ -1,34 +1,77 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+import {useRouter} from 'next/router'
 // import jwt from 'jsonwebtoken'
-import React, {useEffect, useState} from 'react'
-import { useSession, signIn, signOut } from "next-auth/react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
+import React, { useEffect, useState, createContext } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebookF,
+  faInstagramSquare,
+  faLinkedinIn,
+  faPinterestP,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
+// import styled, { ThemeProvider } from "styled-components";
+import { useTheme } from 'next-themes'
+
 
 export default function Settings() {
-  $
-//   if (typeof window !== 'undefined') {
-//   //in your test1 
-// //foo is the key, bar is the value
-// localStorage.setItem("foo", "bar")
+  const { theme, setTheme } = useTheme()
+  const router = useRouter()
+  // var Noofentries = createContext(null)
+  console.log("location",router.pathname)
+  const [entries, setEntries] = useState();
+  const [shakeTime, setshakeTime] = useState();
+  const [spinTime, setspinTime] = useState();
 
-// //in your test 2 you can get the bar by using foo key
-// const bar = localStorage.setItem("foo", "bar")
+  //   if (typeof window !== 'undefined') {
+  //   //in your test1
+  // //foo is the key, bar is the value
+  // localStorage.setItem("foo", "bar")
 
-// console.log(bar)// bar
-// }
-// 
-  const { data: session } = useSession()
-    if(session){
-      console.log(`You're signed in`)
-      console.log(session) 
-    } else {
-      console.log(`You are signed out`)
-    }
+  // //in your test 2 you can get the bar by using foo key
+  // const bar = localStorage.setItem("foo", "bar")
+
+  // console.log(bar)// bar
+  // }
+  //
+
+  const getEntries = (event) => {
+    setEntries(event.target.value);
+    console.log(entries);
+  }
+
+  
+  const getSpinTime = (event) => {
+    setspinTime(event.target.value);
+    console.log(spinTime);
+  }
+
+  
+  const getShakeTime = (event) => {
+    setshakeTime(event.target.value);
+    console.log(shakeTime);
+  }
+
+  useEffect(() => {
+    localStorage.setItem("Entries", entries);
+    localStorage.setItem("ShakeTime", shakeTime);
+    localStorage.setItem("SpinTime", spinTime);
+    // router.reload("/")
+
+
+  }, [entries,shakeTime,spinTime]);
+  const { data: session } = useSession();
+  if (session) {
+    console.log(`You're signed in`);
+    console.log(session);
+  } else {
+    console.log(`You are signed out`);
+  }
   return (
     <div className="container container-sm container-md mb-5">
       <Head>
@@ -41,19 +84,35 @@ export default function Settings() {
           <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container-fluid">
               <a className="navbar-brand" href="#">
-               <img src="logo.jpg" width="150" />
+                <img src="logo.jpg" width="150" />
               </a>
               <div className="d-flex">
                 <div className="navbar-nav">
-                  <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a>
-                  {
-                    (session ? 
-                    <button className="nav-link px-4 btn btn-link" type="button" onClick={() => signOut()}>LOGOUT</button> :
-                    <button type="button" className="px-4 nav-link btn btn-link" data-bs-toggle="modal" data-bs-target="#loginModal">
+                  <a
+                    className="nav-link active px-4"
+                    aria-current="page"
+                    href="#"
+                  >
+                    SETTING
+                  </a>
+                  {session ? (
+                    <button
+                      className="nav-link px-4 btn btn-link"
+                      type="button"
+                      onClick={() => signOut()}
+                    >
+                      LOGOUT
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="px-4 nav-link btn btn-link"
+                      data-bs-toggle="modal"
+                      data-bs-target="#loginModal"
+                    >
                       LOGIN
                     </button>
-                    )
-                  }
+                  )}
                 </div>
               </div>
             </div>
@@ -61,34 +120,78 @@ export default function Settings() {
         </div>
       </header>
       <main>
+      <div className="row justify-content-center">
+                      <div className="col-12">
+                        <div className="row">
+                          <div className="col-12 text-center">
+                            <div className="btn-group " role="group" aria-label="Basic example">
+                              <button type="button" className="btn btn-primary" onClick={(e)=> setTheme('light')}>DAY</button>
+                              <button type="button" className="btn btn-secondary" onClick={(e)=> setTheme('dark')}>NIGHT</button>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                        </div>
         <div className="row justify-content-center my-5 ">
           <div className="col-6">
             <div className="row my-4">
-              <div className="col-3 "><strong># OF ENTRIES</strong></div>
-              <div className="col-9">
-                <input type="range" min="1" max="100" value="50" className="range" id="myRange" />
+              <div className="col-3 ">
+                <strong># OF ENTRIES</strong>
               </div>
+              <div className="col-8">
+                <input
+                  type="range"
+                  min="1"
+                  max="200"
+                  defaultValue="10"
+                  onChange={getEntries}
+                  className="range"
+                  id="myRange"
+                />
+              </div>
+              <div className="col-1">{entries} </div>
             </div>
             <div className="row my-4">
-              <div className="col-3"><strong># OF ENTRIES</strong></div>
-              <div className="col-9">
-                <input type="range" min="1" max="100" value="50" className="range" id="myRange" />
+              <div className="col-3">
+                <strong>SPIN TIME</strong>
               </div>
+              <div className="col-8">
+                <input
+                
+                  type="range"
+                  min="3"
+                  max="180"
+                  className="range"
+                  defaultValue="5"
+                  onChange={getSpinTime}
+                />
+              </div>
+              <div className="col-1">{spinTime}</div>
             </div>
             <div className="row my-4">
-              <div className="col-3"><strong># OF ENTRIES</strong></div>
-              <div className="col-9">
-                <input type="range" min="1" max="100" value="50" className="range" id="myRange" />
+              <div className="col-3">
+                <strong>SHAKE TIME</strong>
               </div>
+              <div className="col-8">
+                <input
+                  type="range"
+                  min="3"
+                  max="180"
+                  className="range"
+                  defaultValue="5"
+                  onChange={getShakeTime}
+                />
+              </div>
+              <div className="col-1">{shakeTime}</div>
             </div>
-            
-            
           </div>
         </div>
+        <div></div>
         <div className="row my-5">
           <div className="col-8 mx-auto">
             <div className="fw-bold fs-5 text-center">
-            Welcome to the most interactive and fun website for picking names,making unbaised decisions and spin a wheel interaction
+              Welcome to the most interactive and fun website for picking
+              names,making unbaised decisions and spin a wheel interaction
             </div>
           </div>
         </div>
@@ -97,29 +200,52 @@ export default function Settings() {
       <footer>
         <div className="row my-5 justify-content-center">
           <div className="col-3">
-            <div className="card footer-card text-center" >
-              <img src="unlimitednames.png" className="card-img-top mx-auto d-block" />
+            <div className="card footer-card text-center">
+              <img
+                src="unlimitednames.png"
+                className="card-img-top mx-auto d-block"
+              />
               <div className="card-body">
-              <h5 className="card-title">Unlimited Names</h5>
-                <p className="card-text text-secondary"><small>Enter over 250 names without any glitch or hassel.</small></p>
+                <h5 className="card-title">Unlimited Names</h5>
+                <p className="card-text text-secondary">
+                  <small>
+                    Enter over 250 names without any glitch or hassel.
+                  </small>
+                </p>
               </div>
             </div>
           </div>
           <div className="col-3">
-            <div className="card footer-card text-center" >
-              <img src="checkicon.png" className="card-img-top mx-auto d-block" />
+            <div className="card footer-card text-center">
+              <img
+                src="checkicon.png"
+                className="card-img-top mx-auto d-block"
+              />
               <div className="card-body">
-              <h5 className="card-title">Top Security</h5>
-                <p className="card-text text-secondary"><small>We are committed to protecting and respecting your privacy and the security of your data.</small></p>
+                <h5 className="card-title">Top Security</h5>
+                <p className="card-text text-secondary">
+                  <small>
+                    We are committed to protecting and respecting your privacy
+                    and the security of your data.
+                  </small>
+                </p>
               </div>
             </div>
           </div>
           <div className="col-3">
-            <div className="card footer-card text-center" >
-              <img src="speechicon.png" className="card-img-top mx-auto d-block" />
+            <div className="card footer-card text-center">
+              <img
+                src="speechicon.png"
+                className="card-img-top mx-auto d-block"
+              />
               <div className="card-body">
-              <h5 className="card-title">How to use Pot of Names</h5>
-                <p className="card-text text-secondary"><small >Type in your entries in the textbox to the right of the wheel. Click the wheel to spin it and get a random winner.</small></p>
+                <h5 className="card-title">How to use Pot of Names</h5>
+                <p className="card-text text-secondary">
+                  <small>
+                    Type in your entries in the textbox to the right of the
+                    wheel. Click the wheel to spin it and get a random winner.
+                  </small>
+                </p>
               </div>
             </div>
           </div>
@@ -127,33 +253,73 @@ export default function Settings() {
         <div className="row my-5">
           <div className="col-12">
             <ul className="footer-social-icons">
-              <li><FontAwesomeIcon icon={faTwitter} className="fontawesome-icon"/></li>
-              <li><FontAwesomeIcon icon={faFacebookF} className="fontawesome-icon facebook-icon"/></li>
-              <li><FontAwesomeIcon icon={faPinterestP} className="fontawesome-icon"/></li>
-              <li><FontAwesomeIcon icon={faLinkedinIn} className="fontawesome-icon"/></li>
-              <li><FontAwesomeIcon icon={faInstagramSquare} className="fontawesome-icon"/></li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faTwitter}
+                  className="fontawesome-icon"
+                />
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faFacebookF}
+                  className="fontawesome-icon facebook-icon"
+                />
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faPinterestP}
+                  className="fontawesome-icon"
+                />
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faLinkedinIn}
+                  className="fontawesome-icon"
+                />
+              </li>
+              <li>
+                <FontAwesomeIcon
+                  icon={faInstagramSquare}
+                  className="fontawesome-icon"
+                />
+              </li>
             </ul>
           </div>
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <Link href="https://potofnames.com/"><img src="logo.jpg" className="img-fluid sponsor-img" alt="..." /></Link>
+            <Link href="https://potofnames.com/">
+              <img src="logo.jpg" className="img-fluid sponsor-img" alt="..." />
+            </Link>
           </div>
           <div className="col-2">
-            <Link href="https://pickapot.com/"><img src="paplogo.png" className="img-fluid sponsor-img" alt="..." /></Link>
+            <Link href="https://pickapot.com/">
+              <img
+                src="paplogo.png"
+                className="img-fluid sponsor-img"
+                alt="..."
+              />
+            </Link>
           </div>
         </div>
         <div className="row">
           <div className="col-12">
-            <p className="text-center"><small>A Project of PICKAPOT LLC. Trademarks and brands are the property of their respective owners.</small></p>
+            <p className="text-center">
+              <small>
+                A Project of PICKAPOT LLC. Trademarks and brands are the
+                property of their respective owners.
+              </small>
+            </p>
           </div>
         </div>
         <div className="row">
           <div className="col-12">
-            <p className="text-center"><small>&copy; 2021 POTOFNAMES LLC. ALL RIGHT RESERVED.</small></p>
+            <p className="text-center">
+              <small>&copy; 2021 POTOFNAMES LLC. ALL RIGHT RESERVED.</small>
+            </p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
