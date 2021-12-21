@@ -479,6 +479,7 @@ export default function Home({participants}) {
 <ReactHowler src="/applause-01.mp3" playing={modalIsOpen}/>
 
 <Modal 
+ariaHideApp={false}
 style={customStyles}
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
