@@ -50,7 +50,7 @@ export default function Home({participants}) {
   const [shakeAnimateClass, setShakeAnimateClass] = useState("")
   const [threeDMode, setThreeDMode] = useState(0)
   const [totalEntries, setTotalEntries] = useState(10)
-  const [wheelSpeed, setWheelSpeed] = useState(1)
+  const [wheelSpeed, setWheelSpeed] = useState(5)
   const [spinTime, setSpinTime] = useState(5)
   const [shakeTime, setShakeTime] = useState(5)
   const [gameType, setGameType] = useState("pot")
@@ -100,9 +100,9 @@ export default function Home({participants}) {
     console.log(threeDMode);
   }
 
-  const settheShouldWeSpin = () => {
+  const settheShouldWeSpin = async () => {
     if(localStorage.getItem("SpinTime") != undefined){
-          setSpinTime(parseInt(localStorage.getItem("SpinTime")))}
+         await setSpinTime(parseInt(localStorage.getItem("SpinTime")))}
           console.log("SpinTime",typeof(spinTime))
           setShouldWeSpin(true)
   }
