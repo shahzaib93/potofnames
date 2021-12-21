@@ -15,7 +15,6 @@ import Modal from 'react-modal';
 // import claps from "../public/applause-01.mp3"
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
-
 export const getStaticProps = async () => {
   const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
