@@ -11,12 +11,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faFacebookF, faInstagramSquare, faLinkedinIn, faPinterestP, faTwitter } from '@fortawesome/free-brands-svg-icons'
 import Confetti from 'react-confetti' 
 import Modal from 'react-modal';
+// import screenfull from 'screenfull';
 // import claps from "../public/applause-01.mp3"
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 
 export const getStaticProps = async () => {
-  const res = await fetch('https://potofnames.com/api/participants');
+  const res = await fetch('http://localhost:3000/api/participants');
   const data = await res.json();
   return{
       props: {participants: data}
@@ -46,14 +47,14 @@ export default function Home({participants}) {
     },
   };
   const [thewinner, setthewinner] = useState("")
-
+  const [enableFullScreen, setenableFullScreen] = useState(false)
   const [shakeAnimateClass, setShakeAnimateClass] = useState("")
   const [threeDMode, setThreeDMode] = useState(0)
   const [totalEntries, setTotalEntries] = useState(10)
   const [wheelSpeed, setWheelSpeed] = useState(5)
   const [spinTime, setSpinTime] = useState(5)
   const [shakeTime, setShakeTime] = useState(5)
-  const [gameType, setGameType] = useState("pot")
+  const [gameType, setGameType] = useState("wheel")
   const segCol = []
   const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
   var css = `
@@ -190,27 +191,57 @@ export default function Home({participants}) {
     // alert(winner);
   }
 
+  // const FullScreen = () =>{
+  //   screenfull.request()
+    
+  // }
+
+
+  useEffect(()=>{
+   const elem =  window.document.getElementById("ForFullScreen")
+   if(enableFullScreen){
+   if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+  setenableFullScreen(false)
+}
+
+  },[enableFullScreen])
+
+
   const addParticipant = async event => {
+    const hello = "hello"
+    const more = window.document.getElementById("moreParticpants")
+    const arr = Array(parseInt(more.value)).fill(hello)
+    console.log("xx x m",arr)
     if(localStorage.getItem("Entries") !=undefined){
      await setTotalEntries(parseInt(localStorage.getItem("Entries")))
     }
+
     event.preventDefault()
     console.log(webState.items.length);
-    if(webState.items.length < totalEntries){
-      const res = await fetch('https://potofnames.com/api/participants', {
+    if(webState.items.length + parseInt(more.value) < totalEntries){
+    
+      const res = await fetch('http://localhost:3000/api/participants', {
         body: JSON.stringify({
+          // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
           name: event.target.participantName.value
         }),
         headers: {'Content-Type': 'application/json'},
         method: 'POST'
       })
       const newParticipant = await res.json()
-      console.log(newParticipant.addParticipant);
+      console.log("add", newParticipant.addParticipant);
       setWebState({
         items: [...webState.items, newParticipant.addParticipant],
         seg: [...webState.seg, newParticipant.addParticipant.name]
       })
-    } else {
+
+   } else {
       alert("You can't add more.");
     }
     event.target.participantName.value = ""
@@ -220,7 +251,7 @@ export default function Home({participants}) {
     const deletedVal = webState.items[index]
     console.log("Delete function data");
     console.log(deletedVal)
-    const res = await fetch('https://potofnames.com/api/participants', {
+    const res = await fetch('http://localhost:3000/api/participants', {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -271,7 +302,9 @@ export default function Home({participants}) {
                     </button>
                     )
                   }
-
+<button type="button" className="px-4 nav-link btn btn-link" onClick={()=>setenableFullScreen(true)}>
+                      Full Screen
+                    </button>
 
                   
 
@@ -283,6 +316,7 @@ export default function Home({participants}) {
       </header>
       {/* <Header onLogoutClick={() => signOut()} session={session} /> */}
       <main>
+        <div id="ForFullScreen">
         <div className="row justify-content-center">
           <div className="col-12 col-md-6">
             {webState.seg.length > 0 && 
@@ -385,6 +419,15 @@ export default function Home({participants}) {
             <div className="input-group mycustom ">
               <input type="text" className="form-control" placeholder="Participant Name" name="participantName" required />
               <div className="input-group-prepend">
+              <input defaultValue={1} className='Participants-repeat' list="Participantsrepeat" id="moreParticpants"/>
+                <datalist id="Participantsrepeat" >
+                <option value={1}>1</option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
+
+                </datalist>
                 <button type="submit" className="btn btn-radius btn-sm" id="inputGroupPrepend2">
                   <img src="plus.png" width="25" className="m-1"/>
                 </button>
@@ -414,13 +457,16 @@ export default function Home({participants}) {
                               <button type="button" className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg" onClick={(e)=> togglePotWheel(e, "wheel")}>WHEEL</button>
                             </div>
                           </div>
+
+       </div>
+
         <div className="m-5 test">
           <div className="row">
             { webState.items.map((item, index) =>(
             // eslint-disable-next-line react/jsx-key
             <div key={index} className="col-6 col-md-6">
               <div className="card mb-3 name-card">
-                <div className="row g-0">
+                <div className="row g-0" style={{border:"1px solid white",borderRadius:"5px"}}>
                   <div className=" col-4 col-md-4">
                     <img src="logo.jpg" className="img-fluid rounded-circle" alt="..." />
                   </div>

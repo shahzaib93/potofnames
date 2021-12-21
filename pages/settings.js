@@ -19,7 +19,7 @@ import {
 import { useTheme } from 'next-themes'
 
 
-export default function Settings() {
+ function Settings() {
   const { theme, setTheme } = useTheme()
   const router = useRouter()
   // var Noofentries = createContext(null)
@@ -89,11 +89,11 @@ export default function Settings() {
               <div className="d-flex">
                 <div className="navbar-nav">
                   <a
+                    type="button"
                     className="nav-link active px-4"
-                    aria-current="page"
-                    href="#"
+                    onClick={()=>router.push("/")}
                   >
-                    SETTING
+                    HOME
                   </a>
                   {session ? (
                     <button
@@ -323,3 +323,5 @@ export default function Settings() {
     </div>
   );
 }
+
+export default Settings

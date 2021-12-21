@@ -16,7 +16,12 @@ export default async function handler (req, res) {
     case 'POST':
       try {
         // const participant = await Participant.create(req.body)
+        // for(var i=0;i<addParticipant.name.length;i++){}
+
         var addParticipant = new Participant(req.body);
+        console.log("body",req.body)
+
+        console.log("add",addParticipant)
         addParticipant.save(function (err) {
             if (err) return handleError(err);
             // saved!

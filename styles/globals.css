@@ -1,3 +1,42 @@
+:root {
+  --fg: #000;
+  --bg: #fff;
+}
+
+[data-theme='dark'] {
+  --fg: #fff;
+  --bg: rgb(22, 21, 21);
+}
+
+[data-theme='dark'] body {
+  color: #fff;
+  background: rgb(22, 21, 21);
+}
+
+[data-theme='dark'] .card{
+  background-color: rgb(22, 21, 21);
+}
+
+#ForFullScreen:fullscreen {
+  overflow: scroll !important;
+  background: white;
+}
+#ForFullScreen:-ms-fullscreen {
+  overflow: scroll !important;
+  background: white;
+
+}
+#ForFullScreen:-webkit-full-screen {
+  overflow: scroll !important;
+  background: white;
+
+}
+#ForFullScreen:-moz-full-screen {
+  overflow: scroll !important;
+  background: white;
+
+}
+
 html,
 body {
   padding: 0;
@@ -6,10 +45,6 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-[data-theme='dark'] {
-  --background: black;
-  --foreground: white;
-}
 
 a {
   color: inherit;
@@ -207,17 +242,27 @@ a {
   .test {
     padding: 0 200px 0 200px;
   }
+   #ForFullScreen{
+    margin-left: -50px;
+   }
 }
 
-
+/* 
 .test{
   margin-left: 15% !important;
 }
 
 .Pot-or-Wheel{
   margin-left: 5% !important;
-}
+} */
 
 .ThreeD-mode{
   margin-left: 20% !important;
+}
+
+.Participants-repeat{
+  margin-top: 4%;
+  height: 35px;
+  width: 50px;
+  border: 2px solid #4f56a5 !important ;
 }
