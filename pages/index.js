@@ -327,7 +327,7 @@ export default function Home({participants}) {
                       
                         
                        return item.name.length > 5 ?
-                       <div className="col-4" >
+                       <div key={index} className="col-4" >
                           <div className="card name-card transform2 position-relative">
                            
                               <div className="col-12">
@@ -341,7 +341,7 @@ export default function Home({participants}) {
                           </div>
                         </div>
                         :
-                        <div className="col-3">
+                        <div key={index} className="col-3">
                           <div className="card name-card transform position-relative">
                             
                               <div className="col-12">
@@ -418,7 +418,7 @@ export default function Home({participants}) {
           <div className="row">
             { webState.items.map((item, index) =>(
             // eslint-disable-next-line react/jsx-key
-            <div className="col-6 col-md-6">
+            <div key={index} className="col-6 col-md-6">
               <div className="card mb-3 name-card">
                 <div className="row g-0">
                   <div className=" col-4 col-md-4">
