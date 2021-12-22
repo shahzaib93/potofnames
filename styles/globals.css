@@ -26,6 +26,20 @@
   background: white;
 
 }
+
+#FULLSCREEN:fullscreen {
+  overflow: scroll !important;
+  background: white;
+}
+
+
+
+#FULLSCREEN:-ms-fullscreen {
+
+  background: white;
+
+}
+
 #ForFullScreen:-webkit-full-screen {
   overflow: scroll !important;
   background: white;
@@ -69,7 +83,7 @@ a {
   font-size: 16px;
 }
 .wheel-img {
-  max-width: 60%;
+  max-width: 100% !important;
 }
 .btn-radius {
   border-radius: 20px;
@@ -180,6 +194,31 @@ a {
   animation-iteration-count: infinite;
 }
 
+.shuffleAnimation{
+  /* transform: rotate3d(0.5, -0.866, 0, 55deg) rotate(-20deg); */
+  animation-name: shuffleanimation;
+  animation-duration: 1s;
+  /* animation-iteration-count: infinite; */
+}
+
+
+@keyframes shuffleanimation {
+  from {
+    /* margin-left: 200px; */
+    opacity: 0.1;
+  }
+
+  /* 50% {
+    margin-left: 110px;
+    opacity: 0.5;
+  } */
+
+  to {
+    margin-left: 0px;
+
+
+  }
+}
 @keyframes animation {
   from {
     top: 10px;
@@ -265,4 +304,8 @@ a {
   height: 35px;
   width: 50px;
   border: 2px solid #4f56a5 !important ;
+}
+
+#wheel{
+  max-width: 90% !important;
 }
