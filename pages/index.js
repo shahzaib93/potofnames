@@ -16,7 +16,7 @@ import Modal from 'react-modal';
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:3000/api/participants');
+  const res = await fetch('https://potofnames.com/api/participants');
   const data = await res.json();
   return{
       props: {participants: data}
@@ -287,7 +287,7 @@ if (!enableFullScreen){
     if(webState.items.length < totalEntries){
 
     
-      const res = await fetch('http://localhost:3000/api/participants', {
+      const res = await fetch('https://potofnames.com/api/participants', {
         body: JSON.stringify({
           // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
           
@@ -323,7 +323,7 @@ if (!enableFullScreen){
     const deletedVal = webState.items[index]
     console.log("Delete function data");
     console.log(deletedVal)
-    const res = await fetch('http://localhost:3000/api/participants', {
+    const res = await fetch('https://potofnames.com/api/participants', {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
