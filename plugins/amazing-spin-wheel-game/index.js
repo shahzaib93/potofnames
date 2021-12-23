@@ -1,7 +1,10 @@
 var React = require('react');
+const { default: ReactHowler } = require('react-howler');
 var WheelComponent = function WheelComponent(_ref) {
   // console.log(_ref.segments);
   const {shouldWeSpin, setShouldWeSpin} = _ref;
+  const [sound, setSound] = React.useState(false);
+{/* <ReactHowler src="/wheel-spin.mp3" playing={true}/> */}
 
   var segments = _ref.segments,
       spinSeconds = _ref.spinSeconds,
@@ -57,9 +60,12 @@ var WheelComponent = function WheelComponent(_ref) {
 
   React.useEffect(() => {
     if(shouldWeSpin) {
+      // console.log("shouldspin",shouldWeSpin)
+      setSound(true)
       wheelInit();
       spin();
       setShouldWeSpin(false);
+      // setSound(false)
     }
   }, [shouldWeSpin])
 
@@ -86,6 +92,7 @@ var WheelComponent = function WheelComponent(_ref) {
   };
 
   var spin = function spin() {
+    console.log("spinning")
     isStarted = true;
 
     if (timerHandle === 0) {

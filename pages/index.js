@@ -16,7 +16,7 @@ import Modal from 'react-modal';
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 export const getStaticProps = async () => {
-  const res = await fetch('https://potofnames.com/api/participants');
+  const res = await fetch('http://localhost:3000/api/participants');
   const data = await res.json();
   return{
       props: {participants: data}
@@ -57,8 +57,10 @@ export default function Home({participants}) {
   const [spinTime, setSpinTime] = useState(5)
   const [shakeTime, setShakeTime] = useState(5)
   const [gameType, setGameType] = useState("wheel")
+  const {sound, setSound} = useState(false);
+
   const segCol = []
-  const tempParticipants = [{name: 'Asif'},{name: 'Jami'},{name: 'Zahid'},{name: 'Khalid'},{name: 'Kayani'},{name: 'Mahir'},{name: 'Shehzad'},{name: 'Aslam'}];
+  const tempParticipants = [{name: 'Asif',repeatation:1},{name: 'Jami',repeatation:1},{name: 'Zahid',repeatation:1},{name: 'Khalid',repeatation:1},{name: 'Kayani',repeatation:1},{name: 'Mahir',repeatation:1},{name: 'Shehzad',repeatation:1},{name: 'Aslam',repeatation:1}];
   var css = `
     canvas, .threeDRotate{
       transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
@@ -128,6 +130,7 @@ console.log("real arr",myarr)
   // }
 
   function openModal() {
+    setsoundplay(false)
     setIsOpen(true);
   }
 
@@ -146,6 +149,7 @@ console.log("real arr",myarr)
          await setSpinTime(parseInt(localStorage.getItem("SpinTime")))}
           console.log("SpinTime",typeof(spinTime))
           setShouldWeSpin(true)
+          setsoundplay(true)
   }
 
   const getSpinTime = (event) => {
@@ -209,7 +213,7 @@ console.log("real arr",myarr)
 
   useEffect(() => {
     // setWebState(webState)
-    console.log(webState);
+    console.log("webstate items length",webState.seg);
     console.log("Coming from useEffects");
   }, [webState, gameType])
 
@@ -232,12 +236,6 @@ console.log("real arr",myarr)
     // alert(winner);
   }
 
-  // const FullScreen = () =>{
-  //   screenfull.request()
-    
-  // }
-
-
 const openfullScreen=(elem)=>{
   setshowdivs("none")
   elem.requestFullscreen()
@@ -250,24 +248,6 @@ const closefullScreen=(elem)=>{
   document.webkitExitFullscreen()
     setshowdivs("block")
 }
-  // if (elm.exitFullscreen) {
-  //   elem.exitFullscreen();
-  // } else if (elem.webkitExitFullscreen) { /* Safari */
-  //   elem.webkitExitFullscreen();
-  // } else if (elem.msExitFullscreen) { /* IE11 */
-  //   elem.msExitFullscreen();
-  // }
-  // if (!elem.fullscreenElement){
-  // setshowdivs("block")
-  // setenableFullScreen(false)}
-  // // elem.exitFullscreen
-  // if (elem.exitFullscreen) {
-  //   elem.exitFullscreen();
-  // } 
-//   if (elem.msExitFullScreen) {
-//     elem.msExitFullScreen();
-// }
-  // elem2.requestFullscreen()
 
 }
 
@@ -295,31 +275,43 @@ if (!enableFullScreen){
     const hello = "hello"
     const more = window.document.getElementById("moreParticpants")
     const arr = Array(parseInt(more.value)).fill(hello)
-    console.log("xx x m",arr)
+    console.log("My participant",event.target.participantName.value)
+    console.log("participant times",more.value)
     if(localStorage.getItem("Entries") !=undefined){
      await setTotalEntries(parseInt(localStorage.getItem("Entries")))
     }
 
     event.preventDefault()
-    console.log(webState.items.length);
+    // console.log("total",webState.items.length);
     // if(webState.items.length + parseInt(more.value) < totalEntries){
     if(webState.items.length < totalEntries){
 
     
-      const res = await fetch('https://potofnames.com/api/participants', {
+      const res = await fetch('http://localhost:3000/api/participants', {
         body: JSON.stringify({
           // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
-          name: event.target.participantName.value
+          
+          name: event.target.participantName.value,
+          repeatation:parseInt(more.value)
         }),
         headers: {'Content-Type': 'application/json'},
         method: 'POST'
       })
       const newParticipant = await res.json()
-      console.log("add", newParticipant.addParticipant);
+      const segarr = []
+      for(var i=0;i<newParticipant.participantArray.length;i++){
+        segarr.push(newParticipant.participantArray[0].name)
+      }
+      console.log("newnewparticipants",newParticipant.participantArray)
       setWebState({
-        items: [...webState.items, newParticipant.addParticipant],
-        seg: [...webState.seg, newParticipant.addParticipant.name]
+        items: [...webState.items,...newParticipant.participantArray],
+        seg: [...webState.seg,...segarr]
       })
+    //   for(var i=0;i<newParticipant.participantArray.length;i++){
+     
+    //   console.log("sxsxsxsx",newParticipant.participantArray[i])
+    // }
+      // console.log("addsvsvsldsdls", newParticipant.addParticipant);
 
    } else {
       alert("You can't add more.");
@@ -331,7 +323,7 @@ if (!enableFullScreen){
     const deletedVal = webState.items[index]
     console.log("Delete function data");
     console.log(deletedVal)
-    const res = await fetch('https://potofnames.com/api/participants', {
+    const res = await fetch('http://localhost:3000/api/participants', {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -348,7 +340,9 @@ if (!enableFullScreen){
     console.log(delParticipant);
   }
 
-
+useEffect(()=>{
+  console.log("spinningornot",shouldWeSpin)
+},[shouldWeSpin])
 
   return (
     <div id='FULLSCREEN' className="container container-sm container-md mb-5">
@@ -446,6 +440,8 @@ if (!enableFullScreen){
                   setShouldWeSpin={setShouldWeSpin}
                   fontFamily='Arial'
                 />
+                <ReactHowler src="/wheel-spin.mp3" playing={soundplay}/>
+
                 </div>
             }
             {console.log("participants",itemsForPot.length)}
@@ -501,10 +497,10 @@ if (!enableFullScreen){
         {
           gameType == 'wheel' &&
           <div   className="row justify-content-center">
-            <div className="col-6 col-md-2 m-5 text-center">
+            <div className="col-6 col-md-2 m-5 text-center" style={{paddingLeft:"3%"}}>
             
               <button
-              
+              style={{display:showdivs}}
                 type="button"
                 className="ThreeD-mode btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg"
                 data-bs-toggle="modal"
@@ -548,7 +544,7 @@ if (!enableFullScreen){
                 <div id="spinBtn" onClick={() => settheShouldWeSpin(true)} className="my-2 text-purple fs-4 fw-bold">Spin</div>
               </>
             }
-            <div style={{marginLeft:"30%"}}  onClick={() => shuffleArray(webState)} className="my-2 text-purple fs-4 fw-bold">Shuffle</div>
+            <button type='Button' style={{marginLeft:"30%"}}  onClick={() => shuffleArray(webState)} className="btn btn-white text-purple fs-4 fw-bold">Shuffle</button>
             
             </div>
           </div>
@@ -579,7 +575,7 @@ if (!enableFullScreen){
                   <div className="col-7 col-md-7">
                     <div className="card-body">
                       <div key={item._id}>
-                        <h5  className={`card-title ${animatenames}`}>{item.name}</h5>
+                        <h5  className={`card-title ${animatenames}`}>{item.name} ({item.repeatation})</h5>
                       </div>
                     </div>
                   </div>

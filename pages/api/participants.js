@@ -20,13 +20,18 @@ export default async function handler (req, res) {
 
         var addParticipant = new Participant(req.body);
         console.log("body",req.body)
-
         console.log("add",addParticipant)
-        addParticipant.save(function (err) {
-            if (err) return handleError(err);
-            // saved!
-        })
-        res.status(201).json({addParticipant})
+        var participantArray = []
+        for(var i=1;i<req.body.repeatation+1;i++){
+          participantArray.push({name:addParticipant.name,repeatation:i,_id:addParticipant._id})
+        }
+  console.log("kxnsxnsxnx",participantArray)
+        // addParticipant.save(function (err) {
+        //     if (err) return handleError(err);
+        //     // saved!
+        // })
+        // console.log("final",addParticipant)
+        res.status(201).json({participantArray})
       } catch (error) {
         res.status(400).json({ success: false })
       }

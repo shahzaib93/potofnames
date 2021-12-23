@@ -307,5 +307,6 @@ a {
 }
 
 #wheel{
-  max-width: 90% !important;
+  max-width: 100% !important;
+  /* margin-left: 5%; */
 }
