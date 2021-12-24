@@ -34,14 +34,17 @@ export default function Home({participants}) {
   const [shouldWeSpin, setShouldWeSpin] = useState(false)
   const [soundplay, setsoundplay] = useState(false)
   const customStyles = {
+    
     content: {
+      margin:"0%",
       width:"30%",
       height:"30%",
       top: '50%',
       left: '50%',
       right: 'auto',
       bottom: 'auto',
-      marginRight: '-50%',
+      
+      // marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
     },
   };
@@ -58,6 +61,8 @@ export default function Home({participants}) {
   const [shakeTime, setShakeTime] = useState(5)
   const [gameType, setGameType] = useState("wheel")
   const {sound, setSound} = useState(false);
+  const [applausing, setApplausing] = useState("applause-01");
+
 
   const segCol = []
   const tempParticipants = [{name: 'Asif',repeatation:1},{name: 'Jami',repeatation:1},{name: 'Zahid',repeatation:1},{name: 'Khalid',repeatation:1},{name: 'Kayani',repeatation:1},{name: 'Mahir',repeatation:1},{name: 'Shehzad',repeatation:1},{name: 'Aslam',repeatation:1}];
@@ -146,7 +151,10 @@ console.log("real arr",myarr)
 
   const settheShouldWeSpin = async () => {
     if(localStorage.getItem("SpinTime") != undefined){
-         await setSpinTime(parseInt(localStorage.getItem("SpinTime")))}
+        await setSpinTime(parseInt(localStorage.getItem("SpinTime")))}
+    if(localStorage.getItem("Applause") != undefined){
+        await setApplausing(localStorage.getItem("Applause"))}    
+        console.log("applausinggg",applausing) 
           console.log("SpinTime",typeof(spinTime))
           setShouldWeSpin(true)
           setsoundplay(true)
@@ -177,7 +185,8 @@ console.log("real arr",myarr)
      await setShakeTime(parseInt(localStorage.getItem("ShakeTime")))
     
     }
-
+    if(localStorage.getItem("Applause") != undefined){
+      await setApplausing(localStorage.getItem("Applause"))}   
     console.log("shake",shakeTime)
     const random = Math.floor(Math.random() * webState.seg.length);
     console.log(random, webState.seg[random]);
@@ -215,6 +224,9 @@ console.log("real arr",myarr)
     // setWebState(webState)
     console.log("webstate items length",webState.seg);
     console.log("Coming from useEffects");
+    if(localStorage.getItem("Applause") != undefined){
+       setApplausing(localStorage.getItem("Applause"))}   
+    console.log("My applausing",applausing)
   }, [webState, gameType])
 
 
@@ -229,6 +241,11 @@ console.log("real arr",myarr)
   }
 
   const onFinished = (winner) => {
+    // const elem =  window.document.getElementById("FULLSCREEN")
+    // window.exitFullscreen()
+    // setenableFullScreen(!enableFullScreen)
+    closefullScreen()
+    // setenableFullScreen(!enableFullScreen)
     setthewinner(winner)
     setsoundplay(true)
     openModal()
@@ -238,7 +255,9 @@ console.log("real arr",myarr)
 
 const openfullScreen=(elem)=>{
   setshowdivs("none")
+  if(elem.requestFullscreen){
   elem.requestFullscreen()
+}
   // elem2.requestFullscreen()
 
 }
@@ -344,6 +363,15 @@ useEffect(()=>{
   console.log("spinningornot",shouldWeSpin)
 },[shouldWeSpin])
 
+
+// useEffect(()=>{
+//   const mycsvdata = localStorage.getItem("csvdata")
+//   console.log("my csv data",mycsvdata)
+//   // setWebState({
+//   //   items: [...webState.items,...newParticipant.participantArray],
+//   //   seg: [...webState.seg,...segarr]
+//   // })
+// },[])
   return (
     <div id='FULLSCREEN' className="container container-sm container-md mb-5">
       
@@ -409,6 +437,26 @@ useEffect(()=>{
       {/* <Header onLogoutClick={() => signOut()} session={session} /> */}
       <main>
         <div id="ForFullScreen">
+        {modalIsOpen?
+<Confetti  width="2000%" height="2000%" numberOfPieces={1000} gravity={0.3}/>
+:null}
+<ReactHowler src={`/${applausing}.mp3`} playing={modalIsOpen}/>
+
+<Modal
+ariaHideApp={false}
+preventScroll={true}
+style={customStyles}
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        
+      >
+        <div style={{textAlign:"center"}}>
+        <h1 style={{textAlign:"center"}}>Winner</h1>
+        <h3 style={{textAlign:"center",marginBottom:"5%",fontFamily:"auto"}}>{thewinner}</h3>
+        <button onClick={closeModal}>close</button>
+
+        </div>
+      </Modal>
           
         <div className="row justify-content-center">
           <div className="col-12 col-md-6">
@@ -416,6 +464,7 @@ useEffect(()=>{
               gameType == 'wheel' &&
                 <div>
                   <img src="/wheel_frame.png" className="position-absolute wheel_frame threeDRotate" />
+                  {/* <img src="logo.jpg" width="125" height='125' className='centerWheelImg' /> */}
                   <WheelComponent
                   segments={webState.seg}
                   segColors={segCol}
@@ -443,7 +492,12 @@ useEffect(()=>{
                 <ReactHowler src="/wheel-spin.mp3" playing={soundplay}/>
 
                 </div>
+
+
+
             }
+
+
             {console.log("participants",itemsForPot.length)}
             {webState.seg.length > 0 && 
             
@@ -550,9 +604,7 @@ useEffect(()=>{
           </div>
 
         </form>
-        {showWinnerModal? 
-        <WinnerModal/>
-       :null}
+       
         <div style={{display:showdivs}}  className="Pot-or-Wheel col-12 text-center m-3">
                             <div className="btn-group " role="group" aria-label="Basic example">
                               <button type="button" className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg" onClick={(e)=> togglePotWheel(e, "pot")}>POT</button>
@@ -621,25 +673,7 @@ useEffect(()=>{
               </div>
             </div>
             
-{modalIsOpen?
-<Confetti width="2000%" height="2000%" numberOfPieces={1000} gravity={0.3}/>
-:null}
-<ReactHowler src="/applause-01.mp3" playing={modalIsOpen}/>
 
-<Modal 
-ariaHideApp={false}
-style={customStyles}
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Example Modal"
-      >
-        <div style={{textAlign:"center"}}>
-        <h1 style={{textAlign:"center"}}>Winner</h1>
-        <h3 style={{textAlign:"center",marginBottom:"5%",fontFamily:"auto"}}>{thewinner}</h3>
-        <button onClick={closeModal}>close</button>
-
-        </div>
-      </Modal>
 
             <div className="modal fade login-modal" id="settingsModal" tabIndex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
               <div className="modal-dialog ">

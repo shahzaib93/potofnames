@@ -1,11 +1,13 @@
 var React = require('react');
 const { default: ReactHowler } = require('react-howler');
+import img from "../../public/logo.jpg"
 var WheelComponent = function WheelComponent(_ref) {
   // console.log(_ref.segments);
   const {shouldWeSpin, setShouldWeSpin} = _ref;
   const [sound, setSound] = React.useState(false);
 {/* <ReactHowler src="/wheel-spin.mp3" playing={true}/> */}
 
+{/* <img id="myImage" src={imge}/> */}
   var segments = _ref.segments,
       spinSeconds = _ref.spinSeconds,
       segColors = _ref.segColors,
@@ -163,7 +165,9 @@ var WheelComponent = function WheelComponent(_ref) {
   };
 
   var drawSegment = function drawSegment(key, lastAngle, angle) {
+    
     var ctx = canvasContext;
+    
     var value = segments[key];
     ctx.save();
     ctx.beginPath();
@@ -184,7 +188,10 @@ var WheelComponent = function WheelComponent(_ref) {
   };
 
   var drawWheel = function drawWheel() {
+
+    
     var ctx = canvasContext;
+    
     var lastAngle = angleCurrent;
     var len = segments.length;
     var PI2 = Math.PI * 2;
@@ -193,17 +200,17 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
     ctx.font = '1em ' + fontFamily;
+    
 
     for (var i = 1; i <= len; i++) {
       var angle = PI2 * (i / len) + angleCurrent;
       drawSegment(i - 1, lastAngle, angle);
       lastAngle = angle;
     }
-
     ctx.beginPath();
     ctx.arc(centerX, centerY, 50, 0, PI2, false);
     ctx.closePath();
-    ctx.fillStyle = primaryColor;
+    // ctx.fillStyle = primaryColor;
     ctx.lineWidth = 10;
     ctx.strokeStyle = contrastColor;
     ctx.fill();
@@ -218,6 +225,7 @@ var WheelComponent = function WheelComponent(_ref) {
     // ctx.lineWidth = 10;
     // ctx.strokeStyle = primaryColor;
     // ctx.stroke();
+    
   };
 
   var drawNeedle = function drawNeedle() {
@@ -240,6 +248,10 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.font = 'bold 1.5em ' + fontFamily;
     currentSegment = segments[i];
     isStarted && ctx.fillText(currentSegment, centerX + 10, centerY + size + 50);
+    var img = new Image()
+    img.src = "roundlogo.png"
+    // ctx.globalCompositeOperation='destination-over';
+    ctx.drawImage(img,centerX-50,centerY-50,100,100)
   };
 
   var clear = function clear() {

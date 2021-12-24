@@ -27,6 +27,9 @@ import { useTheme } from 'next-themes'
   const [entries, setEntries] = useState();
   const [shakeTime, setshakeTime] = useState();
   const [spinTime, setspinTime] = useState();
+  const [applausing, setApplausing] = useState("applause-01");
+  const [selectedFile, setSelectedFile] = useState();
+
 
   //   if (typeof window !== 'undefined') {
   //   //in your test1
@@ -72,6 +75,54 @@ import { useTheme } from 'next-themes'
   } else {
     console.log(`You are signed out`);
   }
+
+  const getApplause = (event) => {
+    setApplausing(event.target.value);
+    // console.log(shakeTime);
+  }
+
+  const getCSVFile = (event) =>{
+    const reader = new FileReader();
+    console.log("file",event.target.files[0])
+    // const body = new FormData();
+    // body.append("file", event.target.value);
+    reader.readAsText(event.target.files[0])
+
+    console.log("my file",reader)
+    reader.onload = function(e){
+      const mycsv = e.target.result
+    const headers = mycsv.slice(0,mycsv.indexOf('\n')).split(",");
+        const rows = mycsv.slice(mycsv.indexOf('\n')+1).split('\n');
+
+        const newArray = rows.map( row => {
+            const values = row.split(",");
+            const eachObject = headers.reduce((obj, header, i) => {
+                obj[header] = values[i];
+                obj["repeatation"] = 1
+                return obj;
+            }, {})
+            return eachObject;
+
+        })
+        console.log("sknsnsnxskc",newArray)
+        localStorage.setItem("csvdata",newArray)
+      
+      }
+    // const response = await fetch("/api/file", {
+    //   method: "POST",
+    //   body
+    // });
+
+  } 
+  useEffect(()=>{
+    // const applauseelem = window.document.getElementById("applause").value
+    console.log("my apllausing",applausing)
+    // setApplausing(applauseelem)
+    localStorage.setItem("Applause",applausing)
+    
+  },[applausing])
+
+
   return (
     <div className="container container-sm container-md mb-5">
       <Head>
@@ -183,6 +234,27 @@ import { useTheme } from 'next-themes'
                 />
               </div>
               <div className="col-1">{shakeTime}</div>
+              <div className="row my-4">
+              <div className="col-3 mt-1">
+                <strong>SELECT MUSIC</strong>
+              </div>
+              <div className="col-8">
+              <select onChange={getApplause} style={{width:"55%",height:"110%",borderRadius:"5px",border:"2px solid #4f56a5"}} name="applause" id="applause">
+  <option value="applause-01">Applause 1</option>
+  <option value="applause-02">Applause 2</option>
+  <option value="applause-03">Applause 3</option>
+</select>
+              </div>
+              </div>
+
+              <div className="row my-4">
+              <div className="col-3 mt-1">
+                <strong>SELECT FILE</strong>
+              </div>
+              <div className="col-8">
+              <input type="file" onChange={getCSVFile} accept=".csv" />
+              </div>
+              </div>
             </div>
           </div>
         </div>

@@ -284,6 +284,15 @@ a {
    #ForFullScreen{
     margin-left: -50px;
    }
+
+   .centerWheelImg{
+    position:absolute;
+    left:79%;
+    top:65%;
+    z-index:9999;
+    border-radius:200px
+  }
+  
 }
 
 /* 
@@ -310,3 +319,4 @@ a {
   max-width: 100% !important;
   /* margin-left: 5%; */
 }
+ 
