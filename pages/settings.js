@@ -81,6 +81,18 @@ import { useTheme } from 'next-themes'
     // console.log(shakeTime);
   }
 
+  const getIMG = (event) =>{
+    const reader = new FileReader();
+    console.log("img",event.target.files[0])
+    reader.readAsDataURL(event.target.files[0])
+
+    reader.addEventListener("load",()=>{
+    console.log("result",reader.result)
+      localStorage.setItem("CenterLogo",reader.result)
+    })
+
+  }
+
   const getCSVFile = (event) =>{
     const reader = new FileReader();
     console.log("file",event.target.files[0])
@@ -105,7 +117,7 @@ import { useTheme } from 'next-themes'
 
         })
         console.log("sknsnsnxskc",newArray)
-        localStorage.setItem("csvdata",newArray)
+        localStorage.setItem("csvdata",JSON.stringify(newArray))
       
       }
     // const response = await fetch("/api/file", {
@@ -122,6 +134,10 @@ import { useTheme } from 'next-themes'
     
   },[applausing])
 
+  // useEffect(() => {
+  //   const data = localStorage.getItem("csvdata")
+  //   console.log("data csv",JSON.parse(data));
+  // }, []);
 
   return (
     <div className="container container-sm container-md mb-5">
@@ -253,6 +269,14 @@ import { useTheme } from 'next-themes'
               </div>
               <div className="col-8">
               <input type="file" onChange={getCSVFile} accept=".csv" />
+              </div>
+              </div>
+              <div className="row my-4">
+              <div className="col-3 mt-1">
+                <strong>SELECT IMAGE</strong>
+              </div>
+              <div className="col-8">
+              <input type="file" onChange={getIMG} />
               </div>
               </div>
             </div>

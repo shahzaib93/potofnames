@@ -5,6 +5,8 @@ var WheelComponent = function WheelComponent(_ref) {
   // console.log(_ref.segments);
   const {shouldWeSpin, setShouldWeSpin} = _ref;
   const [sound, setSound] = React.useState(false);
+  const [LogoImg, setLogoImg] = React.useState("");
+
 {/* <ReactHowler src="/wheel-spin.mp3" playing={true}/> */}
 
 {/* <img id="myImage" src={imge}/> */}
@@ -229,6 +231,8 @@ var WheelComponent = function WheelComponent(_ref) {
   };
 
   var drawNeedle = function drawNeedle() {
+
+    setLogoImg(localStorage.getItem("CenterLogo"))
     var ctx = canvasContext;
     // ctx.lineWidth = 1;
     // ctx.strokeStyle = contrastColor;
@@ -249,7 +253,12 @@ var WheelComponent = function WheelComponent(_ref) {
     currentSegment = segments[i];
     isStarted && ctx.fillText(currentSegment, centerX + 10, centerY + size + 50);
     var img = new Image()
-    img.src = "roundlogo.png"
+    console.log("aaaa",(LogoImg))
+    if(LogoImg!="" && LogoImg != null){
+      img.src = LogoImg
+    }
+    else{
+    img.src = "roundlogo.png"}
     // ctx.globalCompositeOperation='destination-over';
     ctx.drawImage(img,centerX-50,centerY-50,100,100)
   };
