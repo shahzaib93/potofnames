@@ -253,6 +253,8 @@ var WheelComponent = function WheelComponent(_ref) {
     currentSegment = segments[i];
     isStarted && ctx.fillText(currentSegment, centerX + 10, centerY + size + 50);
     var img = new Image()
+    var arrow = new Image()
+    arrow.src = "arrow.png"
     console.log("aaaa",(LogoImg))
     if(LogoImg!="" && LogoImg != null){
       img.src = LogoImg
@@ -260,6 +262,7 @@ var WheelComponent = function WheelComponent(_ref) {
     else{
     img.src = "roundlogo.png"}
     // ctx.globalCompositeOperation='destination-over';
+    ctx.drawImage(arrow,225,-55,150,150)
     ctx.drawImage(img,centerX-50,centerY-50,100,100)
   };
 

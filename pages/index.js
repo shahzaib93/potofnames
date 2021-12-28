@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 import ReactHowler from "react-howler";
 // import jwt from 'jsonwebtoken'
 import React, { useEffect, useState } from "react";
-import { useSession, signIn, signOut } from "next-auth/react";
+// import { useSession, signIn, signOut } from "next-auth/react";
 import WheelComponent from "../plugins/amazing-spin-wheel-game";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSession, signIn, signOut } from "next-auth/react";
 import {
   faFacebookF,
   faInstagramSquare,
@@ -22,7 +23,7 @@ import Modal from "react-modal";
 // http://localhost:3000/api/participants
 // https://potofnames.com/api/participants
 export const getStaticProps = async () => {
-  const res = await fetch("https://potofnames.com/api/participants");
+  const res = await fetch("http://localhost:3000/api/participants");
   const data = await res.json();
   return {
     props: { participants: data },
@@ -67,6 +68,8 @@ export default function Home({ participants }) {
   const [gameType, setGameType] = useState("wheel");
   const { sound, setSound } = useState(false);
   const [applausing, setApplausing] = useState("applause-01");
+  const { typeAuth, setTypeAuth } = useState("Login");
+
 
   const segCol = [];
   const tempParticipants = [
@@ -341,7 +344,7 @@ export default function Home({ participants }) {
     // console.log("total",webState.items.length);
     // if(webState.items.length + parseInt(more.value) < totalEntries){
     if (webState.items.length < totalEntries) {
-      const res = await fetch("https://potofnames.com/api/participants", {
+      const res = await fetch("http://localhost:3000/api/participants", {
         body: JSON.stringify({
           // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
 
@@ -376,7 +379,7 @@ export default function Home({ participants }) {
     const deletedVal = webState.items[index];
     console.log("Delete function data");
     console.log(deletedVal);
-    const res = await fetch("https://potofnames.com/api/participants", {
+    const res = await fetch("http://localhost:3000/api/participants", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -459,15 +462,28 @@ export default function Home({ participants }) {
                       LOGOUT
                     </button>
                   ) : (
+                    <div style={{display:"inherit"}}>
                     <button
                       hidden={enableFullScreen}
                       type="button"
                       className="px-4 nav-link btn btn-link"
                       data-bs-toggle="modal"
-                      data-bs-target="#loginModal"
+                      data-bs-target="#LoginModal"
+                      // onClick={router.push("/api/auth/signin")}
                     >
                       LOGIN
                     </button>
+                     {/* <button
+                     hidden={enableFullScreen}
+                     type="button"
+                     className="px-4 nav-link btn btn-link"
+                     data-bs-toggle="modal"
+                     data-bs-target="#SignupModal"
+                     // onClick={router.push("/api/auth/signin")}
+                   >
+                     SIGNUP
+                   </button> */}
+                   </div>
                   )}
 
                   {gameType == "pot" && (
@@ -784,11 +800,77 @@ export default function Home({ participants }) {
         </div>
         <div style={{ display: showdivs }} className="row">
           <div className="col-12">
-            <div
-              className="modal fade login-modal"
-              id="loginModal"
+                <div
+              className="modal fade modal"
+              id="SignupModal"
               tabIndex="-1"
-              aria-labelledby="loginModalLabel"
+              aria-labelledby="ModalLabel"
+              aria-hidden="true"
+            >
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="loginModalLabel">
+                      Signup to your account
+                    </h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <form method="POST" >
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputEmail1"
+                          className="form-label"
+                        >
+                          Email address
+                        </label>
+                        <input
+                          type="text"
+                          name="username"
+                          className="form-control"
+                          id="exampleInputEmail1"
+                          aria-describedby="emailHelp"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputPassword1"
+                          className="form-label"
+                        >
+                          Password
+                        </label>
+                        <input
+                          type="password"
+                          name="password"
+                          className="form-control"
+                          id="exampleInputPassword1"
+                        />
+                      </div>
+                      
+                      <div className="d-grid gap-2">
+                      <button
+                          type="submit"
+                          className="btn btn-primary btn-block"
+                        >
+                          Signup
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+                <div
+              className="modal fade modal"
+              id="LoginModal"
+              tabIndex="-1"
+              aria-labelledby="ModalLabel"
               aria-hidden="true"
             >
               <div className="modal-dialog">
@@ -835,6 +917,7 @@ export default function Home({ participants }) {
                           id="exampleInputPassword1"
                         />
                       </div>
+                      
                       <div className="d-grid gap-2">
                         <button
                           type="submit"
@@ -842,6 +925,7 @@ export default function Home({ participants }) {
                         >
                           Login
                         </button>
+                        
                         <button
                           className="btn btn-outline-secondary"
                           onClick={() => signIn()}
@@ -852,13 +936,12 @@ export default function Home({ participants }) {
                       </div>
                     </form>
                   </div>
-                  {/* <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" className="btn btn-primary">Save changes</button>
-                  </div> */}
                 </div>
               </div>
             </div>
+              
+
+            
 
             <div
               className="modal fade login-modal"
