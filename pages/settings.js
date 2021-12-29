@@ -120,12 +120,27 @@ import { useTheme } from 'next-themes'
         localStorage.setItem("csvdata",JSON.stringify(newArray))
       
       }
-    // const response = await fetch("/api/file", {
-    //   method: "POST",
-    //   body
-    // });
-
   } 
+
+  const  SelectedImage = async(e) =>{
+    // e.target.style.backgroundColor = "gray"
+    await localStorage.setItem("ArrowImage",e.target.alt)
+  
+  }
+
+  const getArrowImg = (event) =>{
+    const reader = new FileReader();
+    console.log("img",event.target.files[0])
+    reader.readAsDataURL(event.target.files[0])
+
+    reader.addEventListener("load",()=>{
+    console.log("result",reader.result)
+      localStorage.setItem("ArrowImage",reader.result)
+    })
+
+  }
+
+
   useEffect(()=>{
     // const applauseelem = window.document.getElementById("applause").value
     console.log("my apllausing",applausing)
@@ -261,28 +276,79 @@ import { useTheme } from 'next-themes'
   <option value="applause-03">Applause 3</option>
 </select>
               </div>
+              
               </div>
+              <div className="row justify-content-start" style={{marginLeft:"3%"}}>
+                      <div className="col-8">
+                        <div className="row">
+                          <div className="col-12 text-center">
+                            <div className="btn-group " role="group" aria-label="Basic example">
+                              <button type="button" className="btn btn-primary" onClick={(e)=> setApplausing("applause-01")}>ON</button>
+                              <button type="button" className="btn btn-secondary" onClick={(e)=> setApplausing("OFF")}>OFF</button>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                        </div>
 
               <div className="row my-4">
-              <div className="col-3 mt-1">
-                <strong>SELECT FILE</strong>
+              <div className="col-4 mt-1">
+                <strong>SELECT CSV FILE</strong>
               </div>
               <div className="col-8">
               <input type="file" onChange={getCSVFile} accept=".csv" />
               </div>
               </div>
               <div className="row my-4">
-              <div className="col-3 mt-1">
-                <strong>SELECT IMAGE</strong>
+              <div className="col-4 mt-1">
+                <strong>SELECT WHEEL LOGO</strong>
               </div>
               <div className="col-8">
               <input type="file" onChange={getIMG} />
               </div>
               </div>
             </div>
+            <div className="row my-4">
+              <div className="col-4 mt-1">
+                <strong>SELECT ARROW IMAGE</strong>
+              </div>
+              <div className="col-8">
+              <input onChange={getArrowImg} type="file" />
+              </div>
+              <div  className="row my-4 Arrow-Images">
+                
+              <img onClick={(e)=>SelectedImage(e)} alt="Arrow1.png" src="Arrow1.png" style={{width:"20%" , height:"100%"}} />
+              
+              
+              <img onClick={(e)=>SelectedImage(e)} alt="Arrow2.png" src="Arrow2.png" style={{width:"20%" , height:"100%"}} />
+              
+              
+              <img onClick={(e)=>SelectedImage(e)} alt="Arrow3.png" src="Arrow3.png" style={{width:"20%" , height:"100%"}} />
+              
+              </div>
+              
+              </div>
+              <div className="row my-4">
+              <div className="col-4 mt-1">
+                <strong>SHOW OR HIDE TOTAL PARTICIPANTS</strong>
+              </div>
+              <div className="col-8">
+              
+                            <div className="btn-group " role="group" aria-label="Basic example">
+                              <button type="button" className="btn btn-primary" onClick={(e)=> localStorage.setItem("ShowParticipants",true)}>SHOW</button>
+                              <button type="button" className="btn btn-secondary" onClick={(e)=> localStorage.setItem("ShowParticipants",false)}>HIDE</button>
+                            </div>
+                          </div>
+            
+              </div>
           </div>
+          
         </div>
-        <div></div>
+        {/* <div></div> */}
+       
+
+
+
         <div className="row my-5">
           <div className="col-8 mx-auto">
             <div className="fw-bold fs-5 text-center">

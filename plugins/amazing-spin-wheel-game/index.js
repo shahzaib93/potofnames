@@ -6,6 +6,8 @@ var WheelComponent = function WheelComponent(_ref) {
   const {shouldWeSpin, setShouldWeSpin} = _ref;
   const [sound, setSound] = React.useState(false);
   const [LogoImg, setLogoImg] = React.useState("");
+  const [ArrowImg, setArrowImg] = React.useState("");
+
 
 {/* <ReactHowler src="/wheel-spin.mp3" playing={true}/> */}
 
@@ -254,15 +256,18 @@ var WheelComponent = function WheelComponent(_ref) {
     isStarted && ctx.fillText(currentSegment, centerX + 10, centerY + size + 50);
     var img = new Image()
     var arrow = new Image()
-    arrow.src = "arrow.png"
-    console.log("aaaa",(LogoImg))
+    if(localStorage.getItem("ArrowImage")!=undefined){
+      arrow.src = localStorage.getItem("ArrowImage")
+    }
+    else{
+    arrow.src = "arrow.png"}
     if(LogoImg!="" && LogoImg != null){
       img.src = LogoImg
     }
     else{
     img.src = "roundlogo.png"}
     // ctx.globalCompositeOperation='destination-over';
-    ctx.drawImage(arrow,225,-55,150,150)
+    ctx.drawImage(arrow,232,-55,150,160)
     ctx.drawImage(img,centerX-50,centerY-50,100,100)
   };
 

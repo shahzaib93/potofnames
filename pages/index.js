@@ -31,6 +31,8 @@ export const getStaticProps = async () => {
 };
 
 export default function Home({ participants }) {
+  
+  
   // const audio = new Audio("/mixkit-clapping-male-crowd-439.wav")
   const router = useRouter();
   console.log("location", router.pathname);
@@ -66,22 +68,14 @@ export default function Home({ participants }) {
   const [spinTime, setSpinTime] = useState(5);
   const [shakeTime, setShakeTime] = useState(5);
   const [gameType, setGameType] = useState("wheel");
-  const { sound, setSound } = useState(false);
+  const [showParticipants, setShowParticipants ] = useState(false);
   const [applausing, setApplausing] = useState("applause-01");
   const { typeAuth, setTypeAuth } = useState("Login");
 
 
   const segCol = [];
-  const tempParticipants = [
-    { name: "Asif", repeatation: 1 },
-    { name: "Jami", repeatation: 1 },
-    { name: "Zahid", repeatation: 1 },
-    { name: "Khalid", repeatation: 1 },
-    { name: "Kayani", repeatation: 1 },
-    { name: "Mahir", repeatation: 1 },
-    { name: "Shehzad", repeatation: 1 },
-    { name: "Aslam", repeatation: 1 },
-  ];
+  const tempParticipants =[]
+  
   var css = `
     canvas, .threeDRotate{
       transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
@@ -110,6 +104,8 @@ export default function Home({ participants }) {
       items: [...array1],
       seg: [...array2],
     });
+
+    localStorage.setItem("ALLPARTICIPANTS",JSON.stringify(webState.items))
     setAnimatenames("shuffleAnimation");
     // const animate = window.document.getElementsByClassName("animateIt")
     // console.log("animate",animate)
@@ -127,20 +123,6 @@ export default function Home({ participants }) {
 
   
 
-  const myarr = [
-    { one: 1 },
-    { two: 2 },
-    { three: 3 },
-    { four: 4 },
-    { five: 5 },
-  ];
-  console.log("real arr", myarr);
-  // shuffleArray(myarr)
-  // console.log("modified arr",myarr)
-  console.log("ALL ITEMS", webState.items);
-  var itemsForPot = [...webState.items];
-  // const showParticipants = 18
-  console.log(itemsForPot);
 
   if (session) {
     console.log(`You're signed in`);
@@ -172,16 +154,19 @@ export default function Home({ participants }) {
   };
 
   const settheShouldWeSpin = async () => {
-    if (localStorage.getItem("SpinTime") != undefined) {
+    console.log("ssslocal",localStorage.getItem("SpinTime")!="undefined")
+    if (localStorage.getItem("SpinTime")!="undefined" ) {
+    console.log("ssSpinTime", parseInt(localStorage.getItem("SpinTime")));
+
       await setSpinTime(parseInt(localStorage.getItem("SpinTime")));
     }
     if (localStorage.getItem("Applause") != undefined) {
       await setApplausing(localStorage.getItem("Applause"));
     }
     console.log("applausinggg", applausing);
-    console.log("SpinTime", typeof spinTime);
     setShouldWeSpin(true);
     setsoundplay(true);
+    console.log("sssssssreturnedspin",spinTime)
   };
 
   const getSpinTime = (event) => {
@@ -221,6 +206,35 @@ export default function Home({ participants }) {
     }, shakeTime * 1000);
   };
   useEffect(() => {
+    localStorage.setItem("ALLPARTICICPANTS",JSON.stringify( [
+      { name: "Asif", repeatation: 1 },
+      { name: "Jami", repeatation: 1 },
+      { name: "Zahid", repeatation: 1 },
+      { name: "Khalid", repeatation: 1 },
+      { name: "Kayani", repeatation: 1 },
+      { name: "Mahir", repeatation: 1 },
+      { name: "Shehzad", repeatation: 1 },
+      { name: "Aslam", repeatation: 1 },
+    ]))
+
+
+    if(localStorage.getItem("ALLPARTICIPANTS") != undefined){
+      tempParticipants = JSON.parse(localStorage.getItem("ALLPARTICIPANTS"))
+    }
+    else{
+    tempParticipants = [
+      { name: "Asif", repeatation: 1 },
+      { name: "Jami", repeatation: 1 },
+      { name: "Zahid", repeatation: 1 },
+      { name: "Khalid", repeatation: 1 },
+      { name: "Kayani", repeatation: 1 },
+      { name: "Mahir", repeatation: 1 },
+      { name: "Shehzad", repeatation: 1 },
+      { name: "Aslam", repeatation: 1 },
+    ];
+    }
+
+
     if (localStorage.getItem("Entries") != undefined) {
       setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
@@ -246,11 +260,14 @@ export default function Home({ participants }) {
     // setWebState(webState)
     console.log("webstate items length", webState.seg);
     console.log("Coming from useEffects");
+    console.log("apppppplause",localStorage.getItem("Applause"))
     if (localStorage.getItem("Applause") != undefined) {
       setApplausing(localStorage.getItem("Applause"));
     }
     console.log("My applausing", applausing);
   }, [webState, gameType]);
+
+
 
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
@@ -261,6 +278,11 @@ export default function Home({ participants }) {
   }
 
   useEffect(() => {
+    console.log("pppppp",localStorage.getItem("ShowParticipants"))
+    if(localStorage.getItem("ShowParticipants")=="true"){
+      setShowParticipants(true)
+    }
+    console.log("aaaa",showParticipants)
     const segarr=[]
     const newdata = []
     const data = JSON.parse(localStorage.getItem("csvdata"))
@@ -287,8 +309,11 @@ export default function Home({ participants }) {
   const onFinished = (winner) => {
     // const elem =  window.document.getElementById("FULLSCREEN")
     // window.exitFullscreen()
-    setenableFullScreen(!enableFullScreen)
+    if(enableFullScreen){
     closefullScreen();
+    setenableFullScreen(!enableFullScreen)
+
+    }
     // setenableFullScreen(!enableFullScreen)
     setthewinner(winner);
     setsoundplay(true);
@@ -301,6 +326,10 @@ export default function Home({ participants }) {
     setshowdivs("none");
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
     }
     // elem2.requestFullscreen()
   };
@@ -308,6 +337,7 @@ export default function Home({ participants }) {
   const closefullScreen = (elem) => {
     if (!enableFullScreen) {
       document.webkitExitFullscreen();
+      // document.exitFullscreen();
       setshowdivs("block");
     }
   };
@@ -420,7 +450,6 @@ export default function Home({ participants }) {
   
   // },[]);
 
-  
 
 
   return (
@@ -499,7 +528,7 @@ export default function Home({ participants }) {
                   {gameType == "wheel" && (
                     <button
                       hidden={!enableFullScreen}
-                      onClick={() => settheShouldWeSpin(true)}
+                      onClick={() => settheShouldWeSpin()}
                       type="button"
                       className="active px-4 nav-link btn btn-link"
                     >
@@ -533,7 +562,9 @@ export default function Home({ participants }) {
               gravity={0.3}
             />
           ) : null}
+          {applausing=="OFF"?null:
           <ReactHowler src={`/${applausing}.mp3`} playing={modalIsOpen} />
+          }
 
           <Modal
             ariaHideApp={false}
@@ -558,6 +589,12 @@ export default function Home({ participants }) {
           </Modal>
 
           <div className="row justify-content-center">
+                {console.log("pap",showParticipants)}
+            <div hidden={!showParticipants} style={{marginLeft:"5%",fontSize:"25px"}} className="row justify-content-center">
+              
+              <h3 style={{border:"2px solid #4f56a5",width:"fit-content",fontFamily:"auto",borderRadius:"8px"}}>Total Participants = {webState.items.length}  </h3>
+              
+              </div>
             <div className="col-12 col-md-6">
               {webState.seg.length > 0 && gameType == "wheel" && (
                 <div>
@@ -565,7 +602,6 @@ export default function Home({ participants }) {
                     src="/wheel_frame.png"
                     className="position-absolute wheel_frame threeDRotate"
                   />
-                  {/* <img src="logo.jpg" width="125" height='125' className='centerWheelImg' /> */}
                   <WheelComponent
                     segments={webState.seg}
                     segColors={segCol}
@@ -584,8 +620,8 @@ export default function Home({ participants }) {
                     // 10000 for 80 seconds
                     // 22500 for 3 minutes
 
-                    downDuration={parseInt(spinTime) * 125}
-                    spinSeconds={parseInt(spinTime)}
+                    downDuration={spinTime * 125}
+                    spinSeconds={spinTime}
                     shouldWeSpin={shouldWeSpin}
                     setShouldWeSpin={setShouldWeSpin}
                     fontFamily="Arial"
@@ -594,7 +630,6 @@ export default function Home({ participants }) {
                 </div>
               )}
 
-              {console.log("participants", itemsForPot.length)}
               {webState.seg.length > 0 && gameType == "pot" && (
                 <div className={`pot-group ${shakeAnimateClass}`}>
                   <img
@@ -719,7 +754,7 @@ export default function Home({ participants }) {
                 <>
                   <div
                     id="spinBtn"
-                    onClick={() => settheShouldWeSpin(true)}
+                    onClick={() => settheShouldWeSpin()}
                     className="my-2 text-purple fs-4 fw-bold"
                   >
                     Spin
@@ -782,7 +817,7 @@ export default function Home({ participants }) {
                       <div className="card-body">
                         <div key={item._id}>
                           <h5 className={`card-title ${animatenames}`}>
-                            {item.name} ({item.repeatation})
+                            ({index+1} {item.name}
                           </h5>
                         </div>
                       </div>
@@ -987,7 +1022,7 @@ export default function Home({ participants }) {
                             </div>
                           </div>
                         </div>
-                        <div className="row my-4">
+                        {/* <div className="row my-4">
                           <div className="col-3">
                             <strong># OF ENTRIES</strong>
                           </div>
@@ -1003,13 +1038,7 @@ export default function Home({ participants }) {
                           </div>
                           <div className="col-1">{totalEntries}</div>
                         </div>
-                        {/* <div className="row my-4">
-                          <div className="col-3"><strong>WHEEL SPEED</strong></div>
-                          <div className="col-8">
-                            <input type="range" min="1" max="5" className="range" onChange={getWheelSpeed} />
-                          </div>
-                          <div className="col-1">{wheelSpeed}</div>
-                        </div> */}
+                  
                         <div className="row my-4">
                           <div className="col-3">
                             <strong>SPIN TIME</strong>
@@ -1041,9 +1070,9 @@ export default function Home({ participants }) {
                             />
                           </div>
                           <div className="col-1">{shakeTime}</div>
-                        </div>
+                        </div>*/}
                       </div>
-                    </div>
+                    </div> 
                   </div>
                   <div className="modal-footer">
                     <button
