@@ -32,29 +32,6 @@ const customStyles = {
 // }
 
 
-const signupmodal = () => {
-  <Modal
-  ariaHideApp={false}
-  preventScroll={true}
-  style={customStyles}
-  isOpen={true}
-  // onRequestClose={closeModal}
->
-  <div style={{ textAlign: "center" }}>
-    <h1 style={{ textAlign: "center" }}>Winner</h1>
-    <h3
-      style={{
-        textAlign: "center",
-        marginBottom: "5%",
-        fontFamily: "auto",
-      }}
-    >
-      {/* {thewinner} */}
-    </h3>
-    <button >close</button>
-  </div>
-</Modal>
-}
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -72,74 +49,74 @@ export default NextAuth({
     }),
 
     
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      name: "Credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        email: { label: "Email", type: "text", placeholder: "email@.com" },
-        // email:{lable:"Email" , type="email" ,placeholder:"Email"},
-        password: { label: "Password", type: "password" },
-      },
+    // CredentialsProvider({
+    //   // The name to display on the sign in form (e.g. 'Sign in with...')
+    //   name: "Credentials",
+    //   // The credentials is used to generate a suitable form on the sign in page.
+    //   // You can specify whatever fields you are expecting to be submitted.
+    //   // e.g. domain, username, password, 2FA token, etc.
+    //   // You can pass any HTML attribute to the <input> tag through the object.
+    //   credentials: {
+    //     email: { label: "Email", type: "text", placeholder: "email@.com" },
+    //     // email:{lable:"Email" , type="email" ,placeholder:"Email"},
+    //     password: { label: "Password", type: "password" },
+    //   },
 
-      async authorize(credentials, req) {
+    //   async authorize(credentials, req) {
 
-        //FOR POST
-        // const res = await fetch("http://localhost:3000/api/users", {
-        //   body: JSON.stringify({
-        //     email: "Wajahat@gmail.com",
-        //     password: "123",
-        //   }),
-        //   headers: { "Content-Type": "application/json" },
-        //   method: "POST",
-        // });
+    //     //FOR POST
+    //     // const res = await fetch("http://localhost:3000/api/users", {
+    //     //   body: JSON.stringify({
+    //     //     email: "Wajahat@gmail.com",
+    //     //     password: "123",
+    //     //   }),
+    //     //   headers: { "Content-Type": "application/json" },
+    //     //   method: "POST",
+    //     // });
 
         
-        // Add logic here to look up the user from the credentials supplied
-        console.log("request", req);
-        console.log("credentials", credentials);
-          var user;
-          await fetch("http://localhost:3000/api/users").then((response)=>response.json()).then((AllUsers)=>{
-        console.log("ALLLLL",AllUsers)
-        for(var i =0 ; i<AllUsers.length;i++){
-              if (AllUsers[i].email  == credentials.email){
-                if(AllUsers[i].password == credentials.password){
-                console.log("Successful")
-                user = AllUsers[i]
-                break      
-              }
-                else{
-                  console.log("enter correct password")
-                  break
-                }
-              }
-              else{
-                console.log("First Signup")
-                alert("SIGNUP FISRT")
-              }
-        }
-        // const newUser = await res.json();
-        // console.log("MYUSER", newUser);
-      })
+    //     // Add logic here to look up the user from the credentials supplied
+    //     console.log("request", req);
+    //     console.log("credentials", credentials);
+    //       var user;
+    //       await fetch("http://localhost:3000/api/users").then((response)=>response.json()).then((AllUsers)=>{
+    //     console.log("ALLLLL",AllUsers)
+    //     for(var i =0 ; i<AllUsers.length;i++){
+    //           if (AllUsers[i].email  == credentials.email){
+    //             if(AllUsers[i].password == credentials.password){
+    //             console.log("Successful")
+    //             user = AllUsers[i]
+    //             break      
+    //           }
+    //             else{
+    //               console.log("enter correct password")
+    //               break
+    //             }
+    //           }
+    //           else{
+    //             console.log("First Signup")
+    //             alert("SIGNUP FISRT")
+    //           }
+    //     }
+    //     // const newUser = await res.json();
+    //     // console.log("MYUSER", newUser);
+    //   })
 
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          console.log(user);
-          return user
-        } else {
-          console.log("Unsucessful");
-          // <signupmodal/>
-          // If you return null or false then the credentials will be rejected
-          // return null;
-          // You can also Reject this callback with an Error or with a URL:
-          // throw new Error('error message') // Redirect to error page
-          // throw '/path/to/redirect'        // Redirect to a URL
-        }
-      },
-    }),
+    //     if (user) {
+    //       // Any object returned will be saved in `user` property of the JWT
+    //       console.log(user);
+    //       return user
+    //     } else {
+    //       console.log("Unsucessful");
+    //       // <signupmodal/>
+    //       // If you return null or false then the credentials will be rejected
+    //       // return null;
+    //       // You can also Reject this callback with an Error or with a URL:
+    //       // throw new Error('error message') // Redirect to error page
+    //       // throw '/path/to/redirect'        // Redirect to a URL
+    //     }
+    //   },
+    // }),
     // ...add more providers here
   ],
   secret: "H8fm6xRsSw57Usi8pWW2R7FTLPJNZm66PftKRizrMw0=",

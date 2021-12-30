@@ -341,6 +341,29 @@ import { useTheme } from 'next-themes'
                           </div>
             
               </div>
+              <div className="row my-4">
+              <div className="col-4 mt-1">
+                <strong>SHOW OR HIDE CONFETTI</strong>
+              </div>
+              <div className="col-8">
+              <div className="btn-group " role="group" aria-label="Basic example">
+                              <button type="button" className="btn btn-primary" onClick={(e)=> localStorage.setItem("ShowConfetti",true)}>SHOW</button>
+                              <button type="button" className="btn btn-secondary" onClick={(e)=> localStorage.setItem("ShowConfetti",false)}>HIDE</button>
+                            </div>
+              </div>
+              </div>
+
+              <div className="row my-4">
+              <div className="col-4 mt-1">
+                <strong>SHOW OR HIDE Winner MODAL</strong>
+              </div>
+              <div className="col-8">
+              <div className="btn-group " role="group" aria-label="Basic example">
+                              <button type="button" className="btn btn-primary" onClick={(e)=> localStorage.setItem("ShowWinnerModalSettings",true)}>SHOW</button>
+                              <button type="button" className="btn btn-secondary" onClick={(e)=> localStorage.setItem("ShowWinnerModalSettings",false)}>HIDE</button>
+                            </div>
+              </div>
+              </div>
           </div>
           
         </div>

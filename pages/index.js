@@ -31,15 +31,13 @@ export const getStaticProps = async () => {
 };
 
 export default function Home({ participants }) {
-  
-  
   // const audio = new Audio("/mixkit-clapping-male-crowd-439.wav")
   const router = useRouter();
   console.log("location", router.pathname);
   const [modalIsOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const [webState, setWebState] = useState({ items: [], seg: [] });
-  const [showWinnerModal, setshowWinnerModal] = useState(false);
+  // const [showWinnerModal, setshowWinnerModal] = useState(false);
   const [shouldWeSpin, setShouldWeSpin] = useState(false);
   const [soundplay, setsoundplay] = useState(false);
   const customStyles = {
@@ -68,14 +66,17 @@ export default function Home({ participants }) {
   const [spinTime, setSpinTime] = useState(5);
   const [shakeTime, setShakeTime] = useState(5);
   const [gameType, setGameType] = useState("wheel");
-  const [showParticipants, setShowParticipants ] = useState(false);
+  const [showParticipants, setShowParticipants] = useState(false);
   const [applausing, setApplausing] = useState("applause-01");
-  const { typeAuth, setTypeAuth } = useState("Login");
+  const [typeAuth, setTypeAuth] = useState("Login");
+  const [signupdata, setsignupdata] = useState("");
+  const [showConfetti, setshowConfetti] = useState(true);
+  const [showWinnerModalSettings, setshowWinnerModalSettings] = useState(true);
 
 
   const segCol = [];
-  const tempParticipants =[]
-  
+  const tempParticipants = [];
+
   var css = `
     canvas, .threeDRotate{
       transform: rotate3d(0.5, -0.866, 0, ${threeDMode}deg);
@@ -105,24 +106,10 @@ export default function Home({ participants }) {
       seg: [...array2],
     });
 
-    localStorage.setItem("ALLPARTICIPANTS",JSON.stringify(webState.items))
+    localStorage.setItem("ALLPARTICIPANTS", JSON.stringify(webState.items));
     setAnimatenames("shuffleAnimation");
-    // const animate = window.document.getElementsByClassName("animateIt")
-    // console.log("animate",animate)
-    // for(var i=0;i<animate.length-1;i++){
-    // console.log("animating",animate[i])
-
-    //   animate[i].className = "shuffleAnimation"
-
-    // }
     setInterval(() => setAnimatenames(""), 1000);
-
-    // setWebState()
   }
-
-
-  
-
 
   if (session) {
     console.log(`You're signed in`);
@@ -130,15 +117,6 @@ export default function Home({ participants }) {
   } else {
     console.log(`You are signed out`);
   }
-  const getEntriesValue = (event) => {
-    setTotalEntries(event.target.value);
-    console.log(totalEntries);
-  };
-  // const getWheelSpeed = (event) => {
-  //   setWheelSpeed(event.target.value);
-  //   console.log(wheelSpeed);
-  // }
-
   function openModal() {
     setsoundplay(false);
     setIsOpen(true);
@@ -154,9 +132,9 @@ export default function Home({ participants }) {
   };
 
   const settheShouldWeSpin = async () => {
-    console.log("ssslocal",localStorage.getItem("SpinTime")!="undefined")
-    if (localStorage.getItem("SpinTime")!="undefined" ) {
-    console.log("ssSpinTime", parseInt(localStorage.getItem("SpinTime")));
+    console.log("ssslocal", localStorage.getItem("SpinTime") != "undefined");
+    if (localStorage.getItem("SpinTime") != "undefined") {
+      console.log("ssSpinTime", parseInt(localStorage.getItem("SpinTime")));
 
       await setSpinTime(parseInt(localStorage.getItem("SpinTime")));
     }
@@ -166,21 +144,7 @@ export default function Home({ participants }) {
     console.log("applausinggg", applausing);
     setShouldWeSpin(true);
     setsoundplay(true);
-    console.log("sssssssreturnedspin",spinTime)
-  };
-
-  const getSpinTime = (event) => {
-    // if(localStorage.getItem("SpinTime") != undefined){
-    //   setSpinTime(parseInt(localStorage.getItem("SpinTime")))}
-    // setSpinTime(event.target.value);
-    // console.log(spinTime * 125);
-    // console.log(event.target.value * 125);
-  };
-
-  const getShakeTime = (event) => {
-    // setShakeTime(event.target.value);
-    // console.log(`shake Time ${shakeTime * 10}`);
-    // console.log(event.target.value);
+    console.log("sssssssreturnedspin", spinTime);
   };
 
   const togglePotWheel = (event, value) => {
@@ -206,34 +170,43 @@ export default function Home({ participants }) {
     }, shakeTime * 1000);
   };
   useEffect(() => {
-    localStorage.setItem("ALLPARTICICPANTS",JSON.stringify( [
-      { name: "Asif", repeatation: 1 },
-      { name: "Jami", repeatation: 1 },
-      { name: "Zahid", repeatation: 1 },
-      { name: "Khalid", repeatation: 1 },
-      { name: "Kayani", repeatation: 1 },
-      { name: "Mahir", repeatation: 1 },
-      { name: "Shehzad", repeatation: 1 },
-      { name: "Aslam", repeatation: 1 },
-    ]))
+    console.log("MMMMMMM",localStorage.getItem("ShowWinnerModalSettings"))
 
-
-    if(localStorage.getItem("ALLPARTICIPANTS") != undefined){
-      tempParticipants = JSON.parse(localStorage.getItem("ALLPARTICIPANTS"))
-    }
-    else{
-    tempParticipants = [
-      { name: "Asif", repeatation: 1 },
-      { name: "Jami", repeatation: 1 },
-      { name: "Zahid", repeatation: 1 },
-      { name: "Khalid", repeatation: 1 },
-      { name: "Kayani", repeatation: 1 },
-      { name: "Mahir", repeatation: 1 },
-      { name: "Shehzad", repeatation: 1 },
-      { name: "Aslam", repeatation: 1 },
-    ];
+    if (localStorage.getItem("ShowWinnerModalSettings") != undefined && localStorage.getItem("ShowWinnerModalSettings") == "false" ) {
+      setshowWinnerModalSettings(false);
     }
 
+    if (localStorage.getItem("ShowConfetti") != undefined && localStorage.getItem("ShowConfetti") == "false" ) {
+      setshowConfetti(false);
+    }
+    localStorage.setItem(
+      "ALLPARTICICPANTS",
+      JSON.stringify([
+        { name: "Asif", repeatation: 1 },
+        { name: "Jami", repeatation: 1 },
+        { name: "Zahid", repeatation: 1 },
+        { name: "Khalid", repeatation: 1 },
+        { name: "Kayani", repeatation: 1 },
+        { name: "Mahir", repeatation: 1 },
+        { name: "Shehzad", repeatation: 1 },
+        { name: "Aslam", repeatation: 1 },
+      ])
+    );
+
+    if (localStorage.getItem("ALLPARTICIPANTS") != undefined) {
+      tempParticipants = JSON.parse(localStorage.getItem("ALLPARTICIPANTS"));
+    } else {
+      tempParticipants = [
+        { name: "Asif", repeatation: 1 },
+        { name: "Jami", repeatation: 1 },
+        { name: "Zahid", repeatation: 1 },
+        { name: "Khalid", repeatation: 1 },
+        { name: "Kayani", repeatation: 1 },
+        { name: "Mahir", repeatation: 1 },
+        { name: "Shehzad", repeatation: 1 },
+        { name: "Aslam", repeatation: 1 },
+      ];
+    }
 
     if (localStorage.getItem("Entries") != undefined) {
       setTotalEntries(parseInt(localStorage.getItem("Entries")));
@@ -260,14 +233,12 @@ export default function Home({ participants }) {
     // setWebState(webState)
     console.log("webstate items length", webState.seg);
     console.log("Coming from useEffects");
-    console.log("apppppplause",localStorage.getItem("Applause"))
+    console.log("apppppplause", localStorage.getItem("Applause"));
     if (localStorage.getItem("Applause") != undefined) {
       setApplausing(localStorage.getItem("Applause"));
     }
     console.log("My applausing", applausing);
   }, [webState, gameType]);
-
-
 
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
@@ -278,41 +249,38 @@ export default function Home({ participants }) {
   }
 
   useEffect(() => {
-    console.log("pppppp",localStorage.getItem("ShowParticipants"))
-    if(localStorage.getItem("ShowParticipants")=="true"){
-      setShowParticipants(true)
+    console.log("pppppp", localStorage.getItem("ShowParticipants"));
+    if (localStorage.getItem("ShowParticipants") == "true") {
+      setShowParticipants(true);
     }
-    console.log("aaaa",showParticipants)
-    const segarr=[]
-    const newdata = []
-    const data = JSON.parse(localStorage.getItem("csvdata"))
-    if (data !=undefined){
-
+    console.log("aaaa", showParticipants);
+    const segarr = [];
+    const newdata = [];
+    const data = JSON.parse(localStorage.getItem("csvdata"));
+    if (data != undefined) {
       for (var i = 0; i < data.length; i++) {
-        newdata.push({name:Object.values(data[i])[0],repeatation:1})
+        newdata.push({ name: Object.values(data[i])[0], repeatation: 1 });
         segarr.push(Object.values(data[i])[0]);
         // console.log("sk",Object.values(data[i])[0])
       }
 
-      console.log("skdatacsv",newdata)
-      console.log("skwebstate",webState)}
+      console.log("skdatacsv", newdata);
+      console.log("skwebstate", webState);
+    }
 
     setWebState({
       items: [...webState.items, ...newdata],
       seg: [...webState.seg, ...segarr],
-    })
-    console.log("sknewwebstate",webState)
-    
-  
-  },[participants]);
+    });
+    console.log("sknewwebstate", webState);
+  }, [participants]);
 
   const onFinished = (winner) => {
     // const elem =  window.document.getElementById("FULLSCREEN")
     // window.exitFullscreen()
-    if(enableFullScreen){
-    closefullScreen();
-    setenableFullScreen(!enableFullScreen)
-
+    if (enableFullScreen) {
+      closefullScreen();
+      setenableFullScreen(!enableFullScreen);
     }
     // setenableFullScreen(!enableFullScreen)
     setthewinner(winner);
@@ -326,9 +294,11 @@ export default function Home({ participants }) {
     setshowdivs("none");
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) { /* Safari */
+    } else if (elem.webkitRequestFullscreen) {
+      /* Safari */
       elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE11 */
+    } else if (elem.msRequestFullscreen) {
+      /* IE11 */
       elem.msRequestFullscreen();
     }
     // elem2.requestFullscreen()
@@ -426,6 +396,64 @@ export default function Home({ participants }) {
     console.log(delParticipant);
   };
 
+  const LoginUser = async (event) => {
+    event.preventDefault();
+    var user;
+    await fetch("http://localhost:3000/api/users")
+      .then((response) => response.json())
+      .then((AllUsers) => {
+        for (var i = 0; i < AllUsers.length; i++) {
+          if (AllUsers[i].email == event.target.LoginEmail.value) {
+            if (AllUsers[i].password == event.target.LoginPass.value) {
+              user = AllUsers[1];
+              alert("Successfully Login");
+              break;
+            } else {
+              user = "wrong pass";
+              alert("Enter correct password");
+              break;
+            }
+          }
+        }
+        if (!user) {
+          alert("Please Signup first");
+        }
+      });
+  };
+
+  const SignupUser = async (event) => {
+    event.preventDefault();
+    var user;
+    await fetch("http://localhost:3000/api/users")
+      .then((response) => response.json())
+      .then((AllUsers) => {
+        for (var i = 0; i < AllUsers.length; i++) {
+          console.log("ALL", AllUsers[i]);
+          console.log("MY", event.target.SignupEmail.value);
+          if (AllUsers[i].email == event.target.SignupEmail.value) {
+            user = AllUsers[i];
+            console.log("IF");
+            alert("User Already exist. Please Login");
+            break;
+          }
+        }
+        if (!user) {
+          const res = fetch("http://localhost:3000/api/users", {
+            body: JSON.stringify({
+              name: event.target.SignupName.value,
+              email: event.target.SignupEmail.value,
+              password: event.target.SignupPass.value,
+            }),
+            headers: { "Content-Type": "application/json" },
+            method: "POST",
+          });
+          if (res) {
+            alert("Successfully signed in");
+          }
+        }
+      });
+  };
+
   // useEffect(() => {
   //   const segarr=[]
   //   const newdata = []
@@ -446,11 +474,39 @@ export default function Home({ participants }) {
   //   //   seg: [...webState.seg, ...segarr],
   //   // })
   //   console.log("sknewwebstate",webState)
-    
-  
+
   // },[]);
-
-
+  useEffect(() => {
+    var res;
+    var user = "NO";
+    if (session) {
+      fetch("http://localhost:3000/api/users")
+        .then((response) => response.json())
+        .then((AllUsers) => {
+          for (var i = 0; i < AllUsers.length; i++) {
+            if (AllUsers[i].email == session.user.email) {
+              console.log("IFSSSS");
+              user = AllUsers[i];
+              break;
+            }
+          }
+          if (user == "NO") {
+            fetch("http://localhost:3000/api/users", {
+              body: JSON.stringify({
+                name: session.user.name,
+                email: session.user.email,
+              }),
+              headers: { "Content-Type": "application/json" },
+              method: "POST",
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                res = data;
+              });
+          }
+        });
+    }
+  }, [session]);
 
   return (
     <div id="FULLSCREEN" className="container container-sm container-md mb-5">
@@ -491,28 +547,28 @@ export default function Home({ participants }) {
                       LOGOUT
                     </button>
                   ) : (
-                    <div style={{display:"inherit"}}>
-                    <button
-                      hidden={enableFullScreen}
-                      type="button"
-                      className="px-4 nav-link btn btn-link"
-                      data-bs-toggle="modal"
-                      data-bs-target="#LoginModal"
-                      // onClick={router.push("/api/auth/signin")}
-                    >
-                      LOGIN
-                    </button>
-                     {/* <button
-                     hidden={enableFullScreen}
-                     type="button"
-                     className="px-4 nav-link btn btn-link"
-                     data-bs-toggle="modal"
-                     data-bs-target="#SignupModal"
-                     // onClick={router.push("/api/auth/signin")}
-                   >
-                     SIGNUP
-                   </button> */}
-                   </div>
+                    <div style={{ display: "inherit" }}>
+                      <button
+                        hidden={enableFullScreen}
+                        type="button"
+                        className="px-4 nav-link btn btn-link"
+                        data-bs-toggle="modal"
+                        data-bs-target="#LoginModal"
+                        // onClick={router.push("/api/auth/signin")}
+                      >
+                        LOGIN
+                      </button>
+                      <button
+                        hidden={enableFullScreen}
+                        type="button"
+                        className="px-4 nav-link btn btn-link"
+                        data-bs-toggle="modal"
+                        data-bs-target="#SignupModal"
+                        // onClick={router.push("/api/auth/signin")}
+                      >
+                        SIGNUP
+                      </button>
+                    </div>
                   )}
 
                   {gameType == "pot" && (
@@ -560,18 +616,22 @@ export default function Home({ participants }) {
               height="2000%"
               numberOfPieces={1000}
               gravity={0.3}
+              hidden={!showConfetti}
+              
             />
           ) : null}
-          {applausing=="OFF"?null:
-          <ReactHowler src={`/${applausing}.mp3`} playing={modalIsOpen} />
-          }
-
+          {applausing == "OFF" ? null : (
+            <ReactHowler src={`/${applausing}.mp3`} playing={modalIsOpen} />
+          )}
+          {showWinnerModalSettings?
           <Modal
+
             ariaHideApp={false}
             preventScroll={true}
             style={customStyles}
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
+            
           >
             <div style={{ textAlign: "center" }}>
               <h1 style={{ textAlign: "center" }}>Winner</h1>
@@ -586,15 +646,26 @@ export default function Home({ participants }) {
               </h3>
               <button onClick={closeModal}>close</button>
             </div>
-          </Modal>
+          </Modal>:null}
 
           <div className="row justify-content-center">
-                {console.log("pap",showParticipants)}
-            <div hidden={!showParticipants} style={{marginLeft:"5%",fontSize:"25px"}} className="row justify-content-center">
-              
-              <h3 style={{border:"2px solid #4f56a5",width:"fit-content",fontFamily:"auto",borderRadius:"8px"}}>Total Participants = {webState.items.length}  </h3>
-              
-              </div>
+            {console.log("pap", showParticipants)}
+            <div
+              hidden={!showParticipants}
+              style={{ marginLeft: "5%", fontSize: "25px" }}
+              className="row justify-content-center"
+            >
+              <h3
+                style={{
+                  border: "2px solid #4f56a5",
+                  width: "fit-content",
+                  fontFamily: "auto",
+                  borderRadius: "8px",
+                }}
+              >
+                Total Participants = {webState.items.length}{" "}
+              </h3>
+            </div>
             <div className="col-12 col-md-6">
               {webState.seg.length > 0 && gameType == "wheel" && (
                 <div>
@@ -817,7 +888,7 @@ export default function Home({ participants }) {
                       <div className="card-body">
                         <div key={item._id}>
                           <h5 className={`card-title ${animatenames}`}>
-                            ({index+1} {item.name}
+                            ({index + 1} {item.name}
                           </h5>
                         </div>
                       </div>
@@ -835,17 +906,17 @@ export default function Home({ participants }) {
         </div>
         <div style={{ display: showdivs }} className="row">
           <div className="col-12">
-                <div
+            <div
               className="modal fade modal"
               id="SignupModal"
               tabIndex="-1"
               aria-labelledby="ModalLabel"
-              aria-hidden="true"
+              // aria-hidden="true"
             >
               <div className="modal-dialog">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title" id="loginModalLabel">
+                    <h5 className="modal-title" id="SignupModalLabel">
                       Signup to your account
                     </h5>
                     <button
@@ -856,7 +927,22 @@ export default function Home({ participants }) {
                     ></button>
                   </div>
                   <div className="modal-body">
-                    <form method="POST" >
+                    <form id="SignupForm" onSubmit={SignupUser}>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="exampleInputName"
+                          className="form-label"
+                        >
+                          Name
+                        </label>
+                        <input
+                          type="text"
+                          name="SignupName"
+                          className="form-control"
+                          id="SignupName"
+                          aria-describedby="emailHelp"
+                        />
+                      </div>
                       <div className="mb-3">
                         <label
                           htmlFor="exampleInputEmail1"
@@ -865,10 +951,10 @@ export default function Home({ participants }) {
                           Email address
                         </label>
                         <input
-                          type="text"
-                          name="username"
+                          type="email"
+                          name="SignupEmail"
                           className="form-control"
-                          id="exampleInputEmail1"
+                          id="SignupEmail"
                           aria-describedby="emailHelp"
                         />
                       </div>
@@ -881,16 +967,17 @@ export default function Home({ participants }) {
                         </label>
                         <input
                           type="password"
-                          name="password"
+                          name="SignupPass"
                           className="form-control"
-                          id="exampleInputPassword1"
+                          id="SignupPass"
                         />
                       </div>
-                      
+
                       <div className="d-grid gap-2">
-                      <button
+                        <button
                           type="submit"
                           className="btn btn-primary btn-block"
+                          // onClick={()=>SignupUser()}
                         >
                           Signup
                         </button>
@@ -901,7 +988,7 @@ export default function Home({ participants }) {
               </div>
             </div>
 
-                <div
+            <div
               className="modal fade modal"
               id="LoginModal"
               tabIndex="-1"
@@ -922,7 +1009,7 @@ export default function Home({ participants }) {
                     ></button>
                   </div>
                   <div className="modal-body">
-                    <form method="POST" >
+                    <form onSubmit={LoginUser} id="LoginForm">
                       <div className="mb-3">
                         <label
                           htmlFor="exampleInputEmail1"
@@ -932,9 +1019,9 @@ export default function Home({ participants }) {
                         </label>
                         <input
                           type="text"
-                          name="username"
+                          name="LoginEmail"
                           className="form-control"
-                          id="exampleInputEmail1"
+                          id="LoginEmail"
                           aria-describedby="emailHelp"
                         />
                       </div>
@@ -947,12 +1034,12 @@ export default function Home({ participants }) {
                         </label>
                         <input
                           type="password"
-                          name="password"
+                          name="LoginPass"
                           className="form-control"
-                          id="exampleInputPassword1"
+                          id="LoginPass"
                         />
                       </div>
-                      
+
                       <div className="d-grid gap-2">
                         <button
                           type="submit"
@@ -960,23 +1047,36 @@ export default function Home({ participants }) {
                         >
                           Login
                         </button>
-                        
-                        <button
-                          className="btn btn-outline-secondary"
-                          onClick={() => signIn()}
-                          type="button"
-                        >
-                          Sign in with Google
-                        </button>
+                        <div style={{ textAlign: "center" }}>
+                          <form
+                            action="http://localhost:3000/api/auth/signin/google"
+                            method="POST"
+                          >
+                            <input
+                              type="hidden"
+                              name="csrfToken"
+                              value="40c376de57a080a817c694259a5a1d43e85575bd331f5f115d2f5272736348f7"
+                            />
+                            <input
+                              type="hidden"
+                              name="callbackUrl"
+                              value="http://localhost:3000/#"
+                            />
+                            <button
+                              style={{ width: "100%" }}
+                              type="submit"
+                              class="button"
+                            >
+                              Sign in with Google
+                            </button>
+                          </form>
+                        </div>
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
             </div>
-              
-
-            
 
             <div
               className="modal fade login-modal"
@@ -1072,7 +1172,7 @@ export default function Home({ participants }) {
                           <div className="col-1">{shakeTime}</div>
                         </div>*/}
                       </div>
-                    </div> 
+                    </div>
                   </div>
                   <div className="modal-footer">
                     <button
