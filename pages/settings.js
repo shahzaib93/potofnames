@@ -29,6 +29,7 @@ import { useTheme } from 'next-themes'
   const [spinTime, setspinTime] = useState();
   const [applausing, setApplausing] = useState("applause-01");
   const [selectedFile, setSelectedFile] = useState();
+  const [ShowModalBtn,setShowModalBtn] = useState("ON")
 
 
   //   if (typeof window !== 'undefined') {
@@ -42,6 +43,12 @@ import { useTheme } from 'next-themes'
   // console.log(bar)// bar
   // }
   //
+
+  useEffect(()=>{
+    localStorage.setItem("Entries", 15);
+    localStorage.setItem("ShakeTime", 5);
+    localStorage.setItem("SpinTime", 5);
+  })
 
   const getEntries = (event) => {
     setEntries(event.target.value);
@@ -141,7 +148,42 @@ import { useTheme } from 'next-themes'
   }
 
 
+const ShowOrHideModal=async (event)=>{
+  // document.getElementById("MODALON").setAttribute("checked",false)
+  // document.getElementById("MODALOFF").setAttribute("checked",false)
+
+  console.log("eeeee",event.target.id)
+  await localStorage.setItem("SHOW",event.target.id)
+  const Show = await localStorage.getItem("SHOW")
+  console.log("SHOW",Show)
+  if(Show=="MODALON"){
+   await localStorage.setItem("ShowWinnerModalSettings",true)
+   document.getElementById("MODALON").setAttribute("checked",true)
+  }
+  else if(Show=="MODALOFF"){
+   await localStorage.setItem("ShowWinnerModalSettings",false)
+   document.getElementById("MODALOFF").setAttribute("checked",true)
+  }
+  
+  // await localStorage.setItem("ShowWinnerModalSettings",e)
+  // const Btn = await localStorage.setItem("Showmodalbutton","secondary");
+  // await setShowModalBtn(Btn)
+
+
+}
+
+
   useEffect(()=>{
+    const Show =  localStorage.getItem("SHOW")
+  console.log("SHOW",Show)
+  if(Show=="MODALON"){
+   
+   document.getElementById("MODALON").setAttribute("checked",true)
+  }
+  else if(Show=="MODALOFF"){
+
+   document.getElementById("MODALOFF").setAttribute("checked",true)
+  }
     // const applauseelem = window.document.getElementById("applause").value
     console.log("my apllausing",applausing)
     // setApplausing(applauseelem)
@@ -186,6 +228,7 @@ import { useTheme } from 'next-themes'
                       LOGOUT
                     </button>
                   ) : (
+                    <div style={{ display: "inherit" }}>
                     <button
                       type="button"
                       className="px-4 nav-link btn btn-link"
@@ -194,6 +237,17 @@ import { useTheme } from 'next-themes'
                     >
                       LOGIN
                     </button>
+                    <button
+                        
+                        type="button"
+                        className="px-4 nav-link btn btn-link"
+                        data-bs-toggle="modal"
+                        data-bs-target="#SignupModal"
+                        // onClick={router.push("/api/auth/signin")}
+                      >
+                        SIGNUP
+                      </button>
+                      </div>
                   )}
                 </div>
               </div>
@@ -271,11 +325,12 @@ import { useTheme } from 'next-themes'
               </div>
               <div className="col-8">
               <select onChange={getApplause} style={{width:"55%",height:"110%",borderRadius:"5px",border:"2px solid #4f56a5"}} name="applause" id="applause">
-  <option value="applause-01">Applause 1</option>
+  <option  value="applause-01">Applause 1</option>
   <option value="applause-02">Applause 2</option>
   <option value="applause-03">Applause 3</option>
 </select>
               </div>
+              
               
               </div>
               <div className="row justify-content-start" style={{marginLeft:"3%"}}>
@@ -346,8 +401,15 @@ import { useTheme } from 'next-themes'
                 <strong>SHOW OR HIDE CONFETTI</strong>
               </div>
               <div className="col-8">
+              <form onChange={ShowOrHideModal}>
+  <input  type="radio" id="CONFETTIOFF" name="CONFETTI" value="OFF"/>
+  <label for="OFF">HIDE</label><br/>
+  <input type="radio" id="MODALON" name="MODAL" value="ON"/>
+  <label for="ON">SHOW</label><br/>
+</form>
+
               <div className="btn-group " role="group" aria-label="Basic example">
-                              <button type="button" className="btn btn-primary" onClick={(e)=> localStorage.setItem("ShowConfetti",true)}>SHOW</button>
+                              <button  type="button" className="btn btn-primary" onClick={(e)=> localStorage.setItem("ShowConfetti",true)}>SHOW</button>
                               <button type="button" className="btn btn-secondary" onClick={(e)=> localStorage.setItem("ShowConfetti",false)}>HIDE</button>
                             </div>
               </div>
@@ -358,10 +420,13 @@ import { useTheme } from 'next-themes'
                 <strong>SHOW OR HIDE Winner MODAL</strong>
               </div>
               <div className="col-8">
-              <div className="btn-group " role="group" aria-label="Basic example">
-                              <button type="button" className="btn btn-primary" onClick={(e)=> localStorage.setItem("ShowWinnerModalSettings",true)}>SHOW</button>
-                              <button type="button" className="btn btn-secondary" onClick={(e)=> localStorage.setItem("ShowWinnerModalSettings",false)}>HIDE</button>
-                            </div>
+              <form onChange={ShowOrHideModal}>
+  <input  type="radio" id="MODALOFF" name="MODAL" value="OFF"/>
+  <label for="OFF">HIDE</label><br/>
+  <input type="radio" id="MODALON" name="MODAL" value="ON"/>
+  <label for="ON">SHOW</label><br/>
+</form>
+
               </div>
               </div>
           </div>

@@ -26,11 +26,11 @@ export default async function handler (req, res) {
           participantArray.push({name:addParticipant.name,repeatation:i,_id:addParticipant._id})
         }
   console.log("kxnsxnsxnx",participantArray)
-        // addParticipant.save(function (err) {
-        //     if (err) return handleError(err);
-        //     // saved!
-        // })
-        // console.log("final",addParticipant)
+        addParticipant.save(function (err) {
+            if (err) return handleError(err);
+            // saved!
+        })
+        console.log("final",addParticipant)
         res.status(201).json({participantArray})
       } catch (error) {
         res.status(400).json({ success: false })

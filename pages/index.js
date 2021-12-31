@@ -61,7 +61,7 @@ export default function Home({ participants }) {
   const [animatenames, setAnimatenames] = useState("");
 
   const [threeDMode, setThreeDMode] = useState(0);
-  const [totalEntries, setTotalEntries] = useState(10);
+  const [totalEntries, setTotalEntries] = useState(15);
   const [wheelSpeed, setWheelSpeed] = useState(5);
   const [spinTime, setSpinTime] = useState(5);
   const [shakeTime, setShakeTime] = useState(5);
@@ -88,6 +88,8 @@ export default function Home({ participants }) {
       animation-iteration-count: ${shakeTime * 10};
     }
   `;
+
+  var itemsForPot = [...webState.items]
   function shuffleArray(array) {
     var array1 = array.items;
     var array2 = array.seg;
@@ -122,6 +124,8 @@ export default function Home({ participants }) {
     setIsOpen(true);
   }
 
+console.log("LLLLL",participants)
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -132,9 +136,9 @@ export default function Home({ participants }) {
   };
 
   const settheShouldWeSpin = async () => {
-    console.log("ssslocal", localStorage.getItem("SpinTime") != "undefined");
-    if (localStorage.getItem("SpinTime") != "undefined") {
-      console.log("ssSpinTime", parseInt(localStorage.getItem("SpinTime")));
+    console.log("ssslocal", parseInt(localStorage.getItem("SpinTime"))!= NaN );
+    if (parseInt(localStorage.getItem("SpinTime"))!= NaN ) {
+      console.log("sssSpinTime", parseInt(localStorage.getItem("SpinTime")));
 
       await setSpinTime(parseInt(localStorage.getItem("SpinTime")));
     }
@@ -145,6 +149,8 @@ export default function Home({ participants }) {
     setShouldWeSpin(true);
     setsoundplay(true);
     console.log("sssssssreturnedspin", spinTime);
+    console.log("sssssssentries", totalEntries);
+
   };
 
   const togglePotWheel = (event, value) => {
@@ -190,7 +196,7 @@ export default function Home({ participants }) {
         { name: "Mahir", repeatation: 1 },
         { name: "Shehzad", repeatation: 1 },
         { name: "Aslam", repeatation: 1 },
-      ])
+        ,...participants])
     );
 
     if (localStorage.getItem("ALLPARTICIPANTS") != undefined) {
@@ -204,7 +210,7 @@ export default function Home({ participants }) {
         { name: "Kayani", repeatation: 1 },
         { name: "Mahir", repeatation: 1 },
         { name: "Shehzad", repeatation: 1 },
-        { name: "Aslam", repeatation: 1 },
+        { name: "Aslam", repeatation: 1 },...participants
       ];
     }
 
@@ -331,6 +337,7 @@ export default function Home({ participants }) {
   }, [enableFullScreen]);
 
   const addParticipant = async (event) => {
+    event.preventDefault();
     const hello = "hello";
     const more = window.document.getElementById("moreParticpants");
     const arr = Array(parseInt(more.value)).fill(hello);
@@ -340,9 +347,9 @@ export default function Home({ participants }) {
       await setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
 
-    event.preventDefault();
     // console.log("total",webState.items.length);
     // if(webState.items.length + parseInt(more.value) < totalEntries){
+      console.log("AAAAAA",webState.items.length)
     if (webState.items.length < totalEntries) {
       const res = await fetch("https://potofnames.com/api/participants", {
         body: JSON.stringify({
@@ -355,6 +362,7 @@ export default function Home({ participants }) {
         method: "POST",
       });
       const newParticipant = await res.json();
+
       const segarr = [];
       for (var i = 0; i < newParticipant.participantArray.length; i++) {
         segarr.push(newParticipant.participantArray[0].name);
@@ -399,7 +407,7 @@ export default function Home({ participants }) {
   const LoginUser = async (event) => {
     event.preventDefault();
     var user;
-    await fetch("http://localhost:3000/api/users")
+    await fetch("https://potofnames.com/api/users")
       .then((response) => response.json())
       .then((AllUsers) => {
         for (var i = 0; i < AllUsers.length; i++) {
@@ -424,7 +432,7 @@ export default function Home({ participants }) {
   const SignupUser = async (event) => {
     event.preventDefault();
     var user;
-    await fetch("http://localhost:3000/api/users")
+    await fetch("https://potofnames.com/api/users")
       .then((response) => response.json())
       .then((AllUsers) => {
         for (var i = 0; i < AllUsers.length; i++) {
@@ -438,7 +446,7 @@ export default function Home({ participants }) {
           }
         }
         if (!user) {
-          const res = fetch("http://localhost:3000/api/users", {
+          const res = fetch("https://potofnames.com/api/users", {
             body: JSON.stringify({
               name: event.target.SignupName.value,
               email: event.target.SignupEmail.value,
@@ -480,7 +488,7 @@ export default function Home({ participants }) {
     var res;
     var user = "NO";
     if (session) {
-      fetch("http://localhost:3000/api/users")
+      fetch("https://potofnames.com/api/users")
         .then((response) => response.json())
         .then((AllUsers) => {
           for (var i = 0; i < AllUsers.length; i++) {
@@ -491,7 +499,7 @@ export default function Home({ participants }) {
             }
           }
           if (user == "NO") {
-            fetch("http://localhost:3000/api/users", {
+            fetch("https://potofnames.com/api/users", {
               body: JSON.stringify({
                 name: session.user.name,
                 email: session.user.email,
@@ -681,7 +689,7 @@ export default function Home({ participants }) {
                     contrastColor="white"
                     isOnlyOnce={false}
                     size={290}
-                    upDuration={1000}
+                    upDuration={100}
                     // downDuration={22500}
                     // 125 for 1 seconds
                     // 625 for 5 seconds
@@ -888,7 +896,7 @@ export default function Home({ participants }) {
                       <div className="card-body">
                         <div key={item._id}>
                           <h5 className={`card-title ${animatenames}`}>
-                            ({index + 1} {item.name}
+                            {index + 1}) {item.name}
                           </h5>
                         </div>
                       </div>
@@ -1049,7 +1057,7 @@ export default function Home({ participants }) {
                         </button>
                         <div style={{ textAlign: "center" }}>
                           <form
-                            action="http://localhost:3000/api/auth/signin/google"
+                            action="https://potofnames.com/api/auth/signin/google"
                             method="POST"
                           >
                             <input
@@ -1060,7 +1068,7 @@ export default function Home({ participants }) {
                             <input
                               type="hidden"
                               name="callbackUrl"
-                              value="http://localhost:3000/#"
+                              value="https://potofnames.com/#"
                             />
                             <button
                               style={{ width: "100%" }}
