@@ -5,10 +5,9 @@ import { useRouter } from "next/router";
 import ReactHowler from "react-howler";
 // import jwt from 'jsonwebtoken'
 import React, { useEffect, useState } from "react";
-// import { useSession, signIn, signOut } from "next-auth/react";
 import WheelComponent from "../plugins/amazing-spin-wheel-game";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn, signOut, getCsrfToken } from "next-auth/react";
 import {
   faFacebookF,
   faInstagramSquare,
@@ -18,12 +17,14 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import Confetti from "react-confetti";
 import Modal from "react-modal";
-// import screenfull from 'screenfull';
-// import claps from "../public/applause-01.mp3"
-// http://localhost:3000/api/participants
-// https://potofnames.com/api/participants
+import Signup from "./components/signup";
+import Login from "./components/login";
+import { show } from "react-modal/lib/helpers/ariaAppHider";
+
+// https://potofnames/api/participants
+// https://potofnames/api/participants
 export const getStaticProps = async () => {
-  const res = await fetch("https://potofnames.com/api/participants");
+  const res = await fetch("https://potofnames/api/participants");
   const data = await res.json();
   return {
     props: { participants: data },
@@ -32,6 +33,7 @@ export const getStaticProps = async () => {
 
 export default function Home({ participants }) {
   // const audio = new Audio("/mixkit-clapping-male-crowd-439.wav")
+
   const router = useRouter();
   console.log("location", router.pathname);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -72,6 +74,11 @@ export default function Home({ participants }) {
   const [signupdata, setsignupdata] = useState("");
   const [showConfetti, setshowConfetti] = useState(true);
   const [showWinnerModalSettings, setshowWinnerModalSettings] = useState(true);
+  const [csrfToken,setcsrfToken] = useState("")
+  const [showLoginModal,setshowLoginModal] = useState(false)
+  const [showSignuoModal,setshowSignupModal] = useState(false)
+
+
 
 
   const segCol = [];
@@ -124,7 +131,7 @@ export default function Home({ participants }) {
     setIsOpen(true);
   }
 
-console.log("LLLLL",participants)
+// console.log("LLLLL",participants)
 
   function closeModal() {
     setIsOpen(false);
@@ -176,6 +183,10 @@ console.log("LLLLL",participants)
     }, shakeTime * 1000);
   };
   useEffect(() => {
+    const CSRFToken = getCsrfToken().then((CSRF)=>setcsrfToken(CSRF))
+    
+
+    // console.log("CSRF:",CSRFToken)
     console.log("MMMMMMM",localStorage.getItem("ShowWinnerModalSettings"))
 
     if (localStorage.getItem("ShowWinnerModalSettings") != undefined && localStorage.getItem("ShowWinnerModalSettings") == "false" ) {
@@ -351,7 +362,7 @@ console.log("LLLLL",participants)
     // if(webState.items.length + parseInt(more.value) < totalEntries){
       console.log("AAAAAA",webState.items.length)
     if (webState.items.length < totalEntries) {
-      const res = await fetch("https://potofnames.com/api/participants", {
+      const res = await fetch("https://potofnames/api/participants", {
         body: JSON.stringify({
           // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
 
@@ -387,7 +398,7 @@ console.log("LLLLL",participants)
     const deletedVal = webState.items[index];
     console.log("Delete function data");
     console.log(deletedVal);
-    const res = await fetch("https://potofnames.com/api/participants", {
+    const res = await fetch("https://potofnames/api/participants", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -404,63 +415,63 @@ console.log("LLLLL",participants)
     console.log(delParticipant);
   };
 
-  const LoginUser = async (event) => {
-    event.preventDefault();
-    var user;
-    await fetch("https://potofnames.com/api/users")
-      .then((response) => response.json())
-      .then((AllUsers) => {
-        for (var i = 0; i < AllUsers.length; i++) {
-          if (AllUsers[i].email == event.target.LoginEmail.value) {
-            if (AllUsers[i].password == event.target.LoginPass.value) {
-              user = AllUsers[1];
-              alert("Successfully Login");
-              break;
-            } else {
-              user = "wrong pass";
-              alert("Enter correct password");
-              break;
-            }
-          }
-        }
-        if (!user) {
-          alert("Please Signup first");
-        }
-      });
-  };
+  // const LoginUser = async (event) => {
+  //   event.preventDefault();
+  //   var user;
+  //   await fetch("https://potofnames/api/users")
+  //     .then((response) => response.json())
+  //     .then((AllUsers) => {
+  //       for (var i = 0; i < AllUsers.length; i++) {
+  //         if (AllUsers[i].email == event.target.LoginEmail.value) {
+  //           if (AllUsers[i].password == event.target.LoginPass.value) {
+  //             user = AllUsers[1];
+  //             alert("Successfully Login");
+  //             break;
+  //           } else {
+  //             user = "wrong pass";
+  //             alert("Enter correct password");
+  //             break;
+  //           }
+  //         }
+  //       }
+  //       if (!user) {
+  //         alert("Please Signup first");
+  //       }
+  //     });
+  // };
 
-  const SignupUser = async (event) => {
-    event.preventDefault();
-    var user;
-    await fetch("https://potofnames.com/api/users")
-      .then((response) => response.json())
-      .then((AllUsers) => {
-        for (var i = 0; i < AllUsers.length; i++) {
-          console.log("ALL", AllUsers[i]);
-          console.log("MY", event.target.SignupEmail.value);
-          if (AllUsers[i].email == event.target.SignupEmail.value) {
-            user = AllUsers[i];
-            console.log("IF");
-            alert("User Already exist. Please Login");
-            break;
-          }
-        }
-        if (!user) {
-          const res = fetch("https://potofnames.com/api/users", {
-            body: JSON.stringify({
-              name: event.target.SignupName.value,
-              email: event.target.SignupEmail.value,
-              password: event.target.SignupPass.value,
-            }),
-            headers: { "Content-Type": "application/json" },
-            method: "POST",
-          });
-          if (res) {
-            alert("Successfully signed in");
-          }
-        }
-      });
-  };
+  // const SignupUser = async (event) => {
+  //   event.preventDefault();
+  //   var user;
+  //   await fetch("https://potofnames/api/users")
+  //     .then((response) => response.json())
+  //     .then((AllUsers) => {
+  //       for (var i = 0; i < AllUsers.length; i++) {
+  //         console.log("ALL", AllUsers[i]);
+  //         console.log("MY", event.target.SignupEmail.value);
+  //         if (AllUsers[i].email == event.target.SignupEmail.value) {
+  //           user = AllUsers[i];
+  //           console.log("IF");
+  //           alert("User Already exist. Please Login");
+  //           break;
+  //         }
+  //       }
+  //       if (!user) {
+  //         const res = fetch("https://potofnames/api/users", {
+  //           body: JSON.stringify({
+  //             name: event.target.SignupName.value,
+  //             email: event.target.SignupEmail.value,
+  //             password: event.target.SignupPass.value,
+  //           }),
+  //           headers: { "Content-Type": "application/json" },
+  //           method: "POST",
+  //         });
+  //         if (res) {
+  //           alert("Successfully signed in");
+  //         }
+  //       }
+  //     });
+  // };
 
   // useEffect(() => {
   //   const segarr=[]
@@ -488,7 +499,7 @@ console.log("LLLLL",participants)
     var res;
     var user = "NO";
     if (session) {
-      fetch("https://potofnames.com/api/users")
+      fetch("https://potofnames/api/users")
         .then((response) => response.json())
         .then((AllUsers) => {
           for (var i = 0; i < AllUsers.length; i++) {
@@ -499,7 +510,7 @@ console.log("LLLLL",participants)
             }
           }
           if (user == "NO") {
-            fetch("https://potofnames.com/api/users", {
+            fetch("https://potofnames/api/users", {
               body: JSON.stringify({
                 name: session.user.name,
                 email: session.user.email,
@@ -516,6 +527,13 @@ console.log("LLLLL",participants)
     }
   }, [session]);
 
+  const callLogin=()=>{
+    console.log("FUNCTIONTOCALLLOGIN")
+    return(
+      <Login/>
+    )
+  }
+
   return (
     <div id="FULLSCREEN" className="container container-sm container-md mb-5">
       <Head>
@@ -524,6 +542,7 @@ console.log("LLLLL",participants)
         <link rel="icon" href="/favicon.ico" />
         <style>{css}</style>
       </Head>
+      
       <header id="header" className="row">
         <div className="col-12 ">
           <nav className="navbar navbar-expand-lg navbar-light">
@@ -560,9 +579,9 @@ console.log("LLLLL",participants)
                         hidden={enableFullScreen}
                         type="button"
                         className="px-4 nav-link btn btn-link"
-                        data-bs-toggle="modal"
-                        data-bs-target="#LoginModal"
-                        // onClick={router.push("/api/auth/signin")}
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#LoginModal"
+                        onClick={()=>setshowLoginModal(!showLoginModal)}
                       >
                         LOGIN
                       </button>
@@ -570,9 +589,8 @@ console.log("LLLLL",participants)
                         hidden={enableFullScreen}
                         type="button"
                         className="px-4 nav-link btn btn-link"
-                        data-bs-toggle="modal"
-                        data-bs-target="#SignupModal"
-                        // onClick={router.push("/api/auth/signin")}
+                        onClick={()=>setshowSignupModal(!showLoginModal)}
+
                       >
                         SIGNUP
                       </button>
@@ -914,7 +932,9 @@ console.log("LLLLL",participants)
         </div>
         <div style={{ display: showdivs }} className="row">
           <div className="col-12">
-            <div
+            {showLoginModal?<Login Loginstate={(data)=>setshowLoginModal(data)} />:null}
+            {showSignuoModal?<Signup Signupstate={(data)=>setshowSignupModal(data)}/>:null}
+            {/* <div
               className="modal fade modal"
               id="SignupModal"
               tabIndex="-1"
@@ -935,7 +955,9 @@ console.log("LLLLL",participants)
                     ></button>
                   </div>
                   <div className="modal-body">
-                    <form id="SignupForm" onSubmit={SignupUser}>
+                    <form id="SignupForm" 
+                    // onSubmit={SignupUser}
+                    >
                       <div className="mb-3">
                         <label
                           htmlFor="exampleInputName"
@@ -994,9 +1016,9 @@ console.log("LLLLL",participants)
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div
+            {/* <div
               className="modal fade modal"
               id="LoginModal"
               tabIndex="-1"
@@ -1017,7 +1039,10 @@ console.log("LLLLL",participants)
                     ></button>
                   </div>
                   <div className="modal-body">
-                    <form onSubmit={LoginUser} id="LoginForm">
+                    <form 
+                    // onSubmit={LoginUser}
+                    
+                    id="LoginForm">
                       <div className="mb-3">
                         <label
                           htmlFor="exampleInputEmail1"
@@ -1057,18 +1082,18 @@ console.log("LLLLL",participants)
                         </button>
                         <div style={{ textAlign: "center" }}>
                           <form
-                            action="https://potofnames.com/api/auth/signin/google"
+                            action="http://localhost:3000/api/auth/signin/google"
                             method="POST"
                           >
                             <input
                               type="hidden"
                               name="csrfToken"
-                              value="40c376de57a080a817c694259a5a1d43e85575bd331f5f115d2f5272736348f7"
+                              value={csrfToken}
                             />
                             <input
                               type="hidden"
                               name="callbackUrl"
-                              value="https://potofnames.com/#"
+                              value="http://localhost:3000/"
                             />
                             <button
                               style={{ width: "100%" }}
@@ -1084,7 +1109,7 @@ console.log("LLLLL",participants)
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div
               className="modal fade login-modal"
@@ -1354,12 +1379,12 @@ console.log("LLLLL",participants)
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <Link href="https://potofnames.com/">
+            <Link href="http://potofnames/">
               <img src="logo.jpg" className="img-fluid sponsor-img" alt="..." />
             </Link>
           </div>
           <div className="col-2">
-            <Link href="https://pickapot.com/">
+            <Link href="http://pickapot.com/">
               <img
                 src="paplogo.png"
                 className="img-fluid sponsor-img"

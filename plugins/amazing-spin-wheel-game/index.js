@@ -245,7 +245,7 @@ var WheelComponent = function WheelComponent(_ref) {
     // ctx.lineTo(centerX, centerY - 70);
     // ctx.closePath();
     // ctx.fill();
-    var change = angleCurrent + Math.PI / 2;
+    var change = angleCurrent + Math.PI / 50;
     var i = segments.length - Math.floor(change / (Math.PI * 2) * segments.length) - 1;
     if (i < 0) i = i + segments.length;
     ctx.textAlign = 'center';
@@ -267,7 +267,32 @@ var WheelComponent = function WheelComponent(_ref) {
     else{
     img.src = "roundlogo.png"}
     // ctx.globalCompositeOperation='destination-over';
-    ctx.drawImage(arrow,232,-55,150,160)
+
+    function drawRotate12(){
+    ctx.drawImage(arrow,225,-55,150,160)
+    }
+
+    function drawRotated3(){
+    ctx.rotate(Math.PI/2)
+    ctx.drawImage(arrow,centerX-75,-630,150,160)
+    ctx.restore()
+    }
+
+    function drawRotated6(){
+    ctx.rotate(Math.PI);
+    ctx.drawImage(arrow,centerX-685,-650,170,160)
+    ctx.restore()
+    }
+    function drawRotated9(){ 
+    ctx.rotate(Math.PI*7/4.7);
+    ctx.drawImage(arrow,-388,-50,170,160)
+    ctx.restore()
+    }
+// drawRotated9()
+// drawRotate12()
+drawRotated3()
+// drawRotated6()
+
     ctx.drawImage(img,centerX-50,centerY-50,100,100)
   };
 

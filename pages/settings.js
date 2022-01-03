@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import {useRouter} from 'next/router'
+import { useRouter } from "next/router";
 // import jwt from 'jsonwebtoken'
 import React, { useEffect, useState, createContext } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -13,24 +13,26 @@ import {
   faPinterestP,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-// http://localhost:3000/api/participants
+// https://potofnames/api/participants
 // https://potofnames.com/api/participants
 // import styled, { ThemeProvider } from "styled-components";
-import { useTheme } from 'next-themes'
+import { useTheme } from "next-themes";
+import Signup from "./components/signup";
+import Login from "./components/login";
 
-
- function Settings() {
-  const { theme, setTheme } = useTheme()
-  const router = useRouter()
+function Settings() {
+  const { theme, setTheme } = useTheme();
+  const router = useRouter();
   // var Noofentries = createContext(null)
-  console.log("location",router.pathname)
+  console.log("location", router.pathname);
   const [entries, setEntries] = useState();
   const [shakeTime, setshakeTime] = useState();
   const [spinTime, setspinTime] = useState();
   const [applausing, setApplausing] = useState("applause-01");
   const [selectedFile, setSelectedFile] = useState();
-  const [ShowModalBtn,setShowModalBtn] = useState("ON")
-
+  const [ShowModalBtn, setShowModalBtn] = useState("ON");
+  const [showLoginModal,setshowLoginModal] = useState(false)
+  const [showSignupModal,setshowSignupModal] = useState(false)
 
   //   if (typeof window !== 'undefined') {
   //   //in your test1
@@ -44,37 +46,33 @@ import { useTheme } from 'next-themes'
   // }
   //
 
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem("Entries", 15);
     localStorage.setItem("ShakeTime", 5);
     localStorage.setItem("SpinTime", 5);
-  })
+  });
 
   const getEntries = (event) => {
     setEntries(event.target.value);
     console.log(entries);
-  }
+  };
 
-  
   const getSpinTime = (event) => {
     setspinTime(event.target.value);
     console.log(spinTime);
-  }
+  };
 
-  
   const getShakeTime = (event) => {
     setshakeTime(event.target.value);
     console.log(shakeTime);
-  }
+  };
 
   useEffect(() => {
     localStorage.setItem("Entries", entries);
     localStorage.setItem("ShakeTime", shakeTime);
     localStorage.setItem("SpinTime", spinTime);
     // router.reload("/")
-
-
-  }, [entries,shakeTime,spinTime]);
+  }, [entries, shakeTime, spinTime]);
   const { data: session } = useSession();
   if (session) {
     console.log(`You're signed in`);
@@ -86,110 +84,96 @@ import { useTheme } from 'next-themes'
   const getApplause = (event) => {
     setApplausing(event.target.value);
     // console.log(shakeTime);
-  }
+  };
 
-  const getIMG = (event) =>{
+  const getIMG = (event) => {
     const reader = new FileReader();
-    console.log("img",event.target.files[0])
-    reader.readAsDataURL(event.target.files[0])
+    console.log("img", event.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]);
 
-    reader.addEventListener("load",()=>{
-    console.log("result",reader.result)
-      localStorage.setItem("CenterLogo",reader.result)
-    })
+    reader.addEventListener("load", () => {
+      console.log("result", reader.result);
+      localStorage.setItem("CenterLogo", reader.result);
+    });
+  };
 
-  }
-
-  const getCSVFile = (event) =>{
+  const getCSVFile = (event) => {
     const reader = new FileReader();
-    console.log("file",event.target.files[0])
+    console.log("file", event.target.files[0]);
     // const body = new FormData();
     // body.append("file", event.target.value);
-    reader.readAsText(event.target.files[0])
+    reader.readAsText(event.target.files[0]);
 
-    console.log("my file",reader)
-    reader.onload = function(e){
-      const mycsv = e.target.result
-    const headers = mycsv.slice(0,mycsv.indexOf('\n')).split(",");
-        const rows = mycsv.slice(mycsv.indexOf('\n')+1).split('\n');
+    console.log("my file", reader);
+    reader.onload = function (e) {
+      const mycsv = e.target.result;
+      const headers = mycsv.slice(0, mycsv.indexOf("\n")).split(",");
+      const rows = mycsv.slice(mycsv.indexOf("\n") + 1).split("\n");
 
-        const newArray = rows.map( row => {
-            const values = row.split(",");
-            const eachObject = headers.reduce((obj, header, i) => {
-                obj[header] = values[i];
-                obj["repeatation"] = 1
-                return obj;
-            }, {})
-            return eachObject;
+      const newArray = rows.map((row) => {
+        const values = row.split(",");
+        const eachObject = headers.reduce((obj, header, i) => {
+          obj[header] = values[i];
+          obj["repeatation"] = 1;
+          return obj;
+        }, {});
+        return eachObject;
+      });
+      console.log("sknsnsnxskc", newArray);
+      localStorage.setItem("csvdata", JSON.stringify(newArray));
+    };
+  };
 
-        })
-        console.log("sknsnsnxskc",newArray)
-        localStorage.setItem("csvdata",JSON.stringify(newArray))
-      
-      }
-  } 
-
-  const  SelectedImage = async(e) =>{
+  const SelectedImage = async (e) => {
     // e.target.style.backgroundColor = "gray"
-    await localStorage.setItem("ArrowImage",e.target.alt)
-  
-  }
+    await localStorage.setItem("ArrowImage", e.target.alt);
+  };
 
-  const getArrowImg = (event) =>{
+  const getArrowImg = (event) => {
     const reader = new FileReader();
-    console.log("img",event.target.files[0])
-    reader.readAsDataURL(event.target.files[0])
+    console.log("img", event.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]);
 
-    reader.addEventListener("load",()=>{
-    console.log("result",reader.result)
-      localStorage.setItem("ArrowImage",reader.result)
-    })
+    reader.addEventListener("load", () => {
+      console.log("result", reader.result);
+      localStorage.setItem("ArrowImage", reader.result);
+    });
+  };
 
-  }
+  const ShowOrHideModal = async (event) => {
+    // document.getElementById("MODALON").setAttribute("checked",false)
+    // document.getElementById("MODALOFF").setAttribute("checked",false)
 
+    console.log("eeeee", event.target.id);
+    await localStorage.setItem("SHOW", event.target.id);
+    const Show = await localStorage.getItem("SHOW");
+    console.log("SHOW", Show);
+    if (Show == "MODALON") {
+      await localStorage.setItem("ShowWinnerModalSettings", true);
+      document.getElementById("MODALON").setAttribute("checked", true);
+    } else if (Show == "MODALOFF") {
+      await localStorage.setItem("ShowWinnerModalSettings", false);
+      document.getElementById("MODALOFF").setAttribute("checked", true);
+    }
 
-const ShowOrHideModal=async (event)=>{
-  // document.getElementById("MODALON").setAttribute("checked",false)
-  // document.getElementById("MODALOFF").setAttribute("checked",false)
+    // await localStorage.setItem("ShowWinnerModalSettings",e)
+    // const Btn = await localStorage.setItem("Showmodalbutton","secondary");
+    // await setShowModalBtn(Btn)
+  };
 
-  console.log("eeeee",event.target.id)
-  await localStorage.setItem("SHOW",event.target.id)
-  const Show = await localStorage.getItem("SHOW")
-  console.log("SHOW",Show)
-  if(Show=="MODALON"){
-   await localStorage.setItem("ShowWinnerModalSettings",true)
-   document.getElementById("MODALON").setAttribute("checked",true)
-  }
-  else if(Show=="MODALOFF"){
-   await localStorage.setItem("ShowWinnerModalSettings",false)
-   document.getElementById("MODALOFF").setAttribute("checked",true)
-  }
-  
-  // await localStorage.setItem("ShowWinnerModalSettings",e)
-  // const Btn = await localStorage.setItem("Showmodalbutton","secondary");
-  // await setShowModalBtn(Btn)
-
-
-}
-
-
-  useEffect(()=>{
-    const Show =  localStorage.getItem("SHOW")
-  console.log("SHOW",Show)
-  if(Show=="MODALON"){
-   
-   document.getElementById("MODALON").setAttribute("checked",true)
-  }
-  else if(Show=="MODALOFF"){
-
-   document.getElementById("MODALOFF").setAttribute("checked",true)
-  }
+  useEffect(() => {
+    const Show = localStorage.getItem("SHOW");
+    console.log("SHOW", Show);
+    if (Show == "MODALON") {
+      document.getElementById("MODALON").setAttribute("checked", true);
+    } else if (Show == "MODALOFF") {
+      document.getElementById("MODALOFF").setAttribute("checked", true);
+    }
     // const applauseelem = window.document.getElementById("applause").value
-    console.log("my apllausing",applausing)
+    console.log("my apllausing", applausing);
     // setApplausing(applauseelem)
-    localStorage.setItem("Applause",applausing)
-    
-  },[applausing])
+    localStorage.setItem("Applause", applausing);
+  }, [applausing]);
 
   // useEffect(() => {
   //   const data = localStorage.getItem("csvdata")
@@ -215,7 +199,7 @@ const ShowOrHideModal=async (event)=>{
                   <a
                     type="button"
                     className="nav-link active px-4"
-                    onClick={()=>router.push("/")}
+                    onClick={() => router.push("/")}
                   >
                     HOME
                   </a>
@@ -229,25 +213,25 @@ const ShowOrHideModal=async (event)=>{
                     </button>
                   ) : (
                     <div style={{ display: "inherit" }}>
-                    <button
-                      type="button"
-                      className="px-4 nav-link btn btn-link"
-                      data-bs-toggle="modal"
-                      data-bs-target="#loginModal"
-                    >
-                      LOGIN
-                    </button>
-                    <button
-                        
+                      <button
                         type="button"
                         className="px-4 nav-link btn btn-link"
-                        data-bs-toggle="modal"
-                        data-bs-target="#SignupModal"
+                        onClick={()=>setshowLoginModal(!showLoginModal)}
+                      >
+                        LOGIN
+                      </button>
+                      <button
+                        type="button"
+                        className="px-4 nav-link btn btn-link"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#SignupModal"
                         // onClick={router.push("/api/auth/signin")}
+                        onClick={()=>setshowSignupModal(!showSignupModal)}
+
                       >
                         SIGNUP
                       </button>
-                      </div>
+                    </div>
                   )}
                 </div>
               </div>
@@ -256,18 +240,34 @@ const ShowOrHideModal=async (event)=>{
         </div>
       </header>
       <main>
-      <div className="row justify-content-center">
-                      <div className="col-12">
-                        <div className="row">
-                          <div className="col-12 text-center">
-                            <div className="btn-group " role="group" aria-label="Basic example">
-                              <button type="button" className="btn btn-primary" onClick={(e)=> setTheme('light')}>DAY</button>
-                              <button type="button" className="btn btn-secondary" onClick={(e)=> setTheme('dark')}>NIGHT</button>
-                            </div>
-                          </div>
-                        </div>
-                        </div>
-                        </div>
+        <div className="row justify-content-center">
+          <div className="col-12">
+            <div className="row">
+              <div className="col-12 text-center">
+                <div
+                  className="btn-group "
+                  role="group"
+                  aria-label="Basic example"
+                >
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={(e) => setTheme("light")}
+                  >
+                    DAY
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={(e) => setTheme("dark")}
+                  >
+                    NIGHT
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="row justify-content-center my-5 ">
           <div className="col-6">
             <div className="row my-4">
@@ -293,7 +293,6 @@ const ShowOrHideModal=async (event)=>{
               </div>
               <div className="col-8">
                 <input
-                
                   type="range"
                   min="3"
                   max="180"
@@ -320,47 +319,74 @@ const ShowOrHideModal=async (event)=>{
               </div>
               <div className="col-1">{shakeTime}</div>
               <div className="row my-4">
-              <div className="col-3 mt-1">
-                <strong>SELECT MUSIC</strong>
+                <div className="col-3 mt-1">
+                  <strong>SELECT MUSIC</strong>
+                </div>
+                <div className="col-8">
+                  <select
+                    onChange={getApplause}
+                    style={{
+                      width: "55%",
+                      height: "110%",
+                      borderRadius: "5px",
+                      border: "2px solid #4f56a5",
+                    }}
+                    name="applause"
+                    id="applause"
+                  >
+                    <option value="applause-01">Applause 1</option>
+                    <option value="applause-02">Applause 2</option>
+                    <option value="applause-03">Applause 3</option>
+                  </select>
+                </div>
               </div>
-              <div className="col-8">
-              <select onChange={getApplause} style={{width:"55%",height:"110%",borderRadius:"5px",border:"2px solid #4f56a5"}} name="applause" id="applause">
-  <option  value="applause-01">Applause 1</option>
-  <option value="applause-02">Applause 2</option>
-  <option value="applause-03">Applause 3</option>
-</select>
+              <div
+                className="row justify-content-start"
+                style={{ marginLeft: "3%" }}
+              >
+                <div className="col-8">
+                  <div className="row">
+                    <div className="col-12 text-center">
+                      <div
+                        className="btn-group "
+                        role="group"
+                        aria-label="Basic example"
+                      >
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={(e) => setApplausing("applause-01")}
+                        >
+                          ON
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={(e) => setApplausing("OFF")}
+                        >
+                          OFF
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              
-              </div>
-              <div className="row justify-content-start" style={{marginLeft:"3%"}}>
-                      <div className="col-8">
-                        <div className="row">
-                          <div className="col-12 text-center">
-                            <div className="btn-group " role="group" aria-label="Basic example">
-                              <button type="button" className="btn btn-primary" onClick={(e)=> setApplausing("applause-01")}>ON</button>
-                              <button type="button" className="btn btn-secondary" onClick={(e)=> setApplausing("OFF")}>OFF</button>
-                            </div>
-                          </div>
-                        </div>
-                        </div>
-                        </div>
 
               <div className="row my-4">
-              <div className="col-4 mt-1">
-                <strong>SELECT CSV FILE</strong>
-              </div>
-              <div className="col-8">
-              <input type="file" onChange={getCSVFile} accept=".csv" />
-              </div>
+                <div className="col-4 mt-1">
+                  <strong>SELECT CSV FILE</strong>
+                </div>
+                <div className="col-8">
+                  <input type="file" onChange={getCSVFile} accept=".csv" />
+                </div>
               </div>
               <div className="row my-4">
-              <div className="col-4 mt-1">
-                <strong>SELECT WHEEL LOGO</strong>
-              </div>
-              <div className="col-8">
-              <input type="file" onChange={getIMG} />
-              </div>
+                <div className="col-4 mt-1">
+                  <strong>SELECT WHEEL LOGO</strong>
+                </div>
+                <div className="col-8">
+                  <input type="file" onChange={getIMG} />
+                </div>
               </div>
             </div>
             <div className="row my-4">
@@ -368,72 +394,128 @@ const ShowOrHideModal=async (event)=>{
                 <strong>SELECT ARROW IMAGE</strong>
               </div>
               <div className="col-8">
-              <input onChange={getArrowImg} type="file" />
+                <input onChange={getArrowImg} type="file" />
               </div>
-              <div  className="row my-4 Arrow-Images">
-                
-              <img onClick={(e)=>SelectedImage(e)} alt="Arrow1.png" src="Arrow1.png" style={{width:"20%" , height:"100%"}} />
-              
-              
-              <img onClick={(e)=>SelectedImage(e)} alt="Arrow2.png" src="Arrow2.png" style={{width:"20%" , height:"100%"}} />
-              
-              
-              <img onClick={(e)=>SelectedImage(e)} alt="Arrow3.png" src="Arrow3.png" style={{width:"20%" , height:"100%"}} />
-              
+              <div className="row my-4 Arrow-Images">
+                <img
+                  onClick={(e) => SelectedImage(e)}
+                  alt="Arrow1.png"
+                  src="Arrow1.png"
+                  style={{ width: "20%", height: "100%" }}
+                />
+
+                <img
+                  onClick={(e) => SelectedImage(e)}
+                  alt="Arrow2.png"
+                  src="Arrow2.png"
+                  style={{ width: "20%", height: "100%" }}
+                />
+
+                <img
+                  onClick={(e) => SelectedImage(e)}
+                  alt="Arrow3.png"
+                  src="Arrow3.png"
+                  style={{ width: "20%", height: "100%" }}
+                />
               </div>
-              
-              </div>
-              <div className="row my-4">
+            </div>
+            <div className="row my-4">
               <div className="col-4 mt-1">
                 <strong>SHOW OR HIDE TOTAL PARTICIPANTS</strong>
               </div>
               <div className="col-8">
-              
-                            <div className="btn-group " role="group" aria-label="Basic example">
-                              <button type="button" className="btn btn-primary" onClick={(e)=> localStorage.setItem("ShowParticipants",true)}>SHOW</button>
-                              <button type="button" className="btn btn-secondary" onClick={(e)=> localStorage.setItem("ShowParticipants",false)}>HIDE</button>
-                            </div>
-                          </div>
-            
+                <div
+                  className="btn-group "
+                  role="group"
+                  aria-label="Basic example"
+                >
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={(e) =>
+                      localStorage.setItem("ShowParticipants", true)
+                    }
+                  >
+                    SHOW
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={(e) =>
+                      localStorage.setItem("ShowParticipants", false)
+                    }
+                  >
+                    HIDE
+                  </button>
+                </div>
               </div>
-              <div className="row my-4">
+            </div>
+            <div className="row my-4">
               <div className="col-4 mt-1">
                 <strong>SHOW OR HIDE CONFETTI</strong>
               </div>
               <div className="col-8">
-              <form onChange={ShowOrHideModal}>
-  <input  type="radio" id="CONFETTIOFF" name="CONFETTI" value="OFF"/>
-  <label for="OFF">HIDE</label><br/>
-  <input type="radio" id="MODALON" name="MODAL" value="ON"/>
-  <label for="ON">SHOW</label><br/>
-</form>
+                <form onChange={ShowOrHideModal}>
+                   {" "}
+                  <input
+                    type="radio"
+                    id="CONFETTIOFF"
+                    name="CONFETTI"
+                    value="OFF"
+                  />
+                    <label for="OFF">HIDE</label>
+                  <br />
+                    <input type="radio" id="MODALON" name="MODAL" value="ON" /> {" "}
+                  <label for="ON">SHOW</label>
+                  <br />
+                </form>
 
-              <div className="btn-group " role="group" aria-label="Basic example">
-                              <button  type="button" className="btn btn-primary" onClick={(e)=> localStorage.setItem("ShowConfetti",true)}>SHOW</button>
-                              <button type="button" className="btn btn-secondary" onClick={(e)=> localStorage.setItem("ShowConfetti",false)}>HIDE</button>
-                            </div>
+                <div
+                  className="btn-group "
+                  role="group"
+                  aria-label="Basic example"
+                >
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={(e) => localStorage.setItem("ShowConfetti", true)}
+                  >
+                    SHOW
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={(e) => localStorage.setItem("ShowConfetti", false)}
+                  >
+                    HIDE
+                  </button>
+                </div>
               </div>
-              </div>
+            </div>
 
-              <div className="row my-4">
+            <div className="row my-4">
               <div className="col-4 mt-1">
                 <strong>SHOW OR HIDE Winner MODAL</strong>
               </div>
               <div className="col-8">
-              <form onChange={ShowOrHideModal}>
-  <input  type="radio" id="MODALOFF" name="MODAL" value="OFF"/>
-  <label for="OFF">HIDE</label><br/>
-  <input type="radio" id="MODALON" name="MODAL" value="ON"/>
-  <label for="ON">SHOW</label><br/>
-</form>
-
+                <form  onChange={ShowOrHideModal}>
+                   {" "}
+                  <input type="radio" id="MODALOFF" name="MODAL" value="OFF" /> {" "}
+                  <label for="OFF">HIDE</label>
+                  <br />
+                    <input type="radio" id="MODALON" name="MODAL" value="ON" /> {" "}
+                  <label for="ON">SHOW</label>
+                  <br />
+                </form>
               </div>
-              </div>
+            </div>
           </div>
-          
         </div>
         {/* <div></div> */}
-       
+
+
+        {showLoginModal?<Login Loginstate={(data)=>setshowLoginModal(data)}  />:null}
+          {showSignupModal?<Signup Signupstate={(data)=>setshowSignupModal(data)} />:null}
 
 
 
@@ -574,4 +656,4 @@ const ShowOrHideModal=async (event)=>{
   );
 }
 
-export default Settings
+export default Settings;
