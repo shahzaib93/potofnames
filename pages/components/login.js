@@ -31,7 +31,7 @@ export default function Login(props){
 const LoginUser = async (event) => {
     event.preventDefault();
     var user;
-    await fetch("https://potofnames/api/users")
+    await fetch("https://potofnames.com/api/users")
       .then((response) => response.json())
       .then((AllUsers) => {
         for (var i = 0; i < AllUsers.length; i++) {
@@ -121,7 +121,7 @@ const closeModal=()=>{
                   </button>
                   <div style={{ textAlign: "center" }}>
                     <form
-                      action="https://potofnames/api/auth/signin/google"
+                      action="https://potofnames.com/api/auth/signin/google"
                       method="POST"
                     >
                       <input
@@ -132,7 +132,7 @@ const closeModal=()=>{
                       <input
                         type="hidden"
                         name="callbackUrl"
-                        value="https://potofnames/"
+                        value="https://potofnames.com/"
                       />
                       <button
                         style={{ width: "100%" }}

@@ -23,7 +23,7 @@ export default function Signup(props){
 const SignupUser = async (event) => {
     event.preventDefault();
     var user;
-    await fetch("https://potofnames/api/users")
+    await fetch("https://potofnames.com/api/users")
       .then((response) => response.json())
       .then((AllUsers) => {
         for (var i = 0; i < AllUsers.length; i++) {
@@ -37,7 +37,7 @@ const SignupUser = async (event) => {
           }
         }
         if (!user) {
-          const res = fetch("https://potofnames/api/users", {
+          const res = fetch("https://potofnames.com/api/users", {
             body: JSON.stringify({
               name: event.target.SignupName.value,
               email: event.target.SignupEmail.value,

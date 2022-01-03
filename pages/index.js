@@ -24,7 +24,7 @@ import { show } from "react-modal/lib/helpers/ariaAppHider";
 // https://potofnames/api/participants
 // https://potofnames/api/participants
 export const getStaticProps = async () => {
-  const res = await fetch("https://potofnames/api/participants");
+  const res = await fetch("https://potofnames.com/api/participants");
   const data = await res.json();
   return {
     props: { participants: data },
@@ -362,7 +362,7 @@ export default function Home({ participants }) {
     // if(webState.items.length + parseInt(more.value) < totalEntries){
       console.log("AAAAAA",webState.items.length)
     if (webState.items.length < totalEntries) {
-      const res = await fetch("https://potofnames/api/participants", {
+      const res = await fetch("https://potofnames.com/api/participants", {
         body: JSON.stringify({
           // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
 
@@ -398,7 +398,7 @@ export default function Home({ participants }) {
     const deletedVal = webState.items[index];
     console.log("Delete function data");
     console.log(deletedVal);
-    const res = await fetch("https://potofnames/api/participants", {
+    const res = await fetch("https://potofnames.com/api/participants", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -499,7 +499,7 @@ export default function Home({ participants }) {
     var res;
     var user = "NO";
     if (session) {
-      fetch("https://potofnames/api/users")
+      fetch("https://potofnames.com/api/users")
         .then((response) => response.json())
         .then((AllUsers) => {
           for (var i = 0; i < AllUsers.length; i++) {
@@ -510,7 +510,7 @@ export default function Home({ participants }) {
             }
           }
           if (user == "NO") {
-            fetch("https://potofnames/api/users", {
+            fetch("https://potofnames.com/api/users", {
               body: JSON.stringify({
                 name: session.user.name,
                 email: session.user.email,
@@ -1379,7 +1379,7 @@ export default function Home({ participants }) {
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <Link href="http://potofnames/">
+            <Link href="https://potofnames.com/">
               <img src="logo.jpg" className="img-fluid sponsor-img" alt="..." />
             </Link>
           </div>
