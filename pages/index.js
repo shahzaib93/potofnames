@@ -143,13 +143,12 @@ export default function Home({ participants }) {
   };
 
   const settheShouldWeSpin = async () => {
-    console.log("ssslocal", parseInt(localStorage.getItem("SpinTime"))!= NaN );
-    if (parseInt(localStorage.getItem("SpinTime"))!= NaN ) {
+    console.log("ssslocal", localStorage.getItem("SpinTime"));
+    if (!localStorage.getItem("SpinTime")===null ) {
       console.log("sssSpinTime", parseInt(localStorage.getItem("SpinTime")));
-
       await setSpinTime(parseInt(localStorage.getItem("SpinTime")));
     }
-    if (localStorage.getItem("Applause") != undefined) {
+    if (!localStorage.getItem("Applause") === null) {
       await setApplausing(localStorage.getItem("Applause"));
     }
     console.log("applausinggg", applausing);
@@ -165,10 +164,10 @@ export default function Home({ participants }) {
     setGameType(value);
   };
   const shakeBtn = async () => {
-    if (localStorage.getItem("ShakeTime") != undefined) {
+    if (!localStorage.getItem("ShakeTime") === null) {
       await setShakeTime(parseInt(localStorage.getItem("ShakeTime")));
     }
-    if (localStorage.getItem("Applause") != undefined) {
+    if (!localStorage.getItem("Applause") === null) {
       await setApplausing(localStorage.getItem("Applause"));
     }
     console.log("shake", shakeTime);
@@ -189,11 +188,11 @@ export default function Home({ participants }) {
     // console.log("CSRF:",CSRFToken)
     console.log("MMMMMMM",localStorage.getItem("ShowWinnerModalSettings"))
 
-    if (localStorage.getItem("ShowWinnerModalSettings") != undefined && localStorage.getItem("ShowWinnerModalSettings") == "false" ) {
+    if (!localStorage.getItem("ShowWinnerModalSettings") === null) {
       setshowWinnerModalSettings(false);
     }
 
-    if (localStorage.getItem("ShowConfetti") != undefined && localStorage.getItem("ShowConfetti") == "false" ) {
+    if (!localStorage.getItem("ShowConfetti") === null) {
       setshowConfetti(false);
     }
     localStorage.setItem(
@@ -210,7 +209,7 @@ export default function Home({ participants }) {
         ,...participants])
     );
 
-    if (localStorage.getItem("ALLPARTICIPANTS") != undefined) {
+    if (!localStorage.getItem("ALLPARTICIPANTS") === null) {
       tempParticipants = JSON.parse(localStorage.getItem("ALLPARTICIPANTS"));
     } else {
       tempParticipants = [
@@ -225,7 +224,7 @@ export default function Home({ participants }) {
       ];
     }
 
-    if (localStorage.getItem("Entries") != undefined) {
+    if (!localStorage.getItem("Entries") === null) {
       setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
 
@@ -251,7 +250,7 @@ export default function Home({ participants }) {
     console.log("webstate items length", webState.seg);
     console.log("Coming from useEffects");
     console.log("apppppplause", localStorage.getItem("Applause"));
-    if (localStorage.getItem("Applause") != undefined) {
+    if (!localStorage.getItem("Applause") === null) {
       setApplausing(localStorage.getItem("Applause"));
     }
     console.log("My applausing", applausing);
@@ -259,7 +258,7 @@ export default function Home({ participants }) {
 
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
-      segCol.push("#4f56a5");
+      segCol.push("#3f29f9");
     } else {
       segCol.push("#dfdede");
     }
@@ -267,7 +266,7 @@ export default function Home({ participants }) {
 
   useEffect(() => {
     console.log("pppppp", localStorage.getItem("ShowParticipants"));
-    if (localStorage.getItem("ShowParticipants") == "true") {
+    if (!localStorage.getItem("ShowParticipants") === null) {
       setShowParticipants(true);
     }
     console.log("aaaa", showParticipants);
@@ -354,7 +353,7 @@ export default function Home({ participants }) {
     const arr = Array(parseInt(more.value)).fill(hello);
     console.log("My participant", event.target.participantName.value);
     console.log("participant times", more.value);
-    if (localStorage.getItem("Entries") != undefined) {
+    if (!localStorage.getItem("Entries") === null) {
       await setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
 
@@ -415,63 +414,6 @@ export default function Home({ participants }) {
     console.log(delParticipant);
   };
 
-  // const LoginUser = async (event) => {
-  //   event.preventDefault();
-  //   var user;
-  //   await fetch("https://potofnames/api/users")
-  //     .then((response) => response.json())
-  //     .then((AllUsers) => {
-  //       for (var i = 0; i < AllUsers.length; i++) {
-  //         if (AllUsers[i].email == event.target.LoginEmail.value) {
-  //           if (AllUsers[i].password == event.target.LoginPass.value) {
-  //             user = AllUsers[1];
-  //             alert("Successfully Login");
-  //             break;
-  //           } else {
-  //             user = "wrong pass";
-  //             alert("Enter correct password");
-  //             break;
-  //           }
-  //         }
-  //       }
-  //       if (!user) {
-  //         alert("Please Signup first");
-  //       }
-  //     });
-  // };
-
-  // const SignupUser = async (event) => {
-  //   event.preventDefault();
-  //   var user;
-  //   await fetch("https://potofnames/api/users")
-  //     .then((response) => response.json())
-  //     .then((AllUsers) => {
-  //       for (var i = 0; i < AllUsers.length; i++) {
-  //         console.log("ALL", AllUsers[i]);
-  //         console.log("MY", event.target.SignupEmail.value);
-  //         if (AllUsers[i].email == event.target.SignupEmail.value) {
-  //           user = AllUsers[i];
-  //           console.log("IF");
-  //           alert("User Already exist. Please Login");
-  //           break;
-  //         }
-  //       }
-  //       if (!user) {
-  //         const res = fetch("https://potofnames/api/users", {
-  //           body: JSON.stringify({
-  //             name: event.target.SignupName.value,
-  //             email: event.target.SignupEmail.value,
-  //             password: event.target.SignupPass.value,
-  //           }),
-  //           headers: { "Content-Type": "application/json" },
-  //           method: "POST",
-  //         });
-  //         if (res) {
-  //           alert("Successfully signed in");
-  //         }
-  //       }
-  //     });
-  // };
 
   // useEffect(() => {
   //   const segarr=[]
@@ -548,7 +490,7 @@ export default function Home({ participants }) {
           <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container-fluid">
               <a className="navbar-brand" href="#">
-                <img src="logo.jpg" width="150" />
+                <img src="logo.png" width="150" />
               </a>
               <div style={{ marginLeft: "10%" }} className="d-flex">
                 <div className="navbar-nav">
@@ -774,29 +716,50 @@ export default function Home({ participants }) {
             </div>
           </div>
         </div>
-
+        <div
+          style={{ display: showdivs }}
+          className="Pot-or-Wheel row"
+        >
+       <div className="row" style={{display:"flex",flexDirection:"row",justifyContent:"space-between",paddingLeft:"6rem"}}>
         {gameType == "wheel" && (
-          <div className="row justify-content-center">
-            <div
-              className="col-6 col-md-2 m-5 text-center"
-              style={{ paddingLeft: "3%" }}
-            >
-              <button
-                style={{ display: showdivs }}
+              <button 
+                style={{ display: showdivs,width:"fit-content" }}
                 type="button"
-                className="ThreeD-mode btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg"
+                className="ThreeD-mode btn btn-purple btn-radius bg-purple text-white btn-radius col-2"
                 data-bs-toggle="modal"
                 data-bs-target="#threeDModeModal"
               >
                 3D MODE
               </button>
-            </div>
-          </div>
         )}
+            <button
+            style={{width:"15%"}}
+              type="button"
+              className="btn btn-purple btn-radius bg-purple text-white btn-radius col-2"
+              onClick={(e) => togglePotWheel(e, "pot")}
+            >
+              POT
+            </button>
+            <button
+            style={{width:"fit-content"}}
+              type="button"
+              className="btn btn-purple btn-radius bg-purple text-white btn-radius  col-2"
+              onClick={(e) => togglePotWheel(e, "wheel")}
+            >
+              WHEEL
+            </button>
+            <div className="col-2"></div>
+            </div>
+
+        </div>
+
+
+
+
 
         <form
           style={{ display: showdivs }}
-          style={{ marginLeft: "5%" }}
+          style={{ marginLeft: "-11%" }}
           className="row justify-content-center mt-3"
           method="post"
           onSubmit={addParticipant}
@@ -847,50 +810,33 @@ export default function Home({ participants }) {
                   </div>
                 </>
               )}
+              <img src="shuffle-icon.png" width="30" height="30" style={{marginTop:"12px"}} />
+              <div
+                type="Button"
+                style={{ marginLeft: "5%",}}
+                onClick={() => shuffleArray(webState)}
+                className="btn  text-purple fs-4 fw-bold"
+              >
+                shuffle
+              </div>
+
               {gameType == "wheel" && (
                 <>
-                  <div
+                
+                  <div style={{borderLeft:"4px solid #3f29f9",paddingLeft:"13px",paddingTop:"-3px",marginTop:"10%" }}
                     id="spinBtn"
                     onClick={() => settheShouldWeSpin()}
-                    className="my-2 text-purple fs-4 fw-bold"
+                    className="text-purple fs-4 fw-bold"
                   >
-                    Spin
+                    spin
                   </div>
                 </>
               )}
-              <button
-                type="Button"
-                style={{ marginLeft: "30%" }}
-                onClick={() => shuffleArray(webState)}
-                className="btn btn-white text-purple fs-4 fw-bold"
-              >
-                Shuffle
-              </button>
             </div>
           </div>
         </form>
 
-        <div
-          style={{ display: showdivs }}
-          className="Pot-or-Wheel col-12 text-center m-3"
-        >
-          <div className="btn-group " role="group" aria-label="Basic example">
-            <button
-              type="button"
-              className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg"
-              onClick={(e) => togglePotWheel(e, "pot")}
-            >
-              POT
-            </button>
-            <button
-              type="button"
-              className="btn btn-purple btn-radius bg-purple text-white btn-radius btn-lg"
-              onClick={(e) => togglePotWheel(e, "wheel")}
-            >
-              WHEEL
-            </button>
-          </div>
-        </div>
+        
 
         <div style={{ display: showdivs }} className="m-5 test">
           <div className="row">
@@ -905,7 +851,7 @@ export default function Home({ participants }) {
                   >
                     <div className=" col-4 col-md-4">
                       <img
-                        src="logo.jpg"
+                        src="logo.png"
                         className="img-fluid rounded-circle"
                         alt="..."
                       />
@@ -1082,7 +1028,7 @@ export default function Home({ participants }) {
                         </button>
                         <div style={{ textAlign: "center" }}>
                           <form
-                            action="http://localhost:3000/api/auth/signin/google"
+                            action="https://potofnames.com/api/auth/signin/google"
                             method="POST"
                           >
                             <input
@@ -1093,7 +1039,7 @@ export default function Home({ participants }) {
                             <input
                               type="hidden"
                               name="callbackUrl"
-                              value="http://localhost:3000/"
+                              value="https://potofnames.com/"
                             />
                             <button
                               style={{ width: "100%" }}
@@ -1380,7 +1326,7 @@ export default function Home({ participants }) {
         <div className="row justify-content-center">
           <div className="col-2">
             <Link href="https://potofnames.com/">
-              <img src="logo.jpg" className="img-fluid sponsor-img" alt="..." />
+              <img src="logo.png" className="img-fluid sponsor-img" alt="..." />
             </Link>
           </div>
           <div className="col-2">

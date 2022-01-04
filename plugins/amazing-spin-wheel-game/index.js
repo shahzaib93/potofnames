@@ -1,6 +1,6 @@
 var React = require('react');
 const { default: ReactHowler } = require('react-howler');
-import img from "../../public/logo.jpg"
+import img from "../../public/logo.png"
 var WheelComponent = function WheelComponent(_ref) {
   // console.log(_ref.segments);
   const {shouldWeSpin, setShouldWeSpin} = _ref;
@@ -189,12 +189,22 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.font = 'bold 1em ' + fontFamily;
     ctx.fillText(value.substr(0, 21), size / 2 + 20, 0);
     ctx.restore();
+    
   };
 
   var drawWheel = function drawWheel() {
 
     
     var ctx = canvasContext;
+    // setLogoImg(localStorage.getItem("CenterLogo"))
+    // var img = new Image()
+    // if(LogoImg!="" && LogoImg != null){
+    //   img.src = LogoImg
+    // }
+    // else{
+    // img.src = "roundlogo.png"}
+    // ctx.drawImage(img,centerX-50,centerY-50,100,100)
+
     
     var lastAngle = angleCurrent;
     var len = segments.length;
@@ -230,12 +240,86 @@ var WheelComponent = function WheelComponent(_ref) {
     // ctx.strokeStyle = primaryColor;
     // ctx.stroke();
     
+    
   };
 
   var drawNeedle = function drawNeedle() {
+    var arrow = new Image()
+    if(!localStorage.getItem("ArrowImage")===null){
+      arrow.src = localStorage.getItem("ArrowImage")
+    }
+    else{
+    arrow.src = "arrow.png"
+  }
+    var change;
+    var ArrowPos = ""
+    console.log("ARROW",ArrowPos)
+    if(!localStorage.getItem("ArrowPosition")===null){
+      ArrowPos=localStorage.getItem("ArrowPosition")
+    }
+    else{
+      ArrowPos="At-3"
+      change = angleCurrent
 
-    setLogoImg(localStorage.getItem("CenterLogo"))
+    }
     var ctx = canvasContext;
+    arrow.onload = function(){
+      function drawRotate12(){
+        ctx.drawImage(arrow,225,-55,150,160)
+        }
+        function drawRotated3(){
+        ctx.rotate(Math.PI/2)
+        ctx.globalCompositeOperation = "source-over";
+        ctx.drawImage(arrow,centerX-75,-630,150,160)
+        ctx.restore()
+        }
+        function drawRotated6(){
+        ctx.rotate(Math.PI);
+        ctx.drawImage(arrow,centerX-685,-650,170,160)
+        ctx.restore()
+        }
+        function drawRotated9(){ 
+        ctx.rotate(Math.PI*7/4.7);
+        ctx.drawImage(arrow,-388,-50,170,160)
+        ctx.restore()
+        }
+        if(ArrowPos=="At-12"){
+                drawRotate12()
+        }
+
+        else if(ArrowPos=="At-6"){
+                drawRotated6()
+        }
+        else if(ArrowPos=="At-9"){
+                drawRotated9()      
+        }
+      else if(ArrowPos=="At-3"){
+              drawRotated3()     
+      }
+    }
+
+    if(ArrowPos=="At-12"){
+     
+      change = angleCurrent + Math.PI / 2;
+}
+
+else if(ArrowPos=="At-6"){
+      
+      change = angleCurrent + Math.PI*3 / 2;
+
+}
+else if(ArrowPos=="At-9"){
+     
+      change = angleCurrent + Math.PI;
+      
+}
+else if(ArrowPos=="At-3"){
+    
+    change = angleCurrent
+}
+
+
+    console.log("ARRR",change)
     // ctx.lineWidth = 1;
     // ctx.strokeStyle = contrastColor;
     // ctx.fileStyle = contrastColor;
@@ -245,7 +329,8 @@ var WheelComponent = function WheelComponent(_ref) {
     // ctx.lineTo(centerX, centerY - 70);
     // ctx.closePath();
     // ctx.fill();
-    var change = angleCurrent + Math.PI / 50;
+    // var change = angleCurrent + Math.PI / 2;
+
     var i = segments.length - Math.floor(change / (Math.PI * 2) * segments.length) - 1;
     if (i < 0) i = i + segments.length;
     ctx.textAlign = 'center';
@@ -254,46 +339,21 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.font = 'bold 1.5em ' + fontFamily;
     currentSegment = segments[i];
     isStarted && ctx.fillText(currentSegment, centerX + 10, centerY + size + 50);
+    // var img = new Image()
+  
+    
+    
+setLogoImg(localStorage.getItem("CenterLogo"))
     var img = new Image()
-    var arrow = new Image()
-    if(localStorage.getItem("ArrowImage")!=undefined){
-      arrow.src = localStorage.getItem("ArrowImage")
-    }
-    else{
-    arrow.src = "arrow.png"}
     if(LogoImg!="" && LogoImg != null){
       img.src = LogoImg
     }
     else{
     img.src = "roundlogo.png"}
-    // ctx.globalCompositeOperation='destination-over';
-
-    function drawRotate12(){
-    ctx.drawImage(arrow,225,-55,150,160)
-    }
-
-    function drawRotated3(){
-    ctx.rotate(Math.PI/2)
-    ctx.drawImage(arrow,centerX-75,-630,150,160)
-    ctx.restore()
-    }
-
-    function drawRotated6(){
-    ctx.rotate(Math.PI);
-    ctx.drawImage(arrow,centerX-685,-650,170,160)
-    ctx.restore()
-    }
-    function drawRotated9(){ 
-    ctx.rotate(Math.PI*7/4.7);
-    ctx.drawImage(arrow,-388,-50,170,160)
-    ctx.restore()
-    }
-// drawRotated9()
-// drawRotate12()
-drawRotated3()
-// drawRotated6()
-
-    ctx.drawImage(img,centerX-50,centerY-50,100,100)
+    img.onload = function() {
+      ctx.drawImage(img,centerX-50,centerY-50,100,100)
+  };
+    // ctx.drawImage(img,centerX-50,centerY-50,100,100)
   };
 
   var clear = function clear() {

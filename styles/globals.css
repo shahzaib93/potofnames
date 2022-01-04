@@ -70,14 +70,14 @@ a {
 }
 .navbar-light .navbar-nav .show > .nav-link,
 .navbar-light .navbar-nav .nav-link.active {
-  background: #4f56a5;
+  background: #3f29f9;
   border-radius: 20px;
   color: white;
   font-weight: bold;
   font-size: 16px;
 }
 .navbar-light .navbar-nav .nav-link {
-  color: #4f56a5;
+  color: #3f29f9;
   border-radius: 20px;
   font-weight: bold;
   font-size: 16px;
@@ -91,16 +91,16 @@ a {
   font-size: 16px;
 }
 .bg-purple {
-  background: #4f56a5;
+  background: #3f29f9;
 }
 
 .icon {
-  background: #4f56a5;
+  background: #3f29f9;
   color: white;
   padding: 20px;
 }
 .text-purple {
-  color: #4f56a5;
+  color: #3f29f9;
 }
 .mycustom {
   position: relative;
@@ -158,10 +158,12 @@ a {
   border: 0;
 }
 .wheel_frame {
-  width: 680px;
+  width: 720px;
   z-index: -100;
   margin: auto;
-  padding: 10px;
+  /* padding: 10px; */
+  margin-top: -109px;
+  margin-left: -22px;
 }
 .range {
   width: 100%;
@@ -277,6 +279,10 @@ a {
   }
 }
 
+@media only screen and (min-width: 992px) {
+
+}
+
 @media screen and (min-width: 1200px) {
   .test {
     padding: 0 200px 0 200px;
@@ -312,12 +318,13 @@ a {
   margin-top: 4%;
   height: 35px;
   width: 50px;
-  border: 2px solid #4f56a5 !important ;
+  border: 2px solid #3f29f9!important ;
 }
 
 #wheel{
   max-width: 100% !important;
   /* margin-left: 5%; */
+  margin-bottom: 30%;
 }
  
 

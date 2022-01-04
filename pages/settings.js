@@ -70,6 +70,9 @@ function Settings() {
   useEffect(() => {
     localStorage.setItem("Entries", entries);
     localStorage.setItem("ShakeTime", shakeTime);
+    // if(!spinTime){
+    //   localStorage.setItem("SpinTime",2)
+    // }
     localStorage.setItem("SpinTime", spinTime);
     // router.reload("/")
   }, [entries, shakeTime, spinTime]);
@@ -155,11 +158,13 @@ function Settings() {
       await localStorage.setItem("ShowWinnerModalSettings", false);
       document.getElementById("MODALOFF").setAttribute("checked", true);
     }
-
-    // await localStorage.setItem("ShowWinnerModalSettings",e)
-    // const Btn = await localStorage.setItem("Showmodalbutton","secondary");
-    // await setShowModalBtn(Btn)
   };
+
+
+  const getArrowPosition= async(event)=>{
+    console.log("AAA",event.target.value)
+      await localStorage.setItem("ArrowPosition",event.target.value)
+  }
 
   useEffect(() => {
     const Show = localStorage.getItem("SHOW");
@@ -192,7 +197,7 @@ function Settings() {
           <nav className="navbar navbar-expand-lg navbar-light">
             <div className="container-fluid">
               <a className="navbar-brand" href="#">
-                <img src="logo.jpg" width="150" />
+                <img src="logo.png" width="150" height="85" />
               </a>
               <div className="d-flex">
                 <div className="navbar-nav">
@@ -339,7 +344,34 @@ function Settings() {
                     <option value="applause-03">Applause 3</option>
                   </select>
                 </div>
+                
               </div>
+              <div className="row my-4">
+                <div className="col-3 mt-1">
+                  <strong>SELECT ARROW POSITION</strong>
+                </div>
+                <div className="col-8">
+                  <select
+                    onChange={getArrowPosition}
+                    style={{
+                      width: "55%",
+                      height: "50%",
+                      borderRadius: "5px",
+                      border: "2px solid #4f56a5",
+                    }}
+                    name="applause"
+                    id="applause"
+                  >
+                    <option value="At-12">At 12'O clock</option>
+                    <option value="At-3">At 3'O clock</option>
+                    <option value="At-6">At 6'O clock</option>
+                    <option value="At-9">At 9'O clock</option>
+
+                  </select>
+                </div>
+                
+              </div>
+              
               <div
                 className="row justify-content-start"
                 style={{ marginLeft: "3%" }}
@@ -621,7 +653,7 @@ function Settings() {
         <div className="row justify-content-center">
           <div className="col-2">
             <Link href="https://potofnames.com/">
-              <img src="logo.jpg" className="img-fluid sponsor-img" alt="..." />
+              <img src="logo.png" className="img-fluid sponsor-img" alt="..." />
             </Link>
           </div>
           <div className="col-2">
