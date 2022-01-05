@@ -1,17 +1,12 @@
 var React = require('react');
 const { default: ReactHowler } = require('react-howler');
-import img from "../../public/logo.png"
 var WheelComponent = function WheelComponent(_ref) {
-  // console.log(_ref.segments);
   const {shouldWeSpin, setShouldWeSpin} = _ref;
   const [sound, setSound] = React.useState(false);
   const [LogoImg, setLogoImg] = React.useState("");
   const [ArrowImg, setArrowImg] = React.useState("");
 
 
-{/* <ReactHowler src="/wheel-spin.mp3" playing={true}/> */}
-
-{/* <img id="myImage" src={imge}/> */}
   var segments = _ref.segments,
       spinSeconds = _ref.spinSeconds,
       segColors = _ref.segColors,

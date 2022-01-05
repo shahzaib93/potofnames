@@ -17,21 +17,40 @@ export default async function handler (req, res) {
       try {
         // const participant = await Participant.create(req.body)
         // for(var i=0;i<addParticipant.name.length;i++){}
+        // var b = "waj,ahat"
+        // if(b.includes(",")){
+        //   console.log(b.split(","))
+        // }
+        console.log("aaa",typeof(req.body))
 
         var addParticipant = new Participant(req.body);
         console.log("body",req.body)
+
         console.log("add",addParticipant)
+
         var participantArray = []
+        if(req.body.name.includes(",")){
+          console.log("SPLITTED")
+          var SPLIT = addParticipant.name.split(",")
+          for (var i=1;i<SPLIT.length+1;i++){
+            participantArray.push({name:SPLIT[i-1],repeatation:addParticipant.repeatation,_id:addParticipant._id})
+          }
+          console.log("pppp",participantArray)
+        }
+        else{
         for(var i=1;i<req.body.repeatation+1;i++){
           participantArray.push({name:addParticipant.name,repeatation:i,_id:addParticipant._id})
-        }
+        }}
   console.log("kxnsxnsxnx",participantArray)
-        addParticipant.save(function (err) {
-            if (err) return handleError(err);
-            // saved!
-        })
+  // for (var i=0;i<participantArray.length;i++){
+  //       participantArray[i].save(function (err) {
+  //           if (err) return handleError(err);
+  //           // saved!
+  //       })}
         console.log("final",addParticipant)
         res.status(201).json({participantArray})
+        // console.log("SPlit",addParticipant.split(","))
+
       } catch (error) {
         res.status(400).json({ success: false })
       }

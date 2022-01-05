@@ -14,7 +14,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 // https://potofnames/api/participants
-// https://potofnames.com/api/participants
+// https://potofnames.com /api/participants
 // import styled, { ThemeProvider } from "styled-components";
 import { useTheme } from "next-themes";
 import Signup from "./components/signup";
@@ -167,6 +167,10 @@ function Settings() {
   }
 
   useEffect(() => {
+    window.onhashchange = function() {
+      window.location.replace("/")
+      
+     }
     const Show = localStorage.getItem("SHOW");
     console.log("SHOW", Show);
     if (Show == "MODALON") {
@@ -184,6 +188,13 @@ function Settings() {
   //   const data = localStorage.getItem("csvdata")
   //   console.log("data csv",JSON.parse(data));
   // }, []);
+
+const ToHome = () =>{
+  // router.push("/",null,{shallow:false})
+  window.location.replace("/")
+}
+
+
 
   return (
     <div className="container container-sm container-md mb-5">
@@ -204,7 +215,7 @@ function Settings() {
                   <a
                     type="button"
                     className="nav-link active px-4"
-                    onClick={() => router.push("/")}
+                    onClick={() => ToHome()}
                   >
                     HOME
                   </a>
@@ -652,7 +663,7 @@ function Settings() {
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <Link href="https://potofnames.com/">
+            <Link href="https://potofnames.com /">
               <img src="logo.png" className="img-fluid sponsor-img" alt="..." />
             </Link>
           </div>

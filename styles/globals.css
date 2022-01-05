@@ -172,6 +172,7 @@ a {
 .pot-group {
   width: 600px;
   height: 680px;
+  margin-top: 20%;
 }
 
 .pot-group .row{
@@ -310,9 +311,9 @@ a {
   margin-left: 5% !important;
 } */
 
-.ThreeD-mode{
+/* .ThreeD-mode{
   margin-left: 20% !important;
-}
+} */
 
 .Participants-repeat{
   margin-top: 4%;
@@ -340,4 +341,29 @@ a {
 
 
 
+.Modal-class{
+  position: absolute;
+margin: 0%;
+width: 30%;
+height: 30%;
+top: 40%;
+left: 35%;
+right: auto;
+bottom: auto;
+background-color: aliceblue;
+}
 
+@media (max-width: 480px) {
+  .Modal-class{
+    position: absolute;
+  margin: 0%;
+  width: 30%;
+  height: 8%;
+  top: 20%;
+  left: 8% !important;
+  right: auto;
+  bottom: auto;
+  background-color: aliceblue;
+  padding-top: 3%;
+  }
+}
