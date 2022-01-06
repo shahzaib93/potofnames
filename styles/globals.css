@@ -397,11 +397,10 @@ bottom: auto;
   background-color: blue;
   height: 105%;
   border-radius: 5px;
+  width: 20%;
 }
 
-.Progresscontainer{
-  background-color: white;
-}
+
 /* .ProgressBarDiv{
   transform: rotate(270deg);
 } */

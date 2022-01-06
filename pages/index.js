@@ -46,7 +46,8 @@ export default function Home({ participants,Wheeltimes }) {
   const [shouldWeSpin, setShouldWeSpin] = useState(false);
   const [soundplay, setsoundplay] = useState(false);
   const customStyles = {
-    content: {
+    barCompleted: {
+      backgroundColor:"blue"
       
     },
     
@@ -83,8 +84,8 @@ useEffect(()=>{
   setspinWheelTimes(Wheeltimes)
   console.log("GGGGG",spinWheelTimes)
   console.log("OO",localStorage.getItem("WheelImage")!==undefined)
-
-  if(localStorage.getItem("WheelImage")!==undefined){
+console.log("WWWW",wheelImg)
+  if(! localStorage.getItem("WheelImage")===null){
     setwheelImg(localStorage.getItem("WheelImage"))
   }
 
@@ -865,7 +866,7 @@ useEffect(()=>{
 
         <div style={{ display: showdivs }} className="m-5 test">
           <div className="ProgressBarDiv" style={{marginBottom:"5%"}}>
-          <ProgressBar style={customStyles}   labelClassName="Progresslabel" maxCompleted={totalEntries} customLabel={`${remainingEntries}  remaining`} completed={remainingEntries}/>
+          <ProgressBar bgColor="#3f29f9" baseBgColor="#f8f8ff" maxCompleted={totalEntries} customLabel={`${remainingEntries}  remaining`} completed={remainingEntries}/>
           </div>
           <div className="row">
             {webState.items.map((item, index) => (
