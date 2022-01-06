@@ -132,6 +132,12 @@ function Settings() {
     await localStorage.setItem("ArrowImage", e.target.alt);
   };
 
+  const SelectedWheelImage = async (e) => {
+    // e.target.style.backgroundColor = "gray"
+    await localStorage.setItem("WheelImage", e.target.alt);
+  };
+  
+
   const getArrowImg = (event) => {
     const reader = new FileReader();
     console.log("img", event.target.files[0]);
@@ -458,6 +464,38 @@ const ToHome = () =>{
                   onClick={(e) => SelectedImage(e)}
                   alt="Arrow3.png"
                   src="Arrow3.png"
+                  style={{ width: "20%", height: "100%" }}
+                />
+              </div>
+            </div>
+            <div className="row my-4">
+              <div className="col-4 mt-1">
+                <strong>SELECT WHEEL IMAGE</strong>
+              </div>
+              <div className="row my-4 Arrow-Images">
+                <img
+                  onClick={(e) => SelectedWheelImage(e)}
+                  alt="wheel_frame1"
+                  src="wheel_frame1.png"
+                  style={{ width: "20%", height: "100%" }}
+                />
+                <img
+                  onClick={(e) => SelectedWheelImage(e)}
+                  alt="wheel_frame2"
+                  src="wheel_frame2.png"
+                  style={{ width: "20%", height: "100%" }}
+                />
+
+                <img
+                  onClick={(e) => SelectedWheelImage(e)}
+                  alt="wheel_frame3"
+                  src="wheel_frame3.png"
+                  style={{ width: "20%", height: "100%" }}
+                />
+                <img
+                  onClick={(e) => SelectedWheelImage(e)}
+                  alt="wheel_frame4"
+                  src="wheel_frame4.png"
                   style={{ width: "20%", height: "100%" }}
                 />
               </div>

@@ -188,18 +188,15 @@ var WheelComponent = function WheelComponent(_ref) {
   };
 
   var drawWheel = function drawWheel() {
-
-    
     var ctx = canvasContext;
-    // setLogoImg(localStorage.getItem("CenterLogo"))
-    // var img = new Image()
-    // if(LogoImg!="" && LogoImg != null){
-    //   img.src = LogoImg
-    // }
-    // else{
-    // img.src = "roundlogo.png"}
-    // ctx.drawImage(img,centerX-50,centerY-50,100,100)
 
+    // var Wheelimg = new Image()
+    // Wheelimg.src = "wheel_frame.png"
+    // Wheelimg.onload = function(){
+    // ctx.drawImage(Wheelimg,-50,-100,700,900)
+
+    // }
+    
     
     var lastAngle = angleCurrent;
     var len = segments.length;
@@ -265,7 +262,7 @@ var WheelComponent = function WheelComponent(_ref) {
         function drawRotated3(){
         ctx.rotate(Math.PI/2)
         ctx.globalCompositeOperation = "source-over";
-        ctx.drawImage(arrow,centerX-75,-630,150,160)
+        ctx.drawImage(arrow,centerX-75,-670,150,160)
         ctx.restore()
         }
         function drawRotated6(){
@@ -360,7 +357,7 @@ setLogoImg(localStorage.getItem("CenterLogo"))
     id: "wheel",
   }, React.createElement("canvas", {
     id: "canvas",
-    width: "590",
+    width: "620",
     height: "590",
     style: {
       marginTop: "42px",

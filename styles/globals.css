@@ -350,7 +350,7 @@ top: 40%;
 left: 35%;
 right: auto;
 bottom: auto;
-background-color: aliceblue;
+/* background-color: aliceblue; */
 }
 
 @media (max-width: 480px) {
@@ -365,5 +365,43 @@ background-color: aliceblue;
   bottom: auto;
   background-color: aliceblue;
   padding-top: 3%;
+  transform: 'translate(-50%, -50%)';
   }
 }
+
+.Modal-Overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: -10%;
+  bottom: 0;
+  background-color: 'rgba(255, 255, 255, 0.75)';
+}
+
+.Modal-body{
+  overflow-x: hidden !important;
+}
+
+.Progress-container{
+  padding:1%;
+  height: 5%;
+
+}
+.Progresslabel{
+  color: white;
+  font-weight: bold;
+  padding: 5%;
+}
+
+.barCompleted{
+  background-color: blue;
+  height: 105%;
+  border-radius: 5px;
+}
+
+.Progresscontainer{
+  background-color: white;
+}
+/* .ProgressBarDiv{
+  transform: rotate(270deg);
+} */

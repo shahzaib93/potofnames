@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import WheelComponent from "../plugins/amazing-spin-wheel-game";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession, signIn, signOut, getCsrfToken } from "next-auth/react";
+import ProgressBar from "@ramonak/react-progress-bar";
 import {
   faFacebookF,
   faInstagramSquare,
@@ -25,12 +26,15 @@ import { show } from "react-modal/lib/helpers/ariaAppHider";
 export const getStaticProps = async () => {
   const res = await fetch("https://potofnames.com/api/participants");
   const data = await res.json();
+  const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
+  const times = await timesres.json()
+  const timesData = times[0].times
   return {
-    props: { participants: data },
+    props: { participants: data,Wheeltimes:timesData },
   };
 };
 
-export default function Home({ participants }) {
+export default function Home({ participants,Wheeltimes }) {
   // const audio = new Audio("/mixkit-clapping-male-crowd-439.wav")
 
   const router = useRouter();
@@ -43,16 +47,9 @@ export default function Home({ participants }) {
   const [soundplay, setsoundplay] = useState(false);
   const customStyles = {
     content: {
-      margin: "0%",
-      width: "30%",
-      height: "30%",
-      top: "40%",
-      left: "35em",
-      right: "auto",
-      bottom: "auto",
-      // left:"20%",
-      transform: "translate(-50%, -50%)",
+      
     },
+    
   };
   const [showdivs, setshowdivs] = useState("block");
   const [thewinner, setthewinner] = useState("");
@@ -75,8 +72,23 @@ export default function Home({ participants }) {
   const [csrfToken,setcsrfToken] = useState("")
   const [showLoginModal,setshowLoginModal] = useState(false)
   const [showSignuoModal,setshowSignupModal] = useState(false)
+  const [spinWheelTimes,setspinWheelTimes] = useState("")
+  const [wheelImg,setwheelImg] = useState("wheel_frame")
+  const [remainingEntries,setremainingEntries] = useState("")
 
 
+
+useEffect(()=>{
+  setremainingEntries(totalEntries-webState.items.length)
+  setspinWheelTimes(Wheeltimes)
+  console.log("GGGGG",spinWheelTimes)
+  console.log("OO",localStorage.getItem("WheelImage")!==undefined)
+
+  if(localStorage.getItem("WheelImage")!==undefined){
+    setwheelImg(localStorage.getItem("WheelImage"))
+  }
+
+},[wheelImg,totalEntries,webState,remainingEntries])
 
 
   const segCol = [];
@@ -142,9 +154,22 @@ export default function Home({ participants }) {
   };
 
   const settheShouldWeSpin = async () => {
-    console.log("ssslocal", localStorage.getItem("SpinTime"));
-    if (!localStorage.getItem("SpinTime")===null ) {
-      console.log("sssSpinTime", parseInt(localStorage.getItem("SpinTime")));
+    const timesresget = await fetch("https://potofnames.com/api/wheelSpinTimes");
+  const times = await timesresget.json();
+  var timesData  = times[0].times
+  console.log("TTTTTTTTT",timesData)
+    const timerespost = await fetch("https://potofnames.com/api/wheelSpinTimes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({times:timesData+1}),
+    });
+    const time = await timerespost.json();
+    console.log("TTTT",time.addWheelSpinTimes)
+    setspinWheelTimes(time.addWheelSpinTimes.times)
+    
+    console.log("ssslocal", ! localStorage.getItem("SpinTime")==null);
+    if (! localStorage.getItem("SpinTime")===null ) {
+      console.log("sssSpinTime", IF);
       await setSpinTime(parseInt(localStorage.getItem("SpinTime")));
     }
     if (!localStorage.getItem("Applause") === null) {
@@ -223,7 +248,7 @@ export default function Home({ participants }) {
       ];
     }
 
-    if (localStorage.getItem("Entries") !== null) {
+    if (!localStorage.getItem("Entries") === null) {
       setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
 
@@ -565,6 +590,8 @@ export default function Home({ participants }) {
                   >
                     Full Screen
                   </button>
+                  <div style={{marginTop:"2%"}}>Wheel Spinned={spinWheelTimes}</div>
+                  {/* <div style={{marginTop:"2%",marginLeft:"1%"}}>Entries Left={remainingEntries}</div> */}
                 </div>
               </div>
             </div>
@@ -595,6 +622,8 @@ export default function Home({ participants }) {
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             className="Modal-class"
+            bodyOpenClassName="Modal-body"
+            // overlayClassName="Modal-Overlay"
             
           >
             <div style={{ textAlign: "center" }}>
@@ -634,8 +663,9 @@ export default function Home({ participants }) {
               {console.log("III",webState.seg.length,gameType)}
               {webState.seg.length > 0 && gameType == "wheel" && (
                 <div>
-                  <img 
-                    src="/wheel_frame.png"
+                  {console.log("OOOO",wheelImg)}
+                  <img style={{zIndex:0}}
+                    src={`/${wheelImg}.png`}
                     className="position-absolute wheel_frame threeDRotate"
                   />
                   <WheelComponent
@@ -834,6 +864,9 @@ export default function Home({ participants }) {
         
 
         <div style={{ display: showdivs }} className="m-5 test">
+          <div className="ProgressBarDiv" style={{marginBottom:"5%"}}>
+          <ProgressBar style={customStyles}   labelClassName="Progresslabel" maxCompleted={totalEntries} customLabel={`${remainingEntries}  remaining`} completed={remainingEntries}/>
+          </div>
           <div className="row">
             {webState.items.map((item, index) => (
               // eslint-disable-next-line react/jsx-key
