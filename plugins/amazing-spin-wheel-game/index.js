@@ -82,7 +82,9 @@ var WheelComponent = function WheelComponent(_ref) {
   var initCanvas = function initCanvas() {
     var canvas = document.getElementById('canvas');
     canvasContext = canvas.getContext('2d');
+ 
 
+  
     // var background = new Image();
     // background.src = "../wheel_frame.png";
     // canvasContext.drawImage(background,100,100,4000,2770);  
@@ -164,7 +166,27 @@ var WheelComponent = function WheelComponent(_ref) {
   };
 
   var drawSegment = function drawSegment(key, lastAngle, angle) {
+    function drawImageRot(img,x,y,width,height,deg){
+      ctx.save()
+      var rad = deg
+      ctx.translate(x + width / 2, y + height / 2);
+      ctx.rotate(rad);
+      ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height)
+      ctx.restore();
+  }
+    var img = new Image()
     
+    if(LogoImg!="" && LogoImg != null){
+      img.src = LogoImg
+    }
+    else{
+    img.src = "roundlogo.png"}
+    img.onload = function() {
+      drawImageRot(img,centerX-50,centerY-50,100,100,angle)
+
+      
+  };
+  
     var ctx = canvasContext;
     
     var value = segments[key];
@@ -237,16 +259,11 @@ var WheelComponent = function WheelComponent(_ref) {
 
   var drawNeedle = function drawNeedle() {
     var arrow = new Image()
-    if(!localStorage.getItem("ArrowImage")===null){
-      arrow.src = localStorage.getItem("ArrowImage")
-    }
-    else{
-    arrow.src = "arrow.png"
-  }
+    
     var change;
     var ArrowPos = ""
     console.log("ARROW",ArrowPos)
-    if(!localStorage.getItem("ArrowPosition")===null){
+    if(localStorage.getItem("ArrowPosition")!==null){
       ArrowPos=localStorage.getItem("ArrowPosition")
     }
     else{
@@ -289,7 +306,12 @@ var WheelComponent = function WheelComponent(_ref) {
               drawRotated3()     
       }
     }
-
+  //   if(!localStorage.getItem("ArrowImage")===null){
+  //     arrow.src = localStorage.getItem("ArrowImage")
+  //   }
+  //   else{
+  //   arrow.src = "arrow.png"
+  // }
     if(ArrowPos=="At-12"){
      
       change = angleCurrent + Math.PI / 2;
@@ -336,15 +358,7 @@ else if(ArrowPos=="At-3"){
     
     
 setLogoImg(localStorage.getItem("CenterLogo"))
-    var img = new Image()
-    if(LogoImg!="" && LogoImg != null){
-      img.src = LogoImg
-    }
-    else{
-    img.src = "roundlogo.png"}
-    img.onload = function() {
-      ctx.drawImage(img,centerX-50,centerY-50,100,100)
-  };
+    
     // ctx.drawImage(img,centerX-50,centerY-50,100,100)
   };
 
@@ -360,9 +374,10 @@ setLogoImg(localStorage.getItem("CenterLogo"))
     width: "620",
     height: "590",
     style: {
-      marginTop: "42px",
-      marginLeft: "39px",
-      pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto'
+      marginTop: "45px",
+      marginLeft: "38px",
+      pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto',
+      
     }
   }));
 };

@@ -130,11 +130,18 @@ function Settings() {
   const SelectedImage = async (e) => {
     // e.target.style.backgroundColor = "gray"
     await localStorage.setItem("ArrowImage", e.target.alt);
+     console.log("AAAAA" ,await localStorage.getItem("ArrowImage"))
   };
 
   const SelectedWheelImage = async (e) => {
     // e.target.style.backgroundColor = "gray"
+    
     await localStorage.setItem("WheelImage", e.target.alt);
+    if(e.target.alt=="wheel_frame1"){await localStorage.setItem("SegmentColor","#9d17bf")}
+      else if(e.target.alt=="wheel_frame2"){await localStorage.setItem("SegmentColor","#29f930")}
+      else if(e.target.alt=="wheel_frame3"){await localStorage.setItem("SegmentColor","#de1d1d")}
+      else if(e.target.alt=="wheel_frame4"){await localStorage.setItem("SegmentColor","#9d17bf")}
+      else if(e.target.alt=="wheel_frame5"){await localStorage.setItem("SegmentColor","#de1d1d")}
   };
   
 
@@ -470,7 +477,7 @@ const ToHome = () =>{
             </div>
             <div className="row my-4">
               <div className="col-4 mt-1">
-                <strong>SELECT WHEEL IMAGE</strong>
+                <strong>SELECT WHEEL DESIGN</strong>
               </div>
               <div className="row my-4 Arrow-Images">
                 <img
@@ -496,6 +503,12 @@ const ToHome = () =>{
                   onClick={(e) => SelectedWheelImage(e)}
                   alt="wheel_frame4"
                   src="wheel_frame4.png"
+                  style={{ width: "20%", height: "100%" }}
+                />
+                  <img
+                  onClick={(e) => SelectedWheelImage(e)}
+                  alt="wheel_frame5"
+                  src="wheel_frame5.png"
                   style={{ width: "20%", height: "100%" }}
                 />
               </div>

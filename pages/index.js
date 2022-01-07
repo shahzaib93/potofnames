@@ -29,6 +29,7 @@ export const getStaticProps = async () => {
   const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
   const times = await timesres.json()
   const timesData = times[0].times
+
   return {
     props: { participants: data,Wheeltimes:timesData },
   };
@@ -76,21 +77,37 @@ export default function Home({ participants,Wheeltimes }) {
   const [spinWheelTimes,setspinWheelTimes] = useState("")
   const [wheelImg,setwheelImg] = useState("wheel_frame")
   const [remainingEntries,setremainingEntries] = useState("")
+  const [ArrowPos,setArrowPos] = useState("At-3")
+  const [SegmentColor,setSegmentColor] = useState("#171dbf")
+
 
 
 
 useEffect(()=>{
+  console.log("SEGCOLORS",localStorage.getItem("SegmentColor"))
+  if(localStorage.getItem("SegmentColor")!==null){
+    setSegmentColor(localStorage.getItem("SegmentColor"))
+  }
+  gettingArrowImage()
   setremainingEntries(totalEntries-webState.items.length)
   setspinWheelTimes(Wheeltimes)
   console.log("GGGGG",spinWheelTimes)
   console.log("OO",localStorage.getItem("WheelImage")!==undefined)
 console.log("WWWW",wheelImg)
-  if(! localStorage.getItem("WheelImage")===null){
+  if(localStorage.getItem("WheelImage")!==null){
     setwheelImg(localStorage.getItem("WheelImage"))
   }
 
-},[wheelImg,totalEntries,webState,remainingEntries])
+},[wheelImg,totalEntries,webState,remainingEntries,ArrowPos])
 
+
+const gettingArrowImage = async()=>{
+  console.log("OOOOOOOOO",await localStorage.getItem("ArrowPosition"))
+  if(await localStorage.getItem("ArrowPosition")!==null){
+    setArrowPos(await localStorage.getItem("ArrowPosition"))
+  }
+
+}
 
   const segCol = [];
   const tempParticipants = [];
@@ -281,13 +298,28 @@ console.log("WWWW",wheelImg)
     console.log("My applausing", applausing);
   }, [webState, gameType]);
 
+
+
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
-      segCol.push("#3f29f9");
+      if(SegmentColor=="wheel_frame1"){segCol.push("#9d17bf")}
+      else if(SegmentColor=="wheel_frame2"){segCol.push("#29f930")}
+      else if(SegmentColor=="wheel_frame3"){segCol.push("#de1d1d")}
+      else if(SegmentColor=="wheel_frame4"){segCol.push("#9d17bf")}
+      else if(SegmentColor=="wheel_frame5"){segCol.push("#de1d1d")}
+      else{segCol.push("#171dbf")}
+      
     } else {
       segCol.push("#dfdede");
     }
   }
+
+  //wheel_frame1=#2964f9
+  //wheel_frame2=#29f930
+  //wheel_frame3=#de1d1d
+  //wheel_frame4=#9d17bf
+  //wheel_frame5=#de1d1d
+
 
   useEffect(() => {
     console.log("pppppp", localStorage.getItem("ShowParticipants"));
@@ -664,8 +696,26 @@ console.log("WWWW",wheelImg)
               {console.log("III",webState.seg.length,gameType)}
               {webState.seg.length > 0 && gameType == "wheel" && (
                 <div>
-                  {console.log("OOOO",wheelImg)}
-                  <img style={{zIndex:0}}
+                  {console.log("OOOO",ArrowPos)}
+                  {ArrowPos=="At-12"?<img  style={{zIndex:9999,marginTop: "-30px",marginLeft: "290px",width:"100px"}}
+                    src={`/arrow.png`}
+                    className="position-absolute"
+                  />:null}
+                  {ArrowPos=="At-3"?<img  style={{zIndex:9999,marginTop: "260px",marginLeft: "580px",width:"100px",transform:"rotate(90deg)"}}
+                    src={`/arrow.png`}
+                    className="position-absolute"
+                  />:null}
+                  {ArrowPos=="At-6"?<img  style={{zIndex:9999,marginTop: "545px",marginLeft: "290px",width:"100px",transform:"rotate(180deg)"}}
+                    src={`/arrow.png`}
+                    className="position-absolute"
+                  />:null}
+                  {ArrowPos=="At-9"?<img  style={{zIndex:9999,marginTop: "258px",marginLeft: "5px",width:"100px",transform:"rotate(270deg)"}}
+                    src={`/arrow.png`}
+                    className="position-absolute"
+                  />:null}
+
+                  
+                  <img 
                     src={`/${wheelImg}.png`}
                     className="position-absolute wheel_frame threeDRotate"
                   />

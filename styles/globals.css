@@ -157,13 +157,14 @@ a {
 .login-modal .modal-header {
   border: 0;
 }
+
 .wheel_frame {
-  width: 720px;
+  width: 780px;
   z-index: -100;
   margin: auto;
   /* padding: 10px; */
-  margin-top: -109px;
-  margin-left: -22px;
+  margin-top: -140px;
+  margin-left: -52px;
 }
 .range {
   width: 100%;
@@ -404,3 +405,17 @@ bottom: auto;
 /* .ProgressBarDiv{
   transform: rotate(270deg);
 } */
+
+@keyframes rotate{
+  from{ transform: rotate(-360deg); }
+  to{ transform: rotate(360deg); }
+}
+
+/* #canvas{
+  width: "640";
+  height: "590";
+  animation-name: rotate;
+  animation-duration: 15s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  /* border-radius: 50%; */
