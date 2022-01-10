@@ -14,11 +14,12 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 // https://potofnames/api/participants
-// https://potofnames.com/api/participants
+// http://localhost:3000/api/participants
 // import styled, { ThemeProvider } from "styled-components";
 import { useTheme } from "next-themes";
 import Signup from "./components/signup";
 import Login from "./components/login";
+import Modal from "react-modal";
 
 function Settings() {
   const { theme, setTheme } = useTheme();
@@ -137,7 +138,7 @@ function Settings() {
     // e.target.style.backgroundColor = "gray"
     
     await localStorage.setItem("WheelImage", e.target.alt);
-    if(e.target.alt=="wheel_frame1"){await localStorage.setItem("SegmentColor","#9d17bf")}
+    if(e.target.alt=="wheel_frame1"){await localStorage.setItem("SegmentColor","#1784bf")}
       else if(e.target.alt=="wheel_frame2"){await localStorage.setItem("SegmentColor","#29f930")}
       else if(e.target.alt=="wheel_frame3"){await localStorage.setItem("SegmentColor","#de1d1d")}
       else if(e.target.alt=="wheel_frame4"){await localStorage.setItem("SegmentColor","#9d17bf")}
@@ -714,7 +715,7 @@ const ToHome = () =>{
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <Link href="https://potofnames.com/">
+            <Link href="http://localhost:3000/">
               <img src="logo.png" className="img-fluid sponsor-img" alt="..." />
             </Link>
           </div>

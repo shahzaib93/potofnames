@@ -5,7 +5,7 @@ var WheelComponent = function WheelComponent(_ref) {
   const [sound, setSound] = React.useState(false);
   const [LogoImg, setLogoImg] = React.useState("");
   const [ArrowImg, setArrowImg] = React.useState("");
-
+  const [css,setCss] = React.useState("")
 
   var segments = _ref.segments,
       spinSeconds = _ref.spinSeconds,
@@ -61,11 +61,18 @@ var WheelComponent = function WheelComponent(_ref) {
 
   React.useEffect(() => {
     if(shouldWeSpin) {
+     const CANVAS =  document.getElementById("canvas")
+     CANVAS.classList.remove("CANVAS")
+   /
+
+      console.log("IDDDDD",)
       // console.log("shouldspin",shouldWeSpin)
-      setSound(true)
-      wheelInit();
-      spin();
-      setShouldWeSpin(false);
+        setSound(true)
+        wheelInit();
+        spin();
+        setShouldWeSpin(false);
+     
+      
       // setSound(false)
     }
   }, [shouldWeSpin])
@@ -166,6 +173,7 @@ var WheelComponent = function WheelComponent(_ref) {
   };
 
   var drawSegment = function drawSegment(key, lastAngle, angle) {
+
     function drawImageRot(img,x,y,width,height,deg){
       ctx.save()
       var rad = deg
@@ -184,7 +192,6 @@ var WheelComponent = function WheelComponent(_ref) {
     img.onload = function() {
       drawImageRot(img,centerX-50,centerY-50,100,100,angle)
 
-      
   };
   
     var ctx = canvasContext;
@@ -367,18 +374,20 @@ setLogoImg(localStorage.getItem("CenterLogo"))
     ctx.clearRect(0, 0, 1000, 800);
   };
 
+  
   return React.createElement("div", {
-    id: "wheel",
+    id: "wheel"
   }, React.createElement("canvas", {
     id: "canvas",
-    width: "620",
-    height: "590",
+    className:"CANVAS",
+    width: "600",
+    height: "600",
     style: {
       marginTop: "45px",
       marginLeft: "38px",
       pointerEvents: isFinished && isOnlyOnce ? 'none' : 'auto',
       
-    }
+    },
   }));
 };
 

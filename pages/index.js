@@ -20,7 +20,7 @@ import Confetti from "react-confetti";
 import Modal from "react-modal";
 import Signup from "./components/signup";
 import Login from "./components/login";
-import { show } from "react-modal/lib/helpers/ariaAppHider";
+import Settings from "./components/settings";
 // https://potofnames/api/participants
 // https://potofnames/api/participants
 export const getStaticProps = async () => {
@@ -29,6 +29,10 @@ export const getStaticProps = async () => {
   const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
   const times = await timesres.json()
   const timesData = times[0].times
+  // const fragmentsColor;
+  // if(localStorage.getItem("SegmentColor")!==null){
+  //   fragmentsColor=localStorage.getItem("SegmentColor")
+  // }
 
   return {
     props: { participants: data,Wheeltimes:timesData },
@@ -74,6 +78,7 @@ export default function Home({ participants,Wheeltimes }) {
   const [csrfToken,setcsrfToken] = useState("")
   const [showLoginModal,setshowLoginModal] = useState(false)
   const [showSignuoModal,setshowSignupModal] = useState(false)
+  const [showSettingsModal,setshowSettingsModal] = useState(false)
   const [spinWheelTimes,setspinWheelTimes] = useState("")
   const [wheelImg,setwheelImg] = useState("wheel_frame")
   const [remainingEntries,setremainingEntries] = useState("")
@@ -81,13 +86,19 @@ export default function Home({ participants,Wheeltimes }) {
   const [SegmentColor,setSegmentColor] = useState("#171dbf")
 
 
-
+useEffect(()=>{
+  setShowParticipants(showParticipants)
+},[setShowParticipants,showParticipants])
 
 useEffect(()=>{
   console.log("SEGCOLORS",localStorage.getItem("SegmentColor"))
   if(localStorage.getItem("SegmentColor")!==null){
     setSegmentColor(localStorage.getItem("SegmentColor"))
   }
+  if(localStorage.getItem("Entries")!==null){
+    setTotalEntries(localStorage.getItem("Entries"))
+  }
+  // setSegmentColor(fragmentsColor)
   gettingArrowImage()
   setremainingEntries(totalEntries-webState.items.length)
   setspinWheelTimes(Wheeltimes)
@@ -298,21 +309,23 @@ const gettingArrowImage = async()=>{
     console.log("My applausing", applausing);
   }, [webState, gameType]);
 
-
-
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
-      if(SegmentColor=="wheel_frame1"){segCol.push("#9d17bf")}
-      else if(SegmentColor=="wheel_frame2"){segCol.push("#29f930")}
-      else if(SegmentColor=="wheel_frame3"){segCol.push("#de1d1d")}
-      else if(SegmentColor=="wheel_frame4"){segCol.push("#9d17bf")}
-      else if(SegmentColor=="wheel_frame5"){segCol.push("#de1d1d")}
+      console.log("SSEGMENT",SegmentColor)
+      if(SegmentColor=="#1784bf"){segCol.push("#1784bf")}
+      else if(SegmentColor=="#29f930"){segCol.push("#29f930")}
+      else if(SegmentColor=="#de1d1d"){segCol.push("#de1d1d")}
+      else if(SegmentColor=="#9d17bf"){segCol.push("#9d17bf")}
+      else if(SegmentColor=="#de1d1d"){segCol.push("#de1d1d")}
       else{segCol.push("#171dbf")}
       
     } else {
       segCol.push("#dfdede");
     }
   }
+
+
+  
 
   //wheel_frame1=#2964f9
   //wheel_frame2=#29f930
@@ -322,10 +335,10 @@ const gettingArrowImage = async()=>{
 
 
   useEffect(() => {
-    console.log("pppppp", localStorage.getItem("ShowParticipants"));
-    if (!localStorage.getItem("ShowParticipants") === null) {
-      setShowParticipants(true);
-    }
+    // console.log("pppppp", localStorage.getItem("ShowParticipants"));
+    // if (localStorage.getItem("ShowParticipants") !== null) {
+    //   setShowParticipants(true);
+    // }
     console.log("aaaa", showParticipants);
     const segarr = [];
     const newdata = [];
@@ -555,7 +568,7 @@ const gettingArrowImage = async()=>{
                     hidden={enableFullScreen}
                     type="button"
                     className="active px-4 nav-link btn btn-link"
-                    onClick={() => router.push("/settings")}
+                    onClick={() => setshowSettingsModal(!showSettingsModal)}
                   >
                     SETTINGS
                   </button>
@@ -676,40 +689,41 @@ const gettingArrowImage = async()=>{
 
           <div className="row justify-content-center">
             {console.log("pap", showParticipants)}
+            {showParticipants?
             <div
-              hidden={!showParticipants}
-              style={{ marginLeft: "5%", fontSize: "25px" }}
-              className="row justify-content-center"
+            style={{ marginLeft: "5%", fontSize: "25px" }}
+            className="row justify-content-center"
+          >
+            <h3
+              style={{
+                border: "2px solid #4f56a5",
+                width: "fit-content",
+                fontFamily: "auto",
+                borderRadius: "8px",
+              }}
             >
-              <h3
-                style={{
-                  border: "2px solid #4f56a5",
-                  width: "fit-content",
-                  fontFamily: "auto",
-                  borderRadius: "8px",
-                }}
-              >
-                Total Participants = {webState.items.length}{" "}
-              </h3>
-            </div>
+              Total Participants = {webState.items.length}{" "}
+            </h3>
+          </div>:null}
+            
             <div className="col-12 col-md-6">
               {console.log("III",webState.seg.length,gameType)}
               {webState.seg.length > 0 && gameType == "wheel" && (
                 <div>
                   {console.log("OOOO",ArrowPos)}
-                  {ArrowPos=="At-12"?<img  style={{zIndex:9999,marginTop: "-30px",marginLeft: "290px",width:"100px"}}
+                  {ArrowPos=="At-12"?<img  style={{zIndex:9999,marginTop: "-35px",marginLeft: "290px",width:"100px"}}
                     src={`/arrow.png`}
                     className="position-absolute"
                   />:null}
-                  {ArrowPos=="At-3"?<img  style={{zIndex:9999,marginTop: "260px",marginLeft: "580px",width:"100px",transform:"rotate(90deg)"}}
+                  {ArrowPos=="At-3"?<img  style={{zIndex:9999,marginTop: "260px",marginLeft: "585px",width:"100px",transform:"rotate(90deg)"}}
                     src={`/arrow.png`}
                     className="position-absolute"
                   />:null}
-                  {ArrowPos=="At-6"?<img  style={{zIndex:9999,marginTop: "545px",marginLeft: "290px",width:"100px",transform:"rotate(180deg)"}}
+                  {ArrowPos=="At-6"?<img  style={{zIndex:9999,marginTop: "555px",marginLeft: "290px",width:"100px",transform:"rotate(180deg)"}}
                     src={`/arrow.png`}
                     className="position-absolute"
                   />:null}
-                  {ArrowPos=="At-9"?<img  style={{zIndex:9999,marginTop: "258px",marginLeft: "5px",width:"100px",transform:"rotate(270deg)"}}
+                  {ArrowPos=="At-9"?<img  style={{zIndex:9999,marginTop: "258px",marginLeft: "-10px",width:"100px",transform:"rotate(270deg)"}}
                     src={`/arrow.png`}
                     className="position-absolute"
                   />:null}
@@ -959,6 +973,24 @@ const gettingArrowImage = async()=>{
           <div className="col-12">
             {showLoginModal?<Login Loginstate={(data)=>setshowLoginModal(data)} />:null}
             {showSignuoModal?<Signup Signupstate={(data)=>setshowSignupModal(data)}/>:null}
+            {showSettingsModal?<Settings
+            SettingArrowPos={(e)=>setArrowPos(e)}
+            SettingSpinTime={(e)=>setSpinTime(e)}
+            SettingShakeTime={(e)=>setShakeTime(e)}
+            SettingTotalEntries={(e)=>setTotalEntries(e)}
+            SettingShowConfetti={(e)=>setshowConfetti(e)}
+            SettingShowParticipants={(e)=>setShowParticipants(e)}
+            SettingWheelImage={(e)=>setwheelImg(e)}
+            SettingApplausing={(e)=>setApplausing(e)}
+            SettingShowWinnerModal={(e)=>setshowWinnerModalSettings(e)}
+            SettingSegmentColor={(e)=>setSegmentColor(e)}
+
+
+            // SettingCSVFile={(e)=>setCSV}
+
+            Settingstate={(data)=>setshowSettingsModal(data)}/>
+            :null}
+{console.log("MMODAL",spinTime)}
             
 
             <div

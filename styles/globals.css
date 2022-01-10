@@ -407,15 +407,13 @@ bottom: auto;
 } */
 
 @keyframes rotate{
-  from{ transform: rotate(-360deg); }
+  from{ transform: rotate(0deg); }
   to{ transform: rotate(360deg); }
 }
 
-/* #canvas{
-  width: "640";
-  height: "590";
+.CANVAS{
   animation-name: rotate;
-  animation-duration: 15s;
+  animation-duration: 10s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  /* border-radius: 50%; */
+}
