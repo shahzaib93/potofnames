@@ -34,11 +34,12 @@ const customStyles = {
         borderRadius: '8px',
         outline: 'none',
         padding: '20px',
+        border:"2px solid grey"
         
   
     },
     overlay:{
-        zIndex:9999999,
+        zIndex:9999999
 
     }
   };
@@ -57,6 +58,8 @@ function Settings(props) {
   const [showLoginModal,setshowLoginModal] = useState(false)
   const [showSignupModal,setshowSignupModal] = useState(false)
   const [openSettingsModal,setopenSettingsModal] = useState(true)
+  const [CSVArr,setCSVArr] = useState([])
+
 
   
 
@@ -99,8 +102,8 @@ function Settings(props) {
   }
 
   const getApplause =async (event) => {
-    await setApplausing(event.target.value);
-   await localStorage.setItem("Applause", applausing);
+    // await setApplausing(event.target.value);
+   await localStorage.setItem("Applause", event.target.value);
     // console.log(shakeTime);
   };
 
@@ -137,15 +140,33 @@ function Settings(props) {
         }, {});
         return eachObject;
       });
-      console.log("sknsnsnxskc", newArray);
+      setCSVArr(newArray)
+      console.log("CCC",newArray)
       localStorage.setItem("csvdata", JSON.stringify(newArray));
-    };
+      fetch("https://potofnames.com/api/participants", {
+      body: JSON.stringify({
+        // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
+
+        lst:newArray
+      }),
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+    });
+    // const newParticipant = res.json();
+    // console.log("aa",newParticipant)
+     
+    }
+      
+    
+    
+
+    // 
   };
 
   const SelectedImage = async (e) => {
     // e.target.style.backgroundColor = "gray"
     await localStorage.setItem("ArrowImage", e.target.alt);
-     console.log("AAAAA" ,await localStorage.getItem("ArrowImage"))
+    //  console.log("AAAAA" ,await localStorage.getItem("ArrowImage"))
   };
 
   const SelectedWheelImage = async (e) => {
@@ -236,6 +257,8 @@ const closeModal=async()=>{
     props.SettingShowParticipants(showparticipants)
     const wheelimage = await localStorage.getItem("WheelImage")
     props.SettingWheelImage(wheelimage)
+    const arrowimage = await localStorage.getItem("ArrowImage")
+    props.SettingArrowImage(arrowimage)
     const applause = await localStorage.getItem("Applause")
     props.SettingApplausing(applause)
     const showwinnermodal = await localStorage.getItem("ShowWinnerModalSettings")
@@ -252,6 +275,8 @@ const closeModal=async()=>{
     isOpen={openSettingsModal}
     onRequestClose={closeModal}
     style={customStyles}
+    className="FullModal"
+    
   >
     <div >
       <div >
@@ -298,9 +323,9 @@ const closeModal=async()=>{
           </div>
         </div>
         <div className="row justify-content-center my-5 ">
-          <div className="col-6">
+          <div className="col-8">
             <div className="row my-4">
-              <div className="col-3 ">
+              <div className="col-4 ">
                 <strong># OF ENTRIES</strong>
               </div>
               <div className="col-8">
@@ -317,7 +342,7 @@ const closeModal=async()=>{
               <div className="col-1">{entries} </div>
             </div>
             <div className="row my-4">
-              <div className="col-3">
+              <div className="col-4">
                 <strong>SPIN TIME</strong>
               </div>
               <div className="col-8">
@@ -333,7 +358,7 @@ const closeModal=async()=>{
               <div className="col-1">{spinTime}</div>
             </div>
             <div className="row my-4">
-              <div className="col-3">
+              <div className="col-4">
                 <strong>SHAKE TIME</strong>
               </div>
               <div className="col-8">
@@ -347,8 +372,9 @@ const closeModal=async()=>{
                 />
               </div>
               <div className="col-1">{shakeTime}</div>
+              </div>
               <div className="row my-4">
-                <div className="col-3 mt-1">
+                <div className="col-4 mt-1">
                   <strong>SELECT MUSIC</strong>
                 </div>
                 <div className="col-8">
@@ -371,7 +397,7 @@ const closeModal=async()=>{
                 
               </div>
               <div className="row my-4">
-                <div className="col-3 mt-1">
+                <div className="col-4 mt-1">
                   <strong>SELECT ARROW POSITION</strong>
                 </div>
                 <div className="col-8">
@@ -379,7 +405,7 @@ const closeModal=async()=>{
                     onChange={getArrowPosition}
                     style={{
                       width: "55%",
-                      height: "50%",
+                      height: "95%",
                       borderRadius: "5px",
                       border: "2px solid #4f56a5",
                     }}
@@ -396,37 +422,7 @@ const closeModal=async()=>{
                 
               </div>
               
-              <div
-                className="row justify-content-start"
-                style={{ marginLeft: "3%" }}
-              >
-                <div className="col-8">
-                  <div className="row">
-                    <div className="col-12 text-center">
-                      <div
-                        className="btn-group "
-                        role="group"
-                        aria-label="Basic example"
-                      >
-                        <button
-                          type="button"
-                          className="btn btn-primary"
-                          onClick={(e) => setApplausing("applause-01")}
-                        >
-                          ON
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-secondary"
-                          onClick={(e) => setApplausing("OFF")}
-                        >
-                          OFF
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          
 
               <div className="row my-4">
                 <div className="col-4 mt-1">
@@ -444,7 +440,8 @@ const closeModal=async()=>{
                   <input type="file" onChange={getIMG} />
                 </div>
               </div>
-            </div>
+
+          
             <div className="row my-4">
               <div className="col-4 mt-1">
                 <strong>SELECT ARROW IMAGE</strong>
@@ -453,63 +450,75 @@ const closeModal=async()=>{
                 <input onChange={getArrowImg} type="file" />
               </div>
               <div className="row my-4 Arrow-Images">
+              <img
+                  onClick={(e) => SelectedImage(e)}
+                  alt="Arrow"
+                  src="Arrow.png"
+                  style={{ width: "18%", height: "80%" }}
+                />
                 <img
                   onClick={(e) => SelectedImage(e)}
-                  alt="Arrow1.png"
+                  alt="Arrow1"
                   src="Arrow1.png"
-                  style={{ width: "20%", height: "100%" }}
+                  style={{ width: "18%", height: "80%" }}
                 />
 
                 <img
                   onClick={(e) => SelectedImage(e)}
-                  alt="Arrow2.png"
+                  alt="Arrow2"
                   src="Arrow2.png"
-                  style={{ width: "20%", height: "100%" }}
+                  style={{ width: "18%", height: "80%" }}
                 />
 
                 <img
                   onClick={(e) => SelectedImage(e)}
-                  alt="Arrow3.png"
+                  alt="Arrow3"
                   src="Arrow3.png"
-                  style={{ width: "20%", height: "100%" }}
+                  style={{ width: "18%", height: "80%" }}
                 />
               </div>
             </div>
             <div className="row my-4">
-              <div className="col-4 mt-1">
+              <div className="col-6 mt-1">
                 <strong>SELECT WHEEL DESIGN</strong>
               </div>
               <div className="row my-4 Arrow-Images">
+              <img
+                  onClick={(e) => SelectedWheelImage(e)}
+                  alt="wheel_frame"
+                  src="wheel_frame.png"
+                  style={{ width: "15%", height: "100%" }}
+                />
                 <img
                   onClick={(e) => SelectedWheelImage(e)}
                   alt="wheel_frame1"
                   src="wheel_frame1.png"
-                  style={{ width: "20%", height: "100%" }}
+                  style={{ width: "15%", height: "100%" }}
                 />
                 <img
                   onClick={(e) => SelectedWheelImage(e)}
                   alt="wheel_frame2"
                   src="wheel_frame2.png"
-                  style={{ width: "20%", height: "100%" }}
+                  style={{ width: "15%", height: "100%" }}
                 />
 
                 <img
                   onClick={(e) => SelectedWheelImage(e)}
                   alt="wheel_frame3"
                   src="wheel_frame3.png"
-                  style={{ width: "20%", height: "100%" }}
+                  style={{ width: "15%", height: "100%" }}
                 />
                 <img
                   onClick={(e) => SelectedWheelImage(e)}
                   alt="wheel_frame4"
                   src="wheel_frame4.png"
-                  style={{ width: "20%", height: "100%" }}
+                  style={{ width: "15%", height: "100%" }}
                 />
                   <img
                   onClick={(e) => SelectedWheelImage(e)}
                   alt="wheel_frame5"
                   src="wheel_frame5.png"
-                  style={{ width: "20%", height: "100%" }}
+                  style={{ width: "15%", height: "100%" }}
                 />
               </div>
             </div>

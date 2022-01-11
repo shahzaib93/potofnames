@@ -21,8 +21,16 @@ export default async function handler (req, res) {
         // if(b.includes(",")){
         //   console.log(b.split(","))
         // }
-        console.log("aaa",typeof(req.body))
-
+        // console.log("aaaaa",typeof(JSON.parse(req.body)))
+        console.log("aaa",req.body.lst)
+        if(req.body.lst){
+          for(var i=0;i<req.body.lst.length;i++){
+            console.log("BBB",Object.values(req.body.lst[i]))
+            var addParticipant = new Participant({name:Object.values(req.body.lst[i])[0],repeatation:Object.values(req.body.lst[i])[1]});
+            addParticipant.save()
+          }
+        }
+        
         var addParticipant = new Participant(req.body);
         console.log("body",req.body)
 
@@ -47,6 +55,7 @@ export default async function handler (req, res) {
   //           if (err) return handleError(err);
   //           // saved!
   //       })}
+  addParticipant.save()
         console.log("final",addParticipant)
         res.status(201).json({participantArray})
         // console.log("SPlit",addParticipant.split(","))

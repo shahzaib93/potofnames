@@ -84,11 +84,25 @@ export default function Home({ participants,Wheeltimes }) {
   const [remainingEntries,setremainingEntries] = useState("")
   const [ArrowPos,setArrowPos] = useState("At-3")
   const [SegmentColor,setSegmentColor] = useState("#171dbf")
+  const [ArrowImage,setArrowImage] = useState("Arrow")
+
 
 
 useEffect(()=>{
-  setShowParticipants(showParticipants)
-},[setShowParticipants,showParticipants])
+  console.log("qwqwqw", JSON.parse(localStorage.getItem("ShowParticipants")))
+  if(localStorage.getItem("ShowParticipants")!==null){
+    setShowParticipants(JSON.parse(localStorage.getItem("ShowParticipants")))
+  }
+  if(localStorage.getItem("Applause")!==null){
+    setApplausing(localStorage.getItem("Applause"))
+  }
+  if(localStorage.getItem("ArrowImage")!==null){
+    setArrowImage(localStorage.getItem("ArrowImage"))
+  }
+  if(localStorage.getItem("ShowConfetti")!==null){
+    setshowConfetti(JSON.parse(localStorage.getItem("ShowConfetti")))
+  }
+},[])
 
 useEffect(()=>{
   console.log("SEGCOLORS",localStorage.getItem("SegmentColor"))
@@ -201,9 +215,6 @@ const gettingArrowImage = async()=>{
       console.log("sssSpinTime", IF);
       await setSpinTime(parseInt(localStorage.getItem("SpinTime")));
     }
-    if (!localStorage.getItem("Applause") === null) {
-      await setApplausing(localStorage.getItem("Applause"));
-    }
     console.log("applausinggg", applausing);
     setShouldWeSpin(true);
     setsoundplay(true);
@@ -219,9 +230,6 @@ const gettingArrowImage = async()=>{
   const shakeBtn = async () => {
     if (!localStorage.getItem("ShakeTime") === null) {
       await setShakeTime(parseInt(localStorage.getItem("ShakeTime")));
-    }
-    if (!localStorage.getItem("Applause") === null) {
-      await setApplausing(localStorage.getItem("Applause"));
     }
     console.log("shake", shakeTime);
     const random = Math.floor(Math.random() * webState.seg.length);
@@ -245,9 +253,6 @@ const gettingArrowImage = async()=>{
       setshowWinnerModalSettings(false);
     }
 
-    if (!localStorage.getItem("ShowConfetti") === null) {
-      setshowConfetti(false);
-    }
     localStorage.setItem(
       "ALLPARTICICPANTS",
       JSON.stringify([
@@ -303,9 +308,6 @@ const gettingArrowImage = async()=>{
     console.log("webstate items length", webState.seg);
     console.log("Coming from useEffects");
     console.log("apppppplause", localStorage.getItem("Applause"));
-    if (!localStorage.getItem("Applause") === null) {
-      setApplausing(localStorage.getItem("Applause"));
-    }
     console.log("My applausing", applausing);
   }, [webState, gameType]);
 
@@ -470,9 +472,7 @@ const gettingArrowImage = async()=>{
       body: JSON.stringify(deleleId),
     });
     const delParticipant = await res.json();
-    function checkAdult(age) {
-      return age == index;
-    }
+  
     setWebState({
       items: webState.items.filter((checkAdult, i) => i !== index),
       seg: webState.seg.filter((checkAdult, i) => i !== index),
@@ -482,28 +482,28 @@ const gettingArrowImage = async()=>{
   };
 
 
-  // useEffect(() => {
-  //   const segarr=[]
-  //   const newdata = []
-  //   const data = JSON.parse(localStorage.getItem("csvdata"))
-  //   if (data !=undefined){
+  useEffect(() => {
+    const segarr=[]
+    const newdata = []
+    const data = JSON.parse(localStorage.getItem("csvdata"))
+    if (data !=undefined){
 
-  //     for (var i = 0; i < data.length; i++) {
-  //       newdata.push({name:Object.values(data[i])[0],repeatation:1})
-  //       segarr.push(Object.values(data[i])[0]);
-  //       // console.log("sk",Object.values(data[i])[0])
-  //     }
+      for (var i = 0; i < data.length; i++) {
+        newdata.push({name:Object.values(data[i])[0],repeatation:1})
+        segarr.push(Object.values(data[i])[0]);
+        // console.log("sk",Object.values(data[i])[0])
+      }
 
-  //     console.log("skdatacsv",newdata)
-  //     console.log("skwebstate",webState)}
+      console.log("skdatacsv",newdata)
+      console.log("skwebstate",webState)}
 
-  //   // setWebState({
-  //   //   items: [...webState.items, ...newdata],
-  //   //   seg: [...webState.seg, ...segarr],
-  //   // })
-  //   console.log("sknewwebstate",webState)
+    setWebState({
+      items: [...webState.items, ...newdata],
+      seg: [...webState.seg, ...segarr],
+    })
+    console.log("sknewwebstate",webState)
 
-  // },[]);
+  },[]);
   useEffect(() => {
     var res;
     var user = "NO";
@@ -657,9 +657,8 @@ const gettingArrowImage = async()=>{
               
             />
           ) : null}
-          {applausing == "OFF" ? null : (
+          
             <ReactHowler src={`/${applausing}.mp3`} playing={modalIsOpen} />
-          )}
           {showWinnerModalSettings?
           <Modal
             ariaHideApp={false}
@@ -712,19 +711,19 @@ const gettingArrowImage = async()=>{
                 <div>
                   {console.log("OOOO",ArrowPos)}
                   {ArrowPos=="At-12"?<img  style={{zIndex:9999,marginTop: "-35px",marginLeft: "290px",width:"100px"}}
-                    src={`/arrow.png`}
+                    src={`/${ArrowImage}.png`}
                     className="position-absolute"
                   />:null}
                   {ArrowPos=="At-3"?<img  style={{zIndex:9999,marginTop: "260px",marginLeft: "585px",width:"100px",transform:"rotate(90deg)"}}
-                    src={`/arrow.png`}
+                    src={`/${ArrowImage}.png`}
                     className="position-absolute"
                   />:null}
                   {ArrowPos=="At-6"?<img  style={{zIndex:9999,marginTop: "555px",marginLeft: "290px",width:"100px",transform:"rotate(180deg)"}}
-                    src={`/arrow.png`}
+                    src={`/${ArrowImage}.png`}
                     className="position-absolute"
                   />:null}
                   {ArrowPos=="At-9"?<img  style={{zIndex:9999,marginTop: "258px",marginLeft: "-10px",width:"100px",transform:"rotate(270deg)"}}
-                    src={`/arrow.png`}
+                    src={`/${ArrowImage}.png`}
                     className="position-absolute"
                   />:null}
 
@@ -981,16 +980,18 @@ const gettingArrowImage = async()=>{
             SettingShowConfetti={(e)=>setshowConfetti(e)}
             SettingShowParticipants={(e)=>setShowParticipants(e)}
             SettingWheelImage={(e)=>setwheelImg(e)}
-            SettingApplausing={(e)=>setApplausing(e)}
+            SettingApplausing={(e)=>console.log("dddddd",e)}
             SettingShowWinnerModal={(e)=>setshowWinnerModalSettings(e)}
             SettingSegmentColor={(e)=>setSegmentColor(e)}
+            SettingArrowImage={(e)=>setArrowImage(e)}
+
 
 
             // SettingCSVFile={(e)=>setCSV}
 
             Settingstate={(data)=>setshowSettingsModal(data)}/>
             :null}
-{console.log("MMODAL",spinTime)}
+{console.log("MMODAL",showConfetti)}
             
 
             <div

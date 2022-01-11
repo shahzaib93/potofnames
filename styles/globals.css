@@ -8,6 +8,11 @@
   --bg: rgb(22, 21, 21);
 }
 
+[data-theme='dark'] .FullModal{
+  color: #fff !important;
+  background: rgb(22, 21, 21) !important;
+}
+
 [data-theme='dark'] body {
   color: #fff;
   background: rgb(22, 21, 21);
