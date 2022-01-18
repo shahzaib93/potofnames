@@ -8,6 +8,8 @@ var WheelComponent = function WheelComponent(_ref) {
   const [css,setCss] = React.useState("")
 
   var segments = _ref.segments,
+      newsegments = segments.slice(0,10),
+      remainingsegments = segments.slice(11,segments.length),
       spinSeconds = _ref.spinSeconds,
       segColors = _ref.segColors,
       winningSegment = _ref.winningSegment,
@@ -34,36 +36,57 @@ var WheelComponent = function WheelComponent(_ref) {
       setFinished = _useState[1];
 
   var timerHandle = 0
+  var timerHandleNormal = 0
   var timerManualDelay = 50
   if(spinSeconds > 60){
     timerManualDelay = 60
   }
   // spinSeconds
-  var timerDelay = (segments.length < timerManualDelay  ? timerManualDelay : segments.length);
+  var timerDelay = (newsegments.length < timerManualDelay  ? timerManualDelay : newsegments.length);
+  var timerDelayNormal = newsegments.length
   var angleCurrent = 0
   var angleDelta = 0
+  var angleCurrentNormal = 0
+  var angleDeltaNormal = 0
+  var maxSpeedNormal = 0.05
+
   var canvasContext = null
-  // var maxSpeed = Math.PI / (segments.length);
+  // var maxSpeed = Math.PI / (newsegments.length);
   var maxSpeed = 4
-  console.log(`Total segments ${segments.length}`)
+  console.log(`Total newsegments ${newsegments.length}`)
   console.log(`Max speed ${maxSpeed}`)
   console.log(`Timer delay ${timerManualDelay}`)
-  var upTime = segments.length * upDuration
-  var downTime = segments.length * downDuration
+  var upTime = newsegments.length * upDuration
+  var downTime = newsegments.length * downDuration
   var spinStart = 0
+  var spinStartNormal = 0
+
   var frames = 0
+  var framesNormal = 0
+
   var centerX = 300
   var centerY = 300
 
+const [oldval,setOldval] = React.useState("")
+const [start,setstart] = React.useState(true)
+
+React.useEffect(()=>{
+  if(start){
+  spinNormal()}
+
+},[start])
+
   React.useEffect(function () {
+    
     wheelInit();
-  }, [segments]);
+  }, [newsegments]);
 
   React.useEffect(() => {
+    
     if(shouldWeSpin) {
+      setstart(false)
      const CANVAS =  document.getElementById("canvas")
      CANVAS.classList.remove("CANVAS")
-   /
 
       console.log("IDDDDD",)
       // console.log("shouldspin",shouldWeSpin)
@@ -84,6 +107,7 @@ var WheelComponent = function WheelComponent(_ref) {
   var wheelInit = function wheelInit() {
     initCanvas();
     wheelDraw();
+    // spinNormal()
   };
 
   var initCanvas = function initCanvas() {
@@ -101,13 +125,239 @@ var WheelComponent = function WheelComponent(_ref) {
     // spinBtn.addEventListener('click', spin, false);
   };
 
+  var spinNormal = function spin() {
+    // console.log("spinning")
+    
+    isStarted = true;
+
+    if (timerHandleNormal === 0) {
+      spinStartNormal = new Date().getTime();
+      // console.log("WHEELSPEED",Math.PI / newsegments.length)
+      // maxSpeed = 0.1;
+      framesNormal = 0;
+      
+
+
+    }
+    timerHandleNormal = setInterval(onTimerTickNormal, maxSpeedNormal);
+    // console.log("WHEELTimer",timerHandleNormal)
+    console.log("WHEELontimertick",timerHandleNormal)
+
+
+  };
+
+  const count = 1
+  const mainCount = 0
+
+  var onTimerTickNormal = function onTimerTickNormal() {
+    // performance.now()
+    var duration = new Date().getTime() - spinStartNormal;
+    // console.log(`WHEELduration ${duration}`);
+    framesNormal++;
+    // console.log("WHEELtimer",timerDelay)
+    //   console.log("WHEELSpeed",maxSpeedNormal)
+    //   console.log("WHEELDelta",angleDeltaNormal)
+    //   console.log("WHEELCurrent",angleCurrentNormal)
+    var ctx = canvasContext;  
+    
+    var lastAngle = angleCurrentNormal;
+    var len = newsegments.length;
+    // console.log("WHEELSEGSSS",newsegments)
+    var PI2 = Math.PI * 2;
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = primaryColor;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.font = '1em ' + fontFamily;
+    
+const fixedNoofSeg = 8
+const fixedAngle = 4.8
+
+// console.log("WHEELsegs",newsegments)
+const num = 0
+
+    for (var i = 1; i <= len; i++) {
+      // console.log("WHEELlen")
+      
+      var angle = PI2 * (i / len) + angleCurrentNormal;
+      // console.log("WHEELangleangle",angle)
+      // console.log("WHEELin",i)
+      drawSegmentNormal(i - 1, lastAngle, angle);
+      lastAngle = angle;
+    }
+    // console.log("WHEELnum",num)
+
+    angleCurrentNormal+=maxSpeedNormal
+    // ctx.beginPath();
+    // ctx.arc(centerX, centerY, 50, 0, PI2, false);
+    // ctx.closePath();
+    // // ctx.fillStyle = primaryColor;
+    // ctx.lineWidth = 10;
+    // ctx.strokeStyle = contrastColor;
+    // ctx.fill();
+    // ctx.font = 'bold 1em ' + fontFamily;
+    // ctx.fillStyle = contrastColor;
+    // ctx.textAlign = 'center';
+    // // ctx.fillText(buttonText, centerX, centerY + 3);
+    // ctx.stroke();
+    // ctx.beginPath();
+    // ctx.arc(centerX, centerY, size, 0, PI2, false);
+    // ctx.closePath();
+    // ctx.lineWidth = 10;
+    // ctx.strokeStyle = primaryColor;
+    // ctx.stroke();
+    
+    // var duration = new Date().getTime() - spinStart;
+    // console.log(`duration ${duration}`);
+    // var progress = 0;
+    // var finished = false;
+    // console.log("WHEELmaxspeed",maxSpeedNormal)
+    // angleDeltaNormal = maxSpeedNormal
+
+    // if (duration < upTime) {
+      // console.log("WHEELLLLLLL",duration / upTime)
+      // progress = duration / upTime;
+      // // console.log(`progress ${progress}`)
+      // // console.log(`upTime ${upTime}`)
+      // angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2)
+    // } else {
+      // if (winningSegment) {
+      //   if (currentSegment === winningSegment && frames > newsegments.length) {
+      //     progress = duration / upTime;
+      //     angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2 + Math.PI / 2);
+      //     progress = 1;
+      //   } else {
+      //     progress = duration / downTime;
+      //     angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2 + Math.PI / 2);
+      //   }
+      // } else {
+        // progress = duration / downTime;
+        // angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2 + Math.PI / 2);
+      
+
+      // if (progress >= 1) finished = true;
+      // console.log(`progress ${progress}`);
+    // }
+
+    // angleCurrentNormal += angleDeltaNormal;
+    // console.log("angle+",angleCurrent)
+    while (angleCurrentNormal >= Math.PI * 2) {
+      angleCurrentNormal -= Math.PI * 2;
+    // console.log("angle-",angleCurrentNormal)
+
+    }
+
+    // if (finished) {
+    //   setFinished(true);
+    //   onFinished(currentSegment);
+    //   clearInterval(timerHandle);
+    //   timerHandle = 0;
+    //   angleDelta = 0;
+    // }
+  };
+const fix = 8
+  var drawSegmentNormal = function drawSegmentNormal(key, lastAngle, angle) {
+    setOldval[newsegments[0]]
+  //   function drawImageRot(img,x,y,width,height,deg){
+  //     ctx.save()
+  //     var rad = deg
+  //     ctx.translate(x + width / 2, y + height / 2);
+  //     ctx.rotate(rad);
+  //     ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height)
+  //     ctx.restore();
+  // }
+    
+  // if (angle==4.487989505128276){
+  //   console.log("WHEELan")
+  // }
+    var ctx = canvasContext;
+    // console.log("WHEELRemainsegs",remainingsegments)
+    var value = newsegments[key];
+    // if(3 == Math.ceil(angle) || 3==Math.floor(angle) ){
+    // console.log("WHEELanglecount",value,key)
+    //     console.log("WHEELanglecountseg",count)
+    //     // newsegments[key] =lst[key] 
+    //     count+=1
+      
+    // }
+    // if(value=="Asif"){
+    //   console.log("WHEELpoint",angleCurrentNormal+8)
+    // }
+    if(Math.trunc(angleCurrentNormal)+6.02==6.02 || Math.trunc(angleCurrentNormal)+6.03==6.03  ){
+      // if(value==newsegments[0]){
+      console.log("WHEELname",key)
+      // newsegments[key] = `Asif${angleCurrentNormal.toFixed(2)}`
+      // newsegments.remove()
+      // newsegments.push(remainingsegments[0])
+      // if(count%33  ==1 ){
+        // newsegments[key]=newsegments[0]
+        // newsegments.shift()
+        // newsegments.push()
+        newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
+        newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
+
+        
+        // remainingsegments[count] = newsegments[key]
+        // if(value==oldval  ){
+        //   newsegments[mainCount] = oldval
+        // }
+          mainCount+=1
+          
+      // }
+      if(mainCount>7){
+        count=1
+        mainCount = 1
+      }
+      else{
+        count+=1
+      }
+
+        // }
+        console.log("WHEELcounter",count%33,"maincount",mainCount)
+        // if(count/33>8){
+        //   count=1
+        // }
+        // if(count-33==count){
+          // mainCount+=1
+          console.log("WHEELLL",count)
+        // }
+        // if(count>newsegments.length-1){
+        //   count=0
+        // }
+
+      // }
+      console.log("WHEELcount",count)
+      // fix+=8
+    }
+  
+    // console.log("WHEELvalue",key)
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.arc(centerX, centerY, size, lastAngle, angle, false);
+    ctx.lineTo(centerX, centerY);
+    ctx.closePath();
+    ctx.fillStyle = segColors[key];
+    ctx.fill();
+    ctx.stroke();
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    // console.log("WHEELanglean",(lastAngle + angle) / 2)
+    ctx.rotate((lastAngle + angle) / 2);
+    ctx.fillStyle = contrastColor;
+    ctx.font = 'bold 1em ' + fontFamily;
+    ctx.fillText(value.substr(0, 21), size / 2 + 20, 0);
+    
+    ctx.restore();
+    
+  };
   var spin = function spin() {
     console.log("spinning")
     isStarted = true;
 
     if (timerHandle === 0) {
       spinStart = new Date().getTime();
-      maxSpeed = Math.PI / segments.length;
+      maxSpeed = Math.PI / newsegments.length;
       frames = 0;
       timerHandle = setInterval(onTimerTick, timerDelay);
     }
@@ -129,7 +379,7 @@ var WheelComponent = function WheelComponent(_ref) {
       angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2)
     } else {
       if (winningSegment) {
-        if (currentSegment === winningSegment && frames > segments.length) {
+        if (currentSegment === winningSegment && frames > newsegments.length) {
           progress = duration / upTime;
           angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2 + Math.PI / 2);
           progress = 1;
@@ -193,10 +443,15 @@ var WheelComponent = function WheelComponent(_ref) {
       drawImageRot(img,centerX-50,centerY-50,100,100,angle)
 
   };
-  
+  if (angle==4.487989505128276){
+    console.log("WHEELan")
+  }
     var ctx = canvasContext;
-    
-    var value = segments[key];
+    console.log()
+    var value = newsegments[key];
+    newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
+    newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
+    console.log("WHEELvalue",value)
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
@@ -228,7 +483,7 @@ var WheelComponent = function WheelComponent(_ref) {
     
     
     var lastAngle = angleCurrent;
-    var len = segments.length;
+    var len = newsegments.length;
     var PI2 = Math.PI * 2;
     ctx.lineWidth = 1;
     ctx.strokeStyle = primaryColor;
@@ -236,9 +491,13 @@ var WheelComponent = function WheelComponent(_ref) {
     ctx.textAlign = 'center';
     ctx.font = '1em ' + fontFamily;
     
-
+const fixedNoofSeg = 8
+const fixedAngle = 4.8
+console.log("WHEELsegs",newsegments)
     for (var i = 1; i <= len; i++) {
       var angle = PI2 * (i / len) + angleCurrent;
+      // console.log("WHEELangle",angleCurrent)
+      
       drawSegment(i - 1, lastAngle, angle);
       lastAngle = angle;
     }
@@ -352,13 +611,13 @@ else if(ArrowPos=="At-3"){
     // ctx.fill();
     // var change = angleCurrent + Math.PI / 2;
 
-    var i = segments.length - Math.floor(change / (Math.PI * 2) * segments.length) - 1;
-    if (i < 0) i = i + segments.length;
+    var i = newsegments.length - Math.floor(change / (Math.PI * 2) * newsegments.length) - 1;
+    if (i < 0) i = i + newsegments.length;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = primaryColor;
     ctx.font = 'bold 1.5em ' + fontFamily;
-    currentSegment = segments[i];
+    currentSegment = newsegments[i];
     isStarted && ctx.fillText(currentSegment, centerX + 10, centerY + size + 50);
     // var img = new Image()
   

@@ -727,11 +727,15 @@ const gettingArrowImage = async()=>{
                     className="position-absolute"
                   />:null}
 
-                  
+                  <img 
+                    src={`/triangle.png`} style={{zIndex:99999999999,width:"290px",height:"270px",marginTop: "345px",marginLeft: "255px",transform:"rotate(245deg)"}}
+                    className="position-absolute"
+                  />
                   <img 
                     src={`/${wheelImg}.png`}
                     className="position-absolute wheel_frame threeDRotate"
                   />
+                  {console.log("WHEELSEGSSS",webState.seg)}
                   <WheelComponent
                     segments={webState.seg}
                     segColors={segCol}

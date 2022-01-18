@@ -14,7 +14,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 // https://potofnames/api/participants
-// http://localhost:3000/api/participants
+// https://potofnames.com/api/participants
 // import styled, { ThemeProvider } from "styled-components";
 import { useTheme } from "next-themes";
 import Signup from "./components/signup";
@@ -715,7 +715,7 @@ const ToHome = () =>{
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <Link href="http://localhost:3000/">
+            <Link href="https://potofnames.com/">
               <img src="logo.png" className="img-fluid sponsor-img" alt="..." />
             </Link>
           </div>

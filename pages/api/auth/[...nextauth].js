@@ -65,7 +65,7 @@ export default NextAuth({
     //   async authorize(credentials, req) {
 
     //     //FOR POST
-    //     // const res = await fetch("http://localhost:3000/api/users", {
+    //     // const res = await fetch("https://potofnames.com/api/users", {
     //     //   body: JSON.stringify({
     //     //     email: "Wajahat@gmail.com",
     //     //     password: "123",
