@@ -49,9 +49,10 @@ function Settings(props) {
   const router = useRouter();
   // var Noofentries = createContext(null)
   console.log("location", router.pathname);
-  const [entries, setEntries] = useState();
-  const [shakeTime, setshakeTime] = useState();
-  const [spinTime, setspinTime] = useState();
+  const [entries, setEntries] = useState(15);
+  const [shakeTime, setshakeTime] = useState(5);
+  const [spinTime, setspinTime] = useState(5);
+  const [entriesToShow, setentriesToShow] = useState(10);
   const [applausing, setApplausing] = useState("applause-01");
   const [selectedFile, setSelectedFile] = useState();
   const [ShowModalBtn, setShowModalBtn] = useState("ON");
@@ -64,35 +65,51 @@ function Settings(props) {
   
 
   useEffect(() => {
-    localStorage.setItem("Entries", 15);
-    localStorage.setItem("ShakeTime", 5);
-    localStorage.setItem("SpinTime", 5);
-  });
+    // localStorage.setItem("Entries", 15);
+    // localStorage.setItem("ShakeTime", 5);
+    // localStorage.setItem("SpinTime", 5);
+  },);
 
   const getEntries = (event) => {
     setEntries(event.target.value);
     console.log(entries);
+    localStorage.setItem("Entries", entries);
+  };
+
+  const getEntriesToShow = (event) => {
+    setentriesToShow(event.target.value);
+    console.log("SHOW",entriesToShow);
+    localStorage.setItem("EntriesToShow", entriesToShow);
   };
 
   const getSpinTime = (event) => {
     setspinTime(event.target.value);
     console.log(spinTime);
+    localStorage.setItem("SpinTime", spinTime);
   };
 
   const getShakeTime = (event) => {
     setshakeTime(event.target.value);
     console.log(shakeTime);
+    localStorage.setItem("ShakeTime", shakeTime);
+
   };
 
   useEffect(() => {
-    localStorage.setItem("Entries", entries);
-    localStorage.setItem("ShakeTime", shakeTime);
-    // if(!spinTime){
-    //   localStorage.setItem("SpinTime",2)
-    // }
-    localStorage.setItem("SpinTime", spinTime);
-    // router.reload("/")
-  }, [entries, shakeTime, spinTime]);
+    if(localStorage.getItem("Entries")!==null){
+      const entries =  localStorage.getItem("Entries")
+      setEntries(entries)}
+      if(localStorage.getItem("SpinTime")!==null){
+      const spintime =  localStorage.getItem("SpinTime")
+      setspinTime(spintime)}
+      if(localStorage.getItem("ShakeTime")!==null){
+      const shaketime =  localStorage.getItem("ShakeTime")
+      setshakeTime(shaketime)}
+      if(localStorage.getItem("EntriesToShow")!==null){
+        const entriestoshow =  localStorage.getItem("EntriesToShow")
+        localStorage.setItem("LimitedEntries",true)
+       setentriesToShow(entriestoshow)}
+  }, []);
   const { data: session } = useSession();
   if (session) {
     console.log(`You're signed in`);
@@ -251,6 +268,9 @@ const closeModal=async()=>{
     if(localStorage.getItem("ShakeTime")!==null){
     const shaketime = await localStorage.getItem("ShakeTime")
     props.SettingShakeTime(shaketime)}
+    if(localStorage.getItem("EntriesToShow")!==null){
+      const entriestoshow = await localStorage.getItem("EntriesToShow")
+      props.SettingEntriesToShow(entriestoshow)}
     const showconfetti = await localStorage.getItem("ShowConfetti")
     props.SettingShowConfetti(showconfetti)
     const showparticipants = await localStorage.getItem("ShowParticipants")
@@ -328,7 +348,7 @@ const closeModal=async()=>{
               <div className="col-4 ">
                 <strong># OF ENTRIES</strong>
               </div>
-              <div className="col-8">
+              <div className="col-7">
                 <input
                   type="range"
                   min="1"
@@ -345,7 +365,7 @@ const closeModal=async()=>{
               <div className="col-4">
                 <strong>SPIN TIME</strong>
               </div>
-              <div className="col-8">
+              <div className="col-7">
                 <input
                   type="range"
                   min="3"
@@ -361,7 +381,7 @@ const closeModal=async()=>{
               <div className="col-4">
                 <strong>SHAKE TIME</strong>
               </div>
-              <div className="col-8">
+              <div className="col-7">
                 <input
                   type="range"
                   min="3"
@@ -373,6 +393,22 @@ const closeModal=async()=>{
               </div>
               <div className="col-1">{shakeTime}</div>
               </div>
+              <div className="row my-4">
+              <div className="col-4">
+                <strong>ENTRIES TO SHOW</strong>
+              </div>
+              <div className="col-7">
+                <input
+                  type="range"
+                  min="5"
+                  max={entries}
+                  className="range"
+                  defaultValue={entriesToShow}
+                  onChange={getEntriesToShow}
+                />
+              </div>
+              <div className="col-1">{entriesToShow}</div>
+            </div>
               <div className="row my-4">
                 <div className="col-4 mt-1">
                   <strong>SELECT MUSIC</strong>

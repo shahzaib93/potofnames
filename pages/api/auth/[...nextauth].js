@@ -79,7 +79,7 @@ export default NextAuth({
     //     console.log("request", req);
     //     console.log("credentials", credentials);
     //       var user;
-    //       await fetch("http://localhost:3000/api/users").then((response)=>response.json()).then((AllUsers)=>{
+    //       await fetch("https://potofnames.com/api/users").then((response)=>response.json()).then((AllUsers)=>{
     //     console.log("ALLLLL",AllUsers)
     //     for(var i =0 ; i<AllUsers.length;i++){
     //           if (AllUsers[i].email  == credentials.email){

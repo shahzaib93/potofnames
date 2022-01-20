@@ -37,7 +37,7 @@ const SignupUser = async (event) => {
           }
         }
         if (!user) {
-          const res = fetch("https://potofnames.com/api/users", {
+          const res = fetch("http://localhost:3000/api/users", {
             body: JSON.stringify({
               name: event.target.SignupName.value,
               email: event.target.SignupEmail.value,

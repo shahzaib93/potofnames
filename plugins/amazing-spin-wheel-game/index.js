@@ -5,11 +5,12 @@ var WheelComponent = function WheelComponent(_ref) {
   const [sound, setSound] = React.useState(false);
   const [LogoImg, setLogoImg] = React.useState("");
   const [ArrowImg, setArrowImg] = React.useState("");
+  const [NormalStart, setNormalStart] = React.useState(true);
   const [css,setCss] = React.useState("")
 
   var segments = _ref.segments,
-      newsegments = segments.slice(0,10),
-      remainingsegments = segments.slice(11,segments.length),
+      startNormalSpin = _ref.startNormalSpin,
+      entriesToShow = _ref.entriesToShow,
       spinSeconds = _ref.spinSeconds,
       segColors = _ref.segColors,
       winningSegment = _ref.winningSegment,
@@ -30,7 +31,14 @@ var WheelComponent = function WheelComponent(_ref) {
       fontFamily = _ref$fontFamily === void 0 ? 'proxima-nova' : _ref$fontFamily;
   var currentSegment = '';
   var isStarted = false;
-
+  var newsegments = segments
+  var  remainingsegments = segments
+if(entriesToShow>10){
+ newsegments = segments.slice(0,entriesToShow)
+    remainingsegments = segments.slice(entriesToShow+1,segments.length)}
+    else{
+      newsegments = segments
+    }
   var _useState = React.useState(false),
       isFinished = _useState[0],
       setFinished = _useState[1];
@@ -70,11 +78,17 @@ var WheelComponent = function WheelComponent(_ref) {
 const [oldval,setOldval] = React.useState("")
 const [start,setstart] = React.useState(true)
 
+// if(shouldWeSpin){
+//   setNormalStart(false)
+// // }
 React.useEffect(()=>{
-  if(start){
-  spinNormal()}
+  console.log("Normal",startNormalSpin)
+  if(startNormalSpin){
+    // console.log("WheelEntries",entriesToShow)
+    spinNormal()
+  }
 
-},[start])
+},[])
 
   React.useEffect(function () {
     
@@ -84,9 +98,10 @@ React.useEffect(()=>{
   React.useEffect(() => {
     
     if(shouldWeSpin) {
-      setstart(false)
-     const CANVAS =  document.getElementById("canvas")
-     CANVAS.classList.remove("CANVAS")
+      setNormalStart(false)
+      // setstart(false)
+    //  const CANVAS =  document.getElementById("canvas")
+    //  CANVAS.classList.remove("CANVAS")
 
       console.log("IDDDDD",)
       // console.log("shouldspin",shouldWeSpin)
@@ -94,10 +109,12 @@ React.useEffect(()=>{
         wheelInit();
         spin();
         setShouldWeSpin(false);
+        setNormalStart(false)
      
       
       // setSound(false)
     }
+    
   }, [shouldWeSpin])
 
   // React.useEffect(() => {
@@ -128,7 +145,7 @@ React.useEffect(()=>{
   var spinNormal = function spin() {
     // console.log("spinning")
     
-    isStarted = true;
+    // isStarted = true;
 
     if (timerHandleNormal === 0) {
       spinStartNormal = new Date().getTime();
@@ -141,7 +158,7 @@ React.useEffect(()=>{
     }
     timerHandleNormal = setInterval(onTimerTickNormal, maxSpeedNormal);
     // console.log("WHEELTimer",timerHandleNormal)
-    console.log("WHEELontimertick",timerHandleNormal)
+    // console.log("WHEELontimertick",timerHandleNormal)
 
 
   };
@@ -151,7 +168,7 @@ React.useEffect(()=>{
 
   var onTimerTickNormal = function onTimerTickNormal() {
     // performance.now()
-    var duration = new Date().getTime() - spinStartNormal;
+    // var duration = new Date().getTime() - spinStartNormal;
     // console.log(`WHEELduration ${duration}`);
     framesNormal++;
     // console.log("WHEELtimer",timerDelay)
@@ -257,7 +274,7 @@ const num = 0
   };
 const fix = 8
   var drawSegmentNormal = function drawSegmentNormal(key, lastAngle, angle) {
-    setOldval[newsegments[0]]
+    // setOldval[newsegments[0]]
   //   function drawImageRot(img,x,y,width,height,deg){
   //     ctx.save()
   //     var rad = deg
@@ -283,9 +300,10 @@ const fix = 8
     // if(value=="Asif"){
     //   console.log("WHEELpoint",angleCurrentNormal+8)
     // }
-    if(Math.trunc(angleCurrentNormal)+6.02==6.02 || Math.trunc(angleCurrentNormal)+6.03==6.03  ){
+    // console.log("enter",entriesToShow>10)
+    if((Math.trunc(angleCurrentNormal)+6.02==6.02) && entriesToShow>10  ){
       // if(value==newsegments[0]){
-      console.log("WHEELname",key)
+      // console.log("WHEELname",key)
       // newsegments[key] = `Asif${angleCurrentNormal.toFixed(2)}`
       // newsegments.remove()
       // newsegments.push(remainingsegments[0])
@@ -295,6 +313,8 @@ const fix = 8
         // newsegments.push()
         newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
         newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
+        // newsegments[2] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
+
 
         
         // remainingsegments[count] = newsegments[key]
@@ -313,20 +333,20 @@ const fix = 8
       }
 
         // }
-        console.log("WHEELcounter",count%33,"maincount",mainCount)
+        // console.log("WHEELcounter",count%33,"maincount",mainCount)
         // if(count/33>8){
         //   count=1
         // }
         // if(count-33==count){
           // mainCount+=1
-          console.log("WHEELLL",count)
+          // console.log("WHEELLL",count)
         // }
         // if(count>newsegments.length-1){
         //   count=0
         // }
 
       // }
-      console.log("WHEELcount",count)
+      // console.log("WHEELcount",count)
       // fix+=8
     }
   
@@ -449,9 +469,11 @@ const fix = 8
     var ctx = canvasContext;
     console.log()
     var value = newsegments[key];
+    if((Math.trunc(angleCurrent)+6.02==6.02 || Math.trunc(angleCurrent)+6.03==6.03) && entriesToShow>10  ){
     newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
     newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
-    console.log("WHEELvalue",value)
+    // console.log("WHEELvalue",value)
+  }
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
@@ -599,7 +621,7 @@ else if(ArrowPos=="At-3"){
 }
 
 
-    console.log("ARRR",change)
+    // console.log("ARRR",change)
     // ctx.lineWidth = 1;
     // ctx.strokeStyle = contrastColor;
     // ctx.fileStyle = contrastColor;

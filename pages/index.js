@@ -65,6 +65,7 @@ export default function Home({ participants,Wheeltimes }) {
 
   const [threeDMode, setThreeDMode] = useState(0);
   const [totalEntries, setTotalEntries] = useState(15);
+  const [EntriesToShow, setEntriesToShow] = useState(10);
   const [wheelSpeed, setWheelSpeed] = useState(5);
   const [spinTime, setSpinTime] = useState(5);
   const [shakeTime, setShakeTime] = useState(5);
@@ -85,10 +86,14 @@ export default function Home({ participants,Wheeltimes }) {
   const [ArrowPos,setArrowPos] = useState("At-3")
   const [SegmentColor,setSegmentColor] = useState("#171dbf")
   const [ArrowImage,setArrowImage] = useState("Arrow")
+  const [showCover,setshowCover] = useState(false)
+  const [startNormalSpin,setstartNormalSpin] = useState(true)
+
 
 
 
 useEffect(()=>{
+  console.log("WheelShowEntires",EntriesToShow)
   console.log("qwqwqw", JSON.parse(localStorage.getItem("ShowParticipants")))
   if(localStorage.getItem("ShowParticipants")!==null){
     setShowParticipants(JSON.parse(localStorage.getItem("ShowParticipants")))
@@ -102,6 +107,17 @@ useEffect(()=>{
   if(localStorage.getItem("ShowConfetti")!==null){
     setshowConfetti(JSON.parse(localStorage.getItem("ShowConfetti")))
   }
+  if(localStorage.getItem("EntriesToShow")!==null){
+    
+    setEntriesToShow(JSON.parse(localStorage.getItem("EntriesToShow")))
+    localStorage.setItem("ShowCover",true)
+    if(localStorage.getItem("ShowCover")!==null){
+      setshowCover(JSON.parse(localStorage.getItem("ShowCover")))
+    }
+
+  }
+  console.log("ENTRIES",EntriesToShow)
+
 },[])
 
 useEffect(()=>{
@@ -197,6 +213,7 @@ const gettingArrowImage = async()=>{
   };
 
   const settheShouldWeSpin = async () => {
+    setstartNormalSpin(false)
     const timesresget = await fetch("https://potofnames.com/api/wheelSpinTimes");
   const times = await timesresget.json();
   var timesData  = times[0].times
@@ -726,11 +743,11 @@ const gettingArrowImage = async()=>{
                     src={`/${ArrowImage}.png`}
                     className="position-absolute"
                   />:null}
-
+{showCover?
                   <img 
-                    src={`/triangle.png`} style={{zIndex:99999999999,width:"290px",height:"270px",marginTop: "345px",marginLeft: "255px",transform:"rotate(245deg)"}}
+                    src={`/triangle.png`} style={{zIndex:1,width:"290px",height:"260px",marginTop: "340px",marginLeft: "265px",transform:"rotate(240deg)"}}
                     className="position-absolute"
-                  />
+                  />:null}
                   <img 
                     src={`/${wheelImg}.png`}
                     className="position-absolute wheel_frame threeDRotate"
@@ -745,6 +762,8 @@ const gettingArrowImage = async()=>{
                     isOnlyOnce={false}
                     size={290}
                     upDuration={100}
+                    entriesToShow={EntriesToShow}
+                    startNormalSpin={startNormalSpin}
                     // downDuration={22500}
                     // 125 for 1 seconds
                     // 625 for 5 seconds
@@ -981,6 +1000,7 @@ const gettingArrowImage = async()=>{
             SettingSpinTime={(e)=>setSpinTime(e)}
             SettingShakeTime={(e)=>setShakeTime(e)}
             SettingTotalEntries={(e)=>setTotalEntries(e)}
+            SettingEntriesToShow={(e)=>setEntriesToShow(e)}
             SettingShowConfetti={(e)=>setshowConfetti(e)}
             SettingShowParticipants={(e)=>setShowParticipants(e)}
             SettingWheelImage={(e)=>setwheelImg(e)}
@@ -988,14 +1008,9 @@ const gettingArrowImage = async()=>{
             SettingShowWinnerModal={(e)=>setshowWinnerModalSettings(e)}
             SettingSegmentColor={(e)=>setSegmentColor(e)}
             SettingArrowImage={(e)=>setArrowImage(e)}
-
-
-
-            // SettingCSVFile={(e)=>setCSV}
-
             Settingstate={(data)=>setshowSettingsModal(data)}/>
             :null}
-{console.log("MMODAL",showConfetti)}
+{console.log("MMODAL",EntriesToShow)}
             
 
             <div
