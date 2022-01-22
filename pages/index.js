@@ -21,12 +21,15 @@ import Modal from "react-modal";
 import Signup from "./components/signup";
 import Login from "./components/login";
 import Settings from "./components/settings";
-// https://potofnames/api/participants
-// https://potofnames/api/participants
+import {apiUrl} from "../utils"
+// import { Button } from "bootstrap";
+// http://localhost:3000/api/participants
+// http://localhost:3000/api/wheelSpinTimes
 export const getStaticProps = async () => {
-  const res = await fetch("https://potofnames.com/api/participants");
+  const server = process.env.NEXT_PUBLIC_API_BASE;
+  const res = await fetch(apiUrl("/api/participants"));
   const data = await res.json();
-  const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
+  const timesres = await fetch(apiUrl("/api/wheelSpinTimes"));
   const times = await timesres.json()
   const timesData = times[0].times
   // const fragmentsColor;
@@ -87,12 +90,14 @@ export default function Home({ participants,Wheeltimes }) {
   const [SegmentColor,setSegmentColor] = useState("#171dbf")
   const [ArrowImage,setArrowImage] = useState("Arrow")
   const [showCover,setshowCover] = useState(false)
-  const [startNormalSpin,setstartNormalSpin] = useState(true)
+  const [startNormalSpin,setstartNormalSpin] = useState(false)
 
 
 
 
 useEffect(()=>{
+  setstartNormalSpin(true)
+  console.log("WHEELCalled")
   console.log("WheelShowEntires",EntriesToShow)
   console.log("qwqwqw", JSON.parse(localStorage.getItem("ShowParticipants")))
   if(localStorage.getItem("ShowParticipants")!==null){
@@ -214,11 +219,14 @@ const gettingArrowImage = async()=>{
 
   const settheShouldWeSpin = async () => {
     setstartNormalSpin(false)
-    const timesresget = await fetch("https://potofnames.com/api/wheelSpinTimes");
+  apiUrl("/api/wheelSpinTimes")
+
+    const timesresget = await fetch(apiUrl("/api/wheelSpinTimes"));
   const times = await timesresget.json();
   var timesData  = times[0].times
   console.log("TTTTTTTTT",timesData)
-    const timerespost = await fetch("https://potofnames.com/api/wheelSpinTimes", {
+    const timerespost = await fetch(apiUrl("/api/wheelSpinTimes")
+    , {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({times:timesData+1}),
@@ -381,6 +389,7 @@ const gettingArrowImage = async()=>{
   }, [participants]);
 
   const onFinished = (winner) => {
+    setstartNormalSpin(false)
     // const elem =  window.document.getElementById("FULLSCREEN")
     // window.exitFullscreen()
     if (enableFullScreen) {
@@ -447,7 +456,9 @@ const gettingArrowImage = async()=>{
     }
       console.log("AAAAAA",webState.items.length)
     if (webState.items.length < totalEntries) {
-      const res = await fetch("https://potofnames.com/api/participants", {
+
+      const res = await fetch(  apiUrl("/api/participants")
+      , {
         body: JSON.stringify({
           // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
 
@@ -479,11 +490,60 @@ const gettingArrowImage = async()=>{
     event.target.participantName.value = "";
   };
 
+  const addParticipantTextArea = async (event) => {
+    event.preventDefault();
+    const hello = "hello";
+    // const more = window.document.getElementById("moreParticpants");
+    const arr = Array(parseInt(more.value)).fill(hello);
+    console.log("My participant", event.target.participantName.value);
+    console.log("participant times", more.value);
+    if (!localStorage.getItem("Entries") === null) {
+      await setTotalEntries(parseInt(localStorage.getItem("Entries")));
+    }
+      console.log("AAAAAA",webState.items.length)
+    if (webState.items.length < totalEntries) {
+
+      const res = await fetch(  apiUrl("/api/participants")
+      , {
+        body: JSON.stringify({
+          // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
+
+          name: event.target.participantName.value,
+          repeatation: parseInt(more.value),
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      });
+      const newParticipant = await res.json();
+
+      const segarr = [];
+      for (var i = 0; i < newParticipant.participantArray.length; i++) {
+        segarr.push(newParticipant.participantArray[0].name);
+      }
+      console.log("newnewparticipants", newParticipant.participantArray);
+      setWebState({
+        items: [...webState.items, ...newParticipant.participantArray],
+        seg: [...webState.seg, ...segarr],
+      });
+      //   for(var i=0;i<newParticipant.participantArray.length;i++){
+
+      //   console.log("sxsxsxsx",newParticipant.participantArray[i])
+      // }
+      // console.log("addsvsvsldsdls", newParticipant.addParticipant);
+    } else {
+      alert("You can't add more.");
+    }
+    event.target.participantName.value = "";
+  };
+
+
   const deleteParticipant = async (deleleId, index) => {
     const deletedVal = webState.items[index];
     console.log("Delete function data");
     console.log(deletedVal);
-    const res = await fetch("https://potofnames.com/api/participants", {
+
+    const res = await fetch(  apiUrl("/api/participants")
+, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
@@ -525,7 +585,9 @@ const gettingArrowImage = async()=>{
     var res;
     var user = "NO";
     if (session) {
-      fetch("https://potofnames.com/api/users")
+
+      fetch(      apiUrl("/api/users")
+      )
         .then((response) => response.json())
         .then((AllUsers) => {
           for (var i = 0; i < AllUsers.length; i++) {
@@ -536,7 +598,9 @@ const gettingArrowImage = async()=>{
             }
           }
           if (user == "NO") {
-            fetch("https://potofnames.com/api/users", {
+
+            fetch(      apiUrl("/api/users")
+, {
               body: JSON.stringify({
                 name: session.user.name,
                 email: session.user.email,
@@ -722,7 +786,7 @@ const gettingArrowImage = async()=>{
             </h3>
           </div>:null}
             
-            <div className="col-12 col-md-6">
+            <div className="col-6 col-md-6 col-sm-6">
               {console.log("III",webState.seg.length,gameType)}
               {webState.seg.length > 0 && gameType == "wheel" && (
                 <div>
@@ -753,6 +817,7 @@ const gettingArrowImage = async()=>{
                     className="position-absolute wheel_frame threeDRotate"
                   />
                   {console.log("WHEELSEGSSS",webState.seg)}
+                  {/* {setstartNormalSpin(false)} */}
                   <WheelComponent
                     segments={webState.seg}
                     segColors={segCol}
@@ -810,7 +875,7 @@ const gettingArrowImage = async()=>{
                           </div>
                         </div>
                       ) : (
-                        <div key={index} className="col-3">
+                        <div key={index} className="col-3 ">
                           <div className="card name-card transform position-relative">
                             <div className="col-12">
                               <div className="card-body">
@@ -828,10 +893,118 @@ const gettingArrowImage = async()=>{
               )}
               <div className="clearfix"></div>
             </div>
+
+
+
+            <div className="col-4" style={{marginLeft:"5%"}} >
+                    <div>
+                    <form
+          style={{ display: showdivs,marginLeft:"15%" }}
+          className="row justify-content-center mt-3"
+          method="post"
+          onSubmit={addParticipant}
+        >
+          
+          <div style={{ display: showdivs,marginBottom:"5%",marginLeft:"3%",marginTop:"15%" }} >
+
+          <div
+          style={{ display: showdivs }}
+          className="Pot-or-Wheel row"
+        >
+       <div className="row" style={{display:"flex",flexDirection:"row",justifyContent:"space-between"}}>
+        
+            <button
+            style={{width:"20%"}}
+              type="button"
+              className="btn btn-purple btn-radius bg-purple text-white btn-radius col-3"
+              onClick={(e) => togglePotWheel(e, "pot")}
+            >
+              POT
+            </button>
+            {gameType == "wheel" && (
+              <button 
+                style={{width:"fit-content" }}
+                type="button"
+                className="ThreeD-mode btn btn-purple btn-radius bg-purple text-white btn-radius col-3"
+                // data-bs-toggle="modal"
+                // data-bs-target="#threeDModeModal"
+              >
+                3D MODE
+              </button>
+        )}
+            <button
+            style={{width:"fit-content"}}
+              type="button"
+              className="btn btn-purple btn-radius bg-purple text-white btn-radius  col-3"
+              // onClick={(e) => togglePotWheel(e, "wheel")}
+            >
+              WHEEL
+            </button>
+          
+            </div>
+
+        </div>
+            
+          </div>
+          <div style={{ display: showdivs }} className="col-12 col-md-12 ">
+            <div className="input-group mycustom ">
+              <textarea
+                rows={20}
+                className="form-control"
+                placeholder="Participant Name"
+                name="participantName"
+                required
+                onChange={()=>addParticipantTextArea()}
+              />
+            </div>
+          </div>
+        </form>
+                    </div>
+                     <div style={{ display: "flex", flexDirection: "row",marginLeft:"40%" }}>
+              
+            
+              <button
+                type="Button"
+                style={{paddingLeft:"13px",paddingTop:"-3px",marginTop:"10%",marginRight:"10%",paddingRight:"30%" }}
+                onClick={() => shuffleArray(webState)}
+                className="btn btn-purple btn-radius bg-purple text-white btn-radius col-3"
+              >
+                shuffle
+              </button>
+
+              {gameType == "wheel" && (
+                <>
+                
+                  <button style={{borderLeft:"4px solid #3f29f9",paddingTop:"-3px",marginTop:"10%",paddingRight:"20%" }}
+                    id="spinBtn"
+                    onClick={() => settheShouldWeSpin()}
+                    className="btn btn-purple btn-radius bg-purple text-white btn-radius col-3"
+                  >
+                    spin
+                  </button>
+                </>
+              )}
+              {gameType == "pot" && (
+                <>
+                  <div style={{borderLeft:"4px solid #3f29f9",paddingLeft:"13px",paddingTop:"-3px",marginTop:"10%" }}
+                    id="shakeBtn"
+                    onClick={shakeBtn}
+                  className="btn btn-purple btn-radius bg-purple text-white btn-radius col-3"
+                  >
+                    shake
+                  </div>
+                </>
+              )}
+            </div>
+            </div>
+
+
+
+
           </div>
         </div>
         <div
-          style={{ display: showdivs }}
+          style={{ display: showdivs,marginLeft:"-30%" }}
           className="Pot-or-Wheel row"
         >
        <div className="row" style={{display:"flex",flexDirection:"row",justifyContent:"space-between",paddingLeft:"30%",paddingRight:"25%"}}>
@@ -849,8 +1022,8 @@ const gettingArrowImage = async()=>{
                 style={{width:"fit-content" }}
                 type="button"
                 className="ThreeD-mode btn btn-purple btn-radius bg-purple text-white btn-radius col-3"
-                data-bs-toggle="modal"
-                data-bs-target="#threeDModeModal"
+                // data-bs-toggle="modal"
+                // data-bs-target="#threeDModeModal"
               >
                 3D MODE
               </button>
@@ -870,7 +1043,7 @@ const gettingArrowImage = async()=>{
 
         <form
           style={{ display: showdivs }}
-          style={{ marginLeft: "-11%" }}
+          style={{ marginLeft: "-28%" }}
           className="row justify-content-center mt-3"
           method="post"
           onSubmit={addParticipant}
@@ -950,7 +1123,7 @@ const gettingArrowImage = async()=>{
 
         
 
-        <div style={{ display: showdivs }} className="m-5 test">
+        <div style={{ display: showdivs}} className="m-5 newtest">
           <div className="ProgressBarDiv" style={{marginBottom:"5%"}}>
           <ProgressBar bgColor="#3f29f9" baseBgColor="#f8f8ff" maxCompleted={totalEntries} customLabel={`${remainingEntries}  remaining`} completed={remainingEntries}/>
           </div>
@@ -1026,7 +1199,7 @@ const gettingArrowImage = async()=>{
                     <button
                       type="button"
                       className="btn-close"
-                      data-bs-dismiss="modal"
+                      // data-bs-dismiss="modal"
                       aria-label="Close"
                     ></button>
                   </div>
@@ -1113,7 +1286,7 @@ const gettingArrowImage = async()=>{
                     <button
                       type="button"
                       className="btn btn-secondary"
-                      data-bs-dismiss="modal"
+                      // data-bs-dismiss="modal"
                     >
                       Close
                     </button>
@@ -1139,7 +1312,7 @@ const gettingArrowImage = async()=>{
                     <button
                       type="button"
                       className="btn-close"
-                      data-bs-dismiss="modal"
+                      // data-bs-dismiss="modal"
                       aria-label="Close"
                     ></button>
                   </div>
@@ -1281,7 +1454,7 @@ const gettingArrowImage = async()=>{
         </div>
         <div className="row justify-content-center">
           <div className="col-2">
-            <Link href="https://potofnames.com/">
+            <Link href={ apiUrl("/")}>
               <img src="logo.png" className="img-fluid sponsor-img" alt="..." />
             </Link>
           </div>

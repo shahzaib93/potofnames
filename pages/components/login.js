@@ -2,7 +2,7 @@
 import React, { useEffect, useState, createContext } from "react";
 import { useSession, signIn, signOut, getCsrfToken } from "next-auth/react";
 import Modal from "react-modal";
-
+import { apiUrl } from "../../utils";
 const customStyles = {
     content: {
       top: '50%',
@@ -16,8 +16,8 @@ const customStyles = {
     },
   };
 
-// https://potofnames/api/participants
-// https://potofnames.com/api/participants
+// http://localhost:3000/api/participants
+// http://localhost:3000/api/participants
 export default function Login(props){
   const [csrfToken,setcsrfToken] = useState("")
   const [openLoginModal,setopenLoginModal] = useState(true)
@@ -31,7 +31,8 @@ export default function Login(props){
 const LoginUser = async (event) => {
     event.preventDefault();
     var user;
-    await fetch("https://potofnames.com/api/users")
+    await fetch(    apiUrl("/api/users")
+    )
       .then((response) => response.json())
       .then((AllUsers) => {
         for (var i = 0; i < AllUsers.length; i++) {
@@ -121,7 +122,9 @@ const closeModal=()=>{
                   </button>
                   <div style={{ textAlign: "center" }}>
                     <form
-                      action="https://potofnames.com/api/auth/signin/google"
+
+    
+    action={ apiUrl("api/auth/signin/google")}
                       method="POST"
                     >
                       <input
@@ -132,7 +135,7 @@ const closeModal=()=>{
                       <input
                         type="hidden"
                         name="callbackUrl"
-                        value="https://potofnames.com/"
+                        value={apiUrl("/")}
                       />
                       <button
                         style={{ width: "100%" }}

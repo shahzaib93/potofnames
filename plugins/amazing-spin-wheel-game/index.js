@@ -5,7 +5,7 @@ var WheelComponent = function WheelComponent(_ref) {
   const [sound, setSound] = React.useState(false);
   const [LogoImg, setLogoImg] = React.useState("");
   const [ArrowImg, setArrowImg] = React.useState("");
-  const [NormalStart, setNormalStart] = React.useState(true);
+  // const [NormalStart, setNormalStart] = React.useState(true);
   const [css,setCss] = React.useState("")
 
   var segments = _ref.segments,
@@ -33,11 +33,21 @@ var WheelComponent = function WheelComponent(_ref) {
   var isStarted = false;
   var newsegments = segments
   var  remainingsegments = segments
+  var newsegments_normal = segments
+  var  remainingsegments_normal = segments
+  var NormalDelay = 50
 if(entriesToShow>10){
  newsegments = segments.slice(0,entriesToShow)
-    remainingsegments = segments.slice(entriesToShow+1,segments.length)}
+ newsegments_normal = segments.slice(0,entriesToShow)
+ 
+    remainingsegments = segments.slice(entriesToShow+1,segments.length)
+    remainingsegments_normal = segments.slice(entriesToShow+1,segments.length)
+
+  
+  }
     else{
       newsegments = segments
+      newsegments_normal= segments
     }
   var _useState = React.useState(false),
       isFinished = _useState[0],
@@ -67,7 +77,7 @@ if(entriesToShow>10){
   var upTime = newsegments.length * upDuration
   var downTime = newsegments.length * downDuration
   var spinStart = 0
-  var spinStartNormal = 0
+  // var spinStartNormal = 0
 
   var frames = 0
   var framesNormal = 0
@@ -85,7 +95,7 @@ React.useEffect(()=>{
   console.log("Normal",startNormalSpin)
   if(startNormalSpin){
     // console.log("WheelEntries",entriesToShow)
-    spinNormal()
+    // spinNormal()
   }
 
 },[])
@@ -98,10 +108,12 @@ React.useEffect(()=>{
   React.useEffect(() => {
     
     if(shouldWeSpin) {
-      setNormalStart(false)
-      // setstart(false)
-    //  const CANVAS =  document.getElementById("canvas")
-    //  CANVAS.classList.remove("CANVAS")
+      startNormalSpin = false
+      NormalDelay = 0
+      newsegments_normal = []
+      // angleCurrentNormal = 0
+      // angleDeltaNormal = 0
+    
 
       console.log("IDDDDD",)
       // console.log("shouldspin",shouldWeSpin)
@@ -109,7 +121,7 @@ React.useEffect(()=>{
         wheelInit();
         spin();
         setShouldWeSpin(false);
-        setNormalStart(false)
+        // setNormalStart(false)
      
       
       // setSound(false)
@@ -148,17 +160,20 @@ React.useEffect(()=>{
     // isStarted = true;
 
     if (timerHandleNormal === 0) {
-      spinStartNormal = new Date().getTime();
+      // spinStartNormal = new Date().getTime();
       // console.log("WHEELSPEED",Math.PI / newsegments.length)
       // maxSpeed = 0.1;
-      framesNormal = 0;
+      // framesNormal = 0;
       
 
 
     }
-    timerHandleNormal = setInterval(onTimerTickNormal, maxSpeedNormal);
+    if(!shouldWeSpin){
+    timerHandleNormal = setInterval(onTimerTickNormal, NormalDelay);
+  }
     // console.log("WHEELTimer",timerHandleNormal)
     // console.log("WHEELontimertick",timerHandleNormal)
+
 
 
   };
@@ -167,18 +182,19 @@ React.useEffect(()=>{
   const mainCount = 0
 
   var onTimerTickNormal = function onTimerTickNormal() {
+    console.log("working")
     // performance.now()
     // var duration = new Date().getTime() - spinStartNormal;
     // console.log(`WHEELduration ${duration}`);
-    framesNormal++;
-    // console.log("WHEELtimer",timerDelay)
-    //   console.log("WHEELSpeed",maxSpeedNormal)
-    //   console.log("WHEELDelta",angleDeltaNormal)
-    //   console.log("WHEELCurrent",angleCurrentNormal)
+    // framesNormal++;
+    console.log("WHEELtimer",timerDelay)
+      console.log("WHEELSpeed",maxSpeedNormal)
+      console.log("WHEELDelta",angleDeltaNormal)
+      console.log("WHEELCurrent",angleCurrentNormal)
     var ctx = canvasContext;  
     
     var lastAngle = angleCurrentNormal;
-    var len = newsegments.length;
+    var len = newsegments_normal.length;
     // console.log("WHEELSEGSSS",newsegments)
     var PI2 = Math.PI * 2;
     ctx.lineWidth = 1;
@@ -289,7 +305,7 @@ const fix = 8
   // }
     var ctx = canvasContext;
     // console.log("WHEELRemainsegs",remainingsegments)
-    var value = newsegments[key];
+    var value = newsegments_normal[key];
     // if(3 == Math.ceil(angle) || 3==Math.floor(angle) ){
     // console.log("WHEELanglecount",value,key)
     //     console.log("WHEELanglecountseg",count)
@@ -311,8 +327,8 @@ const fix = 8
         // newsegments[key]=newsegments[0]
         // newsegments.shift()
         // newsegments.push()
-        newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
-        newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
+        newsegments_normal[0] = remainingsegments_normal[Math.floor(Math.random() * remainingsegments_normal.length)]
+        newsegments_normal[1] = remainingsegments_normal[Math.floor(Math.random() * remainingsegments_normal.length)]
         // newsegments[2] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
 
 
@@ -372,6 +388,7 @@ const fix = 8
     
   };
   var spin = function spin() {
+    startNormalSpin = false
     console.log("spinning")
     isStarted = true;
 
@@ -422,6 +439,7 @@ const fix = 8
     }
 
     if (finished) {
+      startNormalSpin = false
       setFinished(true);
       onFinished(currentSegment);
       clearInterval(timerHandle);
@@ -463,11 +481,7 @@ const fix = 8
       drawImageRot(img,centerX-50,centerY-50,100,100,angle)
 
   };
-  if (angle==4.487989505128276){
-    console.log("WHEELan")
-  }
     var ctx = canvasContext;
-    console.log()
     var value = newsegments[key];
     if((Math.trunc(angleCurrent)+6.02==6.02 || Math.trunc(angleCurrent)+6.03==6.03) && entriesToShow>10  ){
     newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]

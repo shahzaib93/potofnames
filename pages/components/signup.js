@@ -2,7 +2,7 @@
 import React, { useEffect, useState, createContext } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Modal from "react-modal";
-
+import { apiUrl } from "../../utils";
 const customStyles = {
   content: {
     top: '50%',
@@ -23,7 +23,7 @@ export default function Signup(props){
 const SignupUser = async (event) => {
     event.preventDefault();
     var user;
-    await fetch("https://potofnames.com/api/users")
+    await fetch(apiUrl("/"))
       .then((response) => response.json())
       .then((AllUsers) => {
         for (var i = 0; i < AllUsers.length; i++) {
@@ -37,7 +37,8 @@ const SignupUser = async (event) => {
           }
         }
         if (!user) {
-          const res = fetch("http://localhost:3000/api/users", {
+          const res = fetch(apiUrl("/api/users")
+          , {
             body: JSON.stringify({
               name: event.target.SignupName.value,
               email: event.target.SignupEmail.value,

@@ -13,8 +13,8 @@ import {
   faPinterestP,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-// https://potofnames/api/participants
-// https://potofnames.com/api/participants
+// http://localhost:3000/api/participants
+// http://localhost:3000/api/participants
 // import styled, { ThemeProvider } from "styled-components";
 import { useTheme } from "next-themes";
 import Modal from "react-modal";
@@ -160,7 +160,8 @@ function Settings(props) {
       setCSVArr(newArray)
       console.log("CCC",newArray)
       localStorage.setItem("csvdata", JSON.stringify(newArray));
-      fetch("https://potofnames.com/api/participants", {
+      fetch(apiUrl("/api/participants")
+      , {
       body: JSON.stringify({
         // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
 

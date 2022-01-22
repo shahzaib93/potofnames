@@ -65,7 +65,7 @@ export default NextAuth({
     //   async authorize(credentials, req) {
 
     //     //FOR POST
-    //     // const res = await fetch("https://potofnames.com/api/users", {
+    //     // const res = await fetch("http://localhost:3000/api/users", {
     //     //   body: JSON.stringify({
     //     //     email: "Wajahat@gmail.com",
     //     //     password: "123",
@@ -79,7 +79,7 @@ export default NextAuth({
     //     console.log("request", req);
     //     console.log("credentials", credentials);
     //       var user;
-    //       await fetch("https://potofnames.com/api/users").then((response)=>response.json()).then((AllUsers)=>{
+    //       await fetch("http://localhost:3000.com/api/users").then((response)=>response.json()).then((AllUsers)=>{
     //     console.log("ALLLLL",AllUsers)
     //     for(var i =0 ; i<AllUsers.length;i++){
     //           if (AllUsers[i].email  == credentials.email){

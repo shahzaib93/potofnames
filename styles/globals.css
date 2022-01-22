@@ -284,6 +284,14 @@ a {
   .container-sm {
     width: 700px;
   }
+  /* .wheel_frame {
+    width: 780px;
+    z-index: -100;
+    margin: auto;
+    margin-top: -140px;
+    margin-left: -52px;
+  } */
+ 
 }
 
 @media only screen and (min-width: 992px) {
@@ -294,6 +302,12 @@ a {
   .test {
     padding: 0 200px 0 200px;
   }
+
+  .newtest{
+    padding: 0 400px 100px 15px;
+    /* margin-left: -0.5px !important; */
+  }
+
    #ForFullScreen{
     margin-left: -50px;
    }
