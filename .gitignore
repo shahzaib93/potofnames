@@ -28,12 +28,12 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
-.env.local
+# .env.local
 # vercel
 .vercel
 
 next.config.js
-*.local
-.env.local
+# *.local
+# .env.local
 
 .next
