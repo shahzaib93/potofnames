@@ -27,9 +27,9 @@ import {apiUrl} from "../utils"
 // http://localhost:3000/api/wheelSpinTimes
 export const getStaticProps = async () => {
   const server = process.env.NEXT_PUBLIC_API_BASE;
-  const res = await fetch(apiUrl("/api/participants"));
+  const res = await fetch(server+"/api/participants");
   const data = await res.json();
-  const timesres = await fetch(apiUrl("/api/wheelSpinTimes"));
+  const timesres = await fetch(server+"/api/wheelSpinTimes");
   const times = await timesres.json()
   const timesData = times[0].times
   // const fragmentsColor;
