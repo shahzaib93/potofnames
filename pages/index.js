@@ -22,14 +22,13 @@ import Signup from "./components/signup";
 import Login from "./components/login";
 import Settings from "./components/settings";
 import {apiUrl} from "../utils"
-// import { Button } from "bootstrap";
 // http://localhost:3000/api/participants
 // http://localhost:3000/api/wheelSpinTimes
 export const getStaticProps = async () => {
   const server = process.env.NEXT_PUBLIC_API_BASE;
-  const res = await fetch("https://potofnames.com/api/participants");
+  const res = await fetch("https://potofnames/api/participants");
   const data = await res.json();
-  const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
+  const timesres = await fetch("https://potofnames/api/wheelSpinTimes");
   const times = await timesres.json()
   const timesData = times[0].times
   // const fragmentsColor;
@@ -91,7 +90,8 @@ export default function Home({ participants,Wheeltimes }) {
   const [ArrowImage,setArrowImage] = useState("Arrow")
   const [showCover,setshowCover] = useState(false)
   const [startNormalSpin,setstartNormalSpin] = useState(false)
-
+  const [TextAreaParticipant,setTextAreaParticipant] = useState("")
+  const [TextAreaParticipantArray,setTextAreaParticipantArray] = useState([])
 
 
 
@@ -490,40 +490,60 @@ const gettingArrowImage = async()=>{
     event.target.participantName.value = "";
   };
 
+
+  const handleChangeParticipant=async(event)=>{
+
+    setTextAreaParticipant(event.target.value)
+    const ar = TextAreaParticipant.split("\n")
+    setTextAreaParticipantArray(ar)
+    console.log("MyPPPP",TextAreaParticipantArray)
+
+
+
+  }
+
   const addParticipantTextArea = async (event) => {
-    event.preventDefault();
-    const hello = "hello";
+    // event.preventDefault();
+    // const hello = "hello";
     // const more = window.document.getElementById("moreParticpants");
-    const arr = Array(parseInt(more.value)).fill(hello);
-    console.log("My participant", event.target.participantName.value);
-    console.log("participant times", more.value);
+    // const arr = Array(parseInt(more.value)).fill(hello);
+
+    // const end = TextAreaParticipant.match(/\n/).input
+  //   if(end !==null){
+  //   const Arr = end.split("\n")
+
+  
+  // }
+    // console.log("My",Arr);
+
+    // console.log("participant times", more.value);
     if (!localStorage.getItem("Entries") === null) {
       await setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
       console.log("AAAAAA",webState.items.length)
     if (webState.items.length < totalEntries) {
 
-      const res = await fetch(  apiUrl("/api/participants")
+      const res = await fetch(apiUrl("/api/participants")
       , {
         body: JSON.stringify({
           // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
 
-          name: event.target.participantName.value,
-          repeatation: parseInt(more.value),
+          SimpleList:TextAreaParticipantArray
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST",
       });
       const newParticipant = await res.json();
+      console.log("MyP",newParticipant)
 
-      const segarr = [];
-      for (var i = 0; i < newParticipant.participantArray.length; i++) {
-        segarr.push(newParticipant.participantArray[0].name);
-      }
-      console.log("newnewparticipants", newParticipant.participantArray);
+      // const segarr = [];
+      // for (var i = 0; i < newParticipant.participantArray.length; i++) {
+      //   segarr.push(newParticipant.participantArray[0].name);
+      // }
+      // console.log("newnewparticipants", newParticipant.participantArray);
       setWebState({
-        items: [...webState.items, ...newParticipant.participantArray],
-        seg: [...webState.seg, ...segarr],
+        items: [...webState.items, ...TextAreaParticipantArray],
+        seg: [...webState.seg, ...TextAreaParticipantArray],
       });
       //   for(var i=0;i<newParticipant.participantArray.length;i++){
 
@@ -533,7 +553,6 @@ const gettingArrowImage = async()=>{
     } else {
       alert("You can't add more.");
     }
-    event.target.participantName.value = "";
   };
 
 
@@ -786,7 +805,7 @@ const gettingArrowImage = async()=>{
             </h3>
           </div>:null}
             
-            <div className="col-6 col-md-6 col-sm-6">
+            <div className="col-6 col-md-6 col-lg-6 ForSide">
               {console.log("III",webState.seg.length,gameType)}
               {webState.seg.length > 0 && gameType == "wheel" && (
                 <div>
@@ -896,7 +915,7 @@ const gettingArrowImage = async()=>{
 
 
 
-            <div className="col-4" style={{marginLeft:"5%"}} >
+            <div className="col-4 SideArea" style={{marginLeft:"5%"}} >
                     <div>
                     <form
           style={{ display: showdivs,marginLeft:"15%" }}
@@ -954,7 +973,9 @@ const gettingArrowImage = async()=>{
                 placeholder="Participant Name"
                 name="participantName"
                 required
-                onChange={()=>addParticipantTextArea()}
+                onChange={handleChangeParticipant}
+                value={TextAreaParticipant}
+                onKeyPress={(e)=>e.key=="Enter" && addParticipantTextArea()}
               />
             </div>
           </div>
@@ -1044,7 +1065,7 @@ const gettingArrowImage = async()=>{
         <form
           style={{ display: showdivs }}
           style={{ marginLeft: "-28%" }}
-          className="row justify-content-center mt-3"
+          className="row justify-content-center mt-3 PartcipantForSide"
           method="post"
           onSubmit={addParticipant}
         >

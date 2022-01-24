@@ -281,6 +281,15 @@ a {
   }
 }
 @media screen and (max-width: 500px) {
+  .PartcipantForSide{
+    margin-left: 0% !important;
+  }
+  .Pot-or-Wheel{
+    margin-left: -5% !important;
+  }
+  .ForSide{
+    width: 95% !important;
+  }
   .container-sm {
     width: 700px;
   }
@@ -291,7 +300,17 @@ a {
     margin-top: -140px;
     margin-left: -52px;
   } */
- 
+ .SideArea{
+   display: none;
+   margin-right: 30%;
+ }
+
+ .newtest{
+  /* padding: 0 0 0 100px !important; */
+  /* margin-left: -0.5px !important; */
+}
+
+
 }
 
 @media only screen and (min-width: 992px) {

@@ -22,13 +22,23 @@ export default async function handler (req, res) {
         //   console.log(b.split(","))
         // }
         // console.log("aaaaa",typeof(JSON.parse(req.body)))
-        console.log("aaa",req.body.lst)
+        console.log("aaa",req.body.SimpleList)
         if(req.body.lst){
           for(var i=0;i<req.body.lst.length;i++){
             console.log("BBB",Object.values(req.body.lst[i]))
             var addParticipant = new Participant({name:Object.values(req.body.lst[i])[0],repeatation:Object.values(req.body.lst[i])[1]});
             addParticipant.save()
           }
+        }
+        if(req.body.SimpleList){
+          for(var i=0;i<req.body.SimpleList.length;i++){
+            console.log("BBB",req.body.SimpleList[i])
+            var addParticipant = new Participant({name:req.body.SimpleList[i],repeatation:1});
+            addParticipant.save()
+          }
+          const response  = req.body.SimpleList
+          res.status(201).json({response})
+
         }
         
         var addParticipant = new Participant(req.body);
