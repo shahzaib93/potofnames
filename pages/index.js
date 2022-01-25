@@ -87,11 +87,13 @@ export default function Home({ participants,Wheeltimes }) {
   const [remainingEntries,setremainingEntries] = useState("")
   const [ArrowPos,setArrowPos] = useState("At-3")
   const [SegmentColor,setSegmentColor] = useState("#171dbf")
-  const [ArrowImage,setArrowImage] = useState("Arrow")
+  const [ArrowImage,setArrowImage] = useState("arrow")
   const [showCover,setshowCover] = useState(false)
   const [startNormalSpin,setstartNormalSpin] = useState(false)
   const [TextAreaParticipant,setTextAreaParticipant] = useState("")
   const [TextAreaParticipantArray,setTextAreaParticipantArray] = useState([])
+  const [TextAreaParticipantArrayPrevious,setTextAreaParticipantArrayPrevious] = useState([])
+
 
 
 
@@ -492,9 +494,21 @@ const gettingArrowImage = async()=>{
 
 
   const handleChangeParticipant=async(event)=>{
-
+   
     setTextAreaParticipant(event.target.value)
     const ar = TextAreaParticipant.split("\n")
+    if(ar!=[]){
+      for(var i=0;i<ar.length;i++){
+        const tempSave = ar[-1]
+        if(TextAreaParticipantArrayPrevious[i]!=ar[i]){
+            console.log("MyCDefect",TextAreaParticipantArrayPrevious[i])
+        }
+        console.log("MyCompare",ar,TextAreaParticipantArrayPrevious)
+        // console.log("MyAB",ar[i])
+        // console.log("MyACompare",TextAreaParticipant[i]==ar[i])
+
+      }
+    }
     setTextAreaParticipantArray(ar)
     console.log("MyPPPP",TextAreaParticipantArray)
 
@@ -503,6 +517,7 @@ const gettingArrowImage = async()=>{
   }
 
   const addParticipantTextArea = async (event) => {
+    setTextAreaParticipantArrayPrevious(TextAreaParticipantArray)
     // event.preventDefault();
     // const hello = "hello";
     // const more = window.document.getElementById("moreParticpants");
@@ -541,10 +556,15 @@ const gettingArrowImage = async()=>{
       //   segarr.push(newParticipant.participantArray[0].name);
       // }
       // console.log("newnewparticipants", newParticipant.participantArray);
+      const segarr = [];
+      for (var i = 0; i < newParticipant.response.length; i++) {
+        segarr.push(newParticipant.response[0].name);
+      }
       setWebState({
-        items: [...webState.items, ...TextAreaParticipantArray],
-        seg: [...webState.seg, ...TextAreaParticipantArray],
+        items: [...webState.items, ...newParticipant.response],
+        seg: [...webState.seg, ...segarr]
       });
+      console.log("MyCC",webState)
       //   for(var i=0;i<newParticipant.participantArray.length;i++){
 
       //   console.log("sxsxsxsx",newParticipant.participantArray[i])
@@ -1025,7 +1045,7 @@ const gettingArrowImage = async()=>{
           </div>
         </div>
         <div
-          style={{ display: showdivs,marginLeft:"-30%" }}
+          style={{ display: showdivs,marginLeft:"-40%" }}
           className="Pot-or-Wheel row"
         >
        <div className="row" style={{display:"flex",flexDirection:"row",justifyContent:"space-between",paddingLeft:"30%",paddingRight:"25%"}}>

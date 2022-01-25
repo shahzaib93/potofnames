@@ -31,13 +31,17 @@ export default async function handler (req, res) {
           }
         }
         if(req.body.SimpleList){
+          const ListArray = []
           for(var i=0;i<req.body.SimpleList.length;i++){
             console.log("BBB",req.body.SimpleList[i])
             var addParticipant = new Participant({name:req.body.SimpleList[i],repeatation:1});
             addParticipant.save()
+            ListArray.push(addParticipant)
           }
-          const response  = req.body.SimpleList
+          const response  = ListArray
+          console.log("MyPPPPP",response)
           res.status(201).json({response})
+          
 
         }
         

@@ -35,7 +35,7 @@ var WheelComponent = function WheelComponent(_ref) {
   var  remainingsegments = segments
   var newsegments_normal = segments
   var  remainingsegments_normal = segments
-  var NormalDelay = 50
+  var NormalDelay = 80
 if(entriesToShow>10){
  newsegments = segments.slice(0,entriesToShow)
  newsegments_normal = segments.slice(0,entriesToShow)
@@ -66,7 +66,7 @@ if(entriesToShow>10){
   var angleDelta = 0
   var angleCurrentNormal = 0
   var angleDeltaNormal = 0
-  var maxSpeedNormal = 0.05
+  var maxSpeedNormal = 0.03
 
   var canvasContext = null
   // var maxSpeed = Math.PI / (newsegments.length);
@@ -93,9 +93,9 @@ const [start,setstart] = React.useState(true)
 // // }
 React.useEffect(()=>{
   console.log("Normal",startNormalSpin)
-  if(startNormalSpin){
+  if(startNormalSpin && !shouldWeSpin){
     // console.log("WheelEntries",entriesToShow)
-    // spinNormal()
+    spinNormal()
   }
 
 },[])
@@ -109,14 +109,11 @@ React.useEffect(()=>{
     
     if(shouldWeSpin) {
       startNormalSpin = false
-      NormalDelay = 0
-      newsegments_normal = []
-      // angleCurrentNormal = 0
-      // angleDeltaNormal = 0
-    
-
-      console.log("IDDDDD",)
-      // console.log("shouldspin",shouldWeSpin)
+      // NormalDelay = 0
+      // // newsegments_normal = []
+      angleCurrentNormal = 0
+      angleDeltaNormal = 0
+      maxSpeed = 0
         setSound(true)
         wheelInit();
         spin();
@@ -154,7 +151,7 @@ React.useEffect(()=>{
     // spinBtn.addEventListener('click', spin, false);
   };
 
-  var spinNormal = function spin() {
+    function spinNormal() {
     // console.log("spinning")
     
     // isStarted = true;
@@ -169,7 +166,7 @@ React.useEffect(()=>{
 
     }
     if(!shouldWeSpin){
-    timerHandleNormal = setInterval(onTimerTickNormal, NormalDelay);
+    setInterval(onTimerTickNormal, NormalDelay);
   }
     // console.log("WHEELTimer",timerHandleNormal)
     // console.log("WHEELontimertick",timerHandleNormal)
@@ -181,8 +178,8 @@ React.useEffect(()=>{
   const count = 1
   const mainCount = 0
 
-  var onTimerTickNormal = function onTimerTickNormal() {
-    console.log("working")
+  function onTimerTickNormal() {
+    console.log("NormalWorking")
     // performance.now()
     // var duration = new Date().getTime() - spinStartNormal;
     // console.log(`WHEELduration ${duration}`);
@@ -215,7 +212,8 @@ const num = 0
       var angle = PI2 * (i / len) + angleCurrentNormal;
       // console.log("WHEELangleangle",angle)
       // console.log("WHEELin",i)
-      drawSegmentNormal(i - 1, lastAngle, angle);
+      if(spinStart==0){
+      drawSegmentNormal(i - 1, lastAngle, angle);}
       lastAngle = angle;
     }
     // console.log("WHEELnum",num)
@@ -289,7 +287,7 @@ const num = 0
     // }
   };
 const fix = 8
-  var drawSegmentNormal = function drawSegmentNormal(key, lastAngle, angle) {
+  function drawSegmentNormal(key, lastAngle, angle) {
     // setOldval[newsegments[0]]
   //   function drawImageRot(img,x,y,width,height,deg){
   //     ctx.save()
@@ -387,7 +385,7 @@ const fix = 8
     ctx.restore();
     
   };
-  var spin = function spin() {
+  function spin() {
     startNormalSpin = false
     console.log("spinning")
     isStarted = true;
@@ -400,7 +398,7 @@ const fix = 8
     }
   };
 
-  var onTimerTick = function onTimerTick() {
+  function onTimerTick() {
     frames++;
     draw();
     var duration = new Date().getTime() - spinStart;
@@ -460,7 +458,7 @@ const fix = 8
     drawNeedle();
   };
 
-  var drawSegment = function drawSegment(key, lastAngle, angle) {
+  function drawSegment(key, lastAngle, angle) {
 
     function drawImageRot(img,x,y,width,height,deg){
       ctx.save()
