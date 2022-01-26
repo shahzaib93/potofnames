@@ -221,7 +221,7 @@ const gettingArrowImage = async()=>{
 
   const settheShouldWeSpin = async () => {
     setstartNormalSpin(false)
-  apiUrl("/api/wheelSpinTimes")
+//   apiUrl("/api/wheelSpinTimes")
 
     const timesresget = await fetch(apiUrl("/api/wheelSpinTimes"));
   const times = await timesresget.json();
