@@ -52,7 +52,7 @@ function Settings(props) {
   const [entries, setEntries] = useState(15);
   const [shakeTime, setshakeTime] = useState(5);
   const [spinTime, setspinTime] = useState(5);
-  const [entriesToShow, setentriesToShow] = useState(10);
+  const [entriesToShow, setentriesToShow] = useState(0);
   const [applausing, setApplausing] = useState("applause-01");
   const [selectedFile, setSelectedFile] = useState();
   const [ShowModalBtn, setShowModalBtn] = useState("ON");
@@ -79,7 +79,7 @@ function Settings(props) {
   const getEntriesToShow = (event) => {
     setentriesToShow(event.target.value);
     console.log("SHOW",entriesToShow);
-    localStorage.setItem("EntriesToShow", entriesToShow);
+    localStorage.setItem("EntriesToShow", event.target.value);
   };
 
   const getSpinTime = (event) => {

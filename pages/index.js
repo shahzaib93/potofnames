@@ -31,6 +31,9 @@ export const getStaticProps = async () => {
   const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
   const times = await timesres.json()
   const timesData = times[0].times
+  // if(localStorage.getItem("UserId")!==null){
+  //   localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
+  //   }
   // const fragmentsColor;
   // if(localStorage.getItem("SegmentColor")!==null){
   //   fragmentsColor=localStorage.getItem("SegmentColor")
@@ -67,7 +70,7 @@ export default function Home({ participants,Wheeltimes }) {
 
   const [threeDMode, setThreeDMode] = useState(0);
   const [totalEntries, setTotalEntries] = useState(15);
-  const [EntriesToShow, setEntriesToShow] = useState(10);
+  const [EntriesToShow, setEntriesToShow] = useState(0);
   const [wheelSpeed, setWheelSpeed] = useState(5);
   const [spinTime, setSpinTime] = useState(5);
   const [shakeTime, setShakeTime] = useState(5);
@@ -92,13 +95,75 @@ export default function Home({ participants,Wheeltimes }) {
   const [startNormalSpin,setstartNormalSpin] = useState(false)
   const [TextAreaParticipant,setTextAreaParticipant] = useState("")
   const [TextAreaParticipantArray,setTextAreaParticipantArray] = useState([])
-  const [TextAreaParticipantArrayPrevious,setTextAreaParticipantArrayPrevious] = useState([])
+  const [TextAreaParticipantArrayNames,setTextAreaParticipantArrayNames] = useState([])
+  const [TextAreaParticipantArrayNew,setTextAreaParticipantArrayNew] = useState("")
+  const [UserId,setUserId] = useState("")
+  const [timer, setTimer] = useState(null)
+  const [changed, setChanged] = useState(false)
+
+// useEffect(async()=>{
+//   tempParticipants = [
+//     { name: "Asif", repeatation: 1 },
+//     { name: "Jami", repeatation: 1 },
+//     { name: "Zahid", repeatation: 1 },
+//     { name: "Khalid", repeatation: 1 },
+//     { name: "Kayani", repeatation: 1 },
+//     { name: "Mahir", repeatation: 1 },
+//     { name: "Shehzad", repeatation: 1 },
+//     { name: "Aslam", repeatation: 1 }
+//   ];
+//     const resAll = await fetch(apiUrl("/api/participants"))
+//     const participants = await resAll.json();
+//     const AllPart = [...participants,...tempParticipants]
+//   console.log("ALLLLKSKLSCNSC",participants)
+//       let temp = [];
+//         AllPart.map((participant) => {
+//           temp.push(participant.name);
+//         });
+//         setWebState({ items: [AllPart], seg: temp });
+//       }
+    
+// ,[changed])
 
 
+ useEffect(()=>{
+   if(localStorage.getItem("UserId")==null){
+   localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
+   }
+   console.log("USERID",localStorage.getItem("UserId"))
 
+   localStorage.setItem("NORMALSPINSTORE",true)
+
+ },[])
+
+  useEffect(()=>{
+    const AllDataParticipants=async()=>{
+      const arrNames = []
+      const res = await fetch("https://potofnames.com/api/participants");
+      const data = await res.json();
+      // await setTextAreaParticipantArray(data)
+  
+  for (var i = 0; i < data.length; i++) {
+    arrNames.push(data[i].name)
+  }
+      await setTextAreaParticipantArrayNames(arrNames)
+      const ForTextArea = arrNames.join("\n")
+  await setTextAreaParticipantArrayNew(ForTextArea)
+// console.log("ALL",arrNames)
+    }
+    AllDataParticipants()},[webState])
+
+
+    useEffect(()=>{
+      setstartNormalSpin(true)
+
+  if(shouldWeSpin){
+      setstartNormalSpin(false)
+  }
+    },[webState])
 
 useEffect(()=>{
-  setstartNormalSpin(true)
+  
   console.log("WHEELCalled")
   console.log("WheelShowEntires",EntriesToShow)
   console.log("qwqwqw", JSON.parse(localStorage.getItem("ShowParticipants")))
@@ -212,6 +277,7 @@ const gettingArrowImage = async()=>{
 
   function closeModal() {
     setIsOpen(false);
+    window.location.reload()
   }
 
   const getThreeDMode = (event) => {
@@ -221,8 +287,9 @@ const gettingArrowImage = async()=>{
 
   const settheShouldWeSpin = async () => {
     setstartNormalSpin(false)
-  apiUrl("/api/wheelSpinTimes")
-
+    localStorage.setItem("NORMALSPINSTORE",false)
+    setTimeout(async()=>{
+  // apiUrl("/api/wheelSpinTimes")
     const timesresget = await fetch(apiUrl("/api/wheelSpinTimes"));
   const times = await timesresget.json();
   var timesData  = times[0].times
@@ -235,7 +302,7 @@ const gettingArrowImage = async()=>{
     });
     const time = await timerespost.json();
     console.log("TTTT",time.addWheelSpinTimes)
-    setspinWheelTimes(time.addWheelSpinTimes.times)
+    setspinWheelTimes(timesData+1)
     
     console.log("ssslocal", ! localStorage.getItem("SpinTime")==null);
     if (! localStorage.getItem("SpinTime")===null ) {
@@ -247,7 +314,7 @@ const gettingArrowImage = async()=>{
     setsoundplay(true);
     console.log("sssssssreturnedspin", spinTime);
     console.log("sssssssentries", totalEntries);
-
+  },100)
   };
 
   const togglePotWheel = (event, value) => {
@@ -338,6 +405,7 @@ const gettingArrowImage = async()=>{
     console.log("My applausing", applausing);
   }, [webState, gameType]);
 
+  
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
       console.log("SSEGMENT",SegmentColor)
@@ -445,7 +513,7 @@ const gettingArrowImage = async()=>{
       closefullScreen(elem);
     }
   }, [enableFullScreen]);
-
+  
   const addParticipant = async (event) => {
     event.preventDefault();
     const hello = "hello";
@@ -466,6 +534,7 @@ const gettingArrowImage = async()=>{
 
           name: event.target.participantName.value,
           repeatation: parseInt(more.value),
+          UserId:localStorage.getItem("UserId")
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST",
@@ -492,88 +561,74 @@ const gettingArrowImage = async()=>{
     event.target.participantName.value = "";
   };
 
+  const ADDPARTICIPANT=async(Arr)=>{
+    console.log("ALLLLLLLLLLLLLLLLLLL",Arr)
+    const res = await fetch(apiUrl("/api/participants")
+    , {
+      body: JSON.stringify({
+        // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
 
-  const handleChangeParticipant=async(event)=>{
-   
-    setTextAreaParticipant(event.target.value)
-    const ar = TextAreaParticipant.split("\n")
-    if(ar!=[]){
-      for(var i=0;i<ar.length;i++){
-        const tempSave = ar[-1]
-        if(TextAreaParticipantArrayPrevious[i]!=ar[i]){
-            console.log("MyCDefect",TextAreaParticipantArrayPrevious[i])
-        }
-        console.log("MyCompare",ar,TextAreaParticipantArrayPrevious)
-        // console.log("MyAB",ar[i])
-        // console.log("MyACompare",TextAreaParticipant[i]==ar[i])
-
-      }
-    }
-    setTextAreaParticipantArray(ar)
-    console.log("MyPPPP",TextAreaParticipantArray)
-
-
-
+        UpdateArray:Arr,
+        UserId:localStorage.getItem("UserId")
+      }),
+      headers: { "Content-Type": "application/json" },
+      method: "POST",
+    });
+    setChanged(true)
+//     await res.json().then(async()=>{
+//     const resAll = await fetch(apiUrl("/api/participants"))
+//   const participants = await resAll.json();
+// console.log("ALLLLKSKLSCNSC",participants)
+//     let temp = [];
+//       participants.map((participant) => {
+//         temp.push(participant.name);
+//       });
+//       setWebState({ items: [...participants], seg: temp });
+//     })
   }
 
-  const addParticipantTextArea = async (event) => {
-    setTextAreaParticipantArrayPrevious(TextAreaParticipantArray)
-    // event.preventDefault();
-    // const hello = "hello";
-    // const more = window.document.getElementById("moreParticpants");
-    // const arr = Array(parseInt(more.value)).fill(hello);
-
-    // const end = TextAreaParticipant.match(/\n/).input
-  //   if(end !==null){
-  //   const Arr = end.split("\n")
-
-  
-  // }
-    // console.log("My",Arr);
-
-    // console.log("participant times", more.value);
+  const handleChangeParticipant=async(event)=>{
+    clearTimeout(timer)
+    const val = event.target.value
+    setTextAreaParticipantArrayNew(val)
+    const values = event.target.value
+    const NewArr = values.split("\n")
     if (!localStorage.getItem("Entries") === null) {
       await setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
-      console.log("AAAAAA",webState.items.length)
+      // console.log("AAAAAA",webState)
     if (webState.items.length < totalEntries) {
+      // var myresponse;
 
-      const res = await fetch(apiUrl("/api/participants")
-      , {
-        body: JSON.stringify({
-          // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
 
-          SimpleList:TextAreaParticipantArray
-        }),
-        headers: { "Content-Type": "application/json" },
-        method: "POST",
-      });
-      const newParticipant = await res.json();
-      console.log("MyP",newParticipant)
+  const newtimer = setTimeout(
+    callToDelete
+          
+   ,1000)
+  async function callToDelete (){
+    const delres = await  fetch(apiUrl("/api/participants")
+    , {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({UpdateArray:NewArr,UserId:localStorage.getItem("UserId")}),
+        })
+        console.log("ALLLLresponse",delres)
+        delres.json().then(()=>{
+  ADDPARTICIPANT(NewArr)
 
-      // const segarr = [];
-      // for (var i = 0; i < newParticipant.participantArray.length; i++) {
-      //   segarr.push(newParticipant.participantArray[0].name);
-      // }
-      // console.log("newnewparticipants", newParticipant.participantArray);
-      const segarr = [];
-      for (var i = 0; i < newParticipant.response.length; i++) {
-        segarr.push(newParticipant.response[0].name);
-      }
-      setWebState({
-        items: [...webState.items, ...newParticipant.response],
-        seg: [...webState.seg, ...segarr]
-      });
-      console.log("MyCC",webState)
-      //   for(var i=0;i<newParticipant.participantArray.length;i++){
-
-      //   console.log("sxsxsxsx",newParticipant.participantArray[i])
-      // }
-      // console.log("addsvsvsldsdls", newParticipant.addParticipant);
-    } else {
+        })
+  }
+  setTimer(newtimer)
+  
+  }
+    else {
       alert("You can't add more.");
     }
-  };
+ 
+  }
+
+
+  
 
 
   const deleteParticipant = async (deleleId, index) => {
@@ -852,6 +907,10 @@ const gettingArrowImage = async()=>{
                     className="position-absolute"
                   />:null}
                   <img 
+                    src={`/circle-512.png`} style={{zIndex:0,width:"100px",height:"100px",marginTop: "295px",marginLeft: "287px"}}
+                    className="position-absolute"
+                  />
+                  <img 
                     src={`/${wheelImg}.png`}
                     className="position-absolute wheel_frame threeDRotate"
                   />
@@ -990,12 +1049,13 @@ const gettingArrowImage = async()=>{
               <textarea
                 rows={20}
                 className="form-control"
+                id="TextArea"
                 placeholder="Participant Name"
                 name="participantName"
                 required
                 onChange={handleChangeParticipant}
-                value={TextAreaParticipant}
-                onKeyPress={(e)=>e.key=="Enter" && addParticipantTextArea()}
+                value={TextAreaParticipantArrayNew}
+                // onKeyPress={(e)=>e.key=="Enter" && addParticipantTextArea()}
               />
             </div>
           </div>
@@ -1048,7 +1108,7 @@ const gettingArrowImage = async()=>{
           style={{ display: showdivs,marginLeft:"-40%" }}
           className="Pot-or-Wheel row"
         >
-       <div className="row" style={{display:"flex",flexDirection:"row",justifyContent:"space-between",paddingLeft:"30%",paddingRight:"25%"}}>
+       <div className="row BelowWheelButtons" style={{display:"flex",flexDirection:"row",justifyContent:"space-between",paddingLeft:"35%",paddingRight:"25%"}}>
         
             <button
             style={{width:"20%"}}

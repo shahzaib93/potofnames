@@ -280,7 +280,7 @@ a {
     transform: translate(1px, -2px) rotate(-1deg);
   }
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
   .PartcipantForSide{
     margin-left: 0% !important;
   }
@@ -385,7 +385,7 @@ a {
 margin: 0%;
 width: 30%;
 height: 30%;
-top: 40%;
+top: 20%;
 left: 35%;
 right: auto;
 bottom: auto;
@@ -455,3 +455,8 @@ bottom: auto;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 } */
+
+@media (min-width: 600px){
+.BelowWheelButtons{
+  display: none !important;
+}}

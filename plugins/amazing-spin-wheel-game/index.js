@@ -5,7 +5,7 @@ var WheelComponent = function WheelComponent(_ref) {
   const [sound, setSound] = React.useState(false);
   const [LogoImg, setLogoImg] = React.useState("");
   const [ArrowImg, setArrowImg] = React.useState("");
-  // const [NormalStart, setNormalStart] = React.useState(true);
+  const [NormalStop, setNormalStop] = React.useState(false);
   const [css,setCss] = React.useState("")
 
   var segments = _ref.segments,
@@ -33,22 +33,27 @@ var WheelComponent = function WheelComponent(_ref) {
   var isStarted = false;
   var newsegments = segments
   var  remainingsegments = segments
-  var newsegments_normal = segments
-  var  remainingsegments_normal = segments
-  var NormalDelay = 80
-if(entriesToShow>10){
- newsegments = segments.slice(0,entriesToShow)
- newsegments_normal = segments.slice(0,entriesToShow)
- 
-    remainingsegments = segments.slice(entriesToShow+1,segments.length)
-    remainingsegments_normal = segments.slice(entriesToShow+1,segments.length)
+  var newsegments = segments
+  var  remainingsegments = segments
 
-  
-  }
-    else{
-      newsegments = segments
-      newsegments_normal= segments
-    }
+  React.useEffect(()=>
+  wheelInit(),
+  [newsegments]);
+
+  React.useEffect(()=>{
+    if(entriesToShow<segments.length && entriesToShow>9){
+      newsegments = segments.slice(0,entriesToShow)
+      newsegments = segments.slice(0,entriesToShow)
+      
+         remainingsegments = segments.slice(entriesToShow+1,segments.length)
+         remainingsegments = segments.slice(entriesToShow+1,segments.length)
+     
+       
+       }
+  },[entriesToShow])
+  var NormalDelay = 100
+
+    // console.log("ENTRIESSSSS",newsegments)
   var _useState = React.useState(false),
       isFinished = _useState[0],
       setFinished = _useState[1];
@@ -66,14 +71,14 @@ if(entriesToShow>10){
   var angleDelta = 0
   var angleCurrentNormal = 0
   var angleDeltaNormal = 0
-  var maxSpeedNormal = 0.03
+  var maxSpeedNormal = 0.008
 
   var canvasContext = null
   // var maxSpeed = Math.PI / (newsegments.length);
   var maxSpeed = 4
-  console.log(`Total newsegments ${newsegments.length}`)
-  console.log(`Max speed ${maxSpeed}`)
-  console.log(`Timer delay ${timerManualDelay}`)
+  // console.log(`Total newsegments ${newsegments.length}`)
+  // console.log(`Max speed ${maxSpeed}`)
+  // console.log(`Timer delay ${timerManualDelay}`)
   var upTime = newsegments.length * upDuration
   var downTime = newsegments.length * downDuration
   var spinStart = 0
@@ -85,114 +90,80 @@ if(entriesToShow>10){
   var centerX = 300
   var centerY = 300
 
-const [oldval,setOldval] = React.useState("")
-const [start,setstart] = React.useState(true)
-
-// if(shouldWeSpin){
-//   setNormalStart(false)
-// // }
-React.useEffect(()=>{
-  console.log("Normal",startNormalSpin)
-  if(startNormalSpin && !shouldWeSpin){
-    // console.log("WheelEntries",entriesToShow)
-    spinNormal()
-  }
-
-},[])
-
-  React.useEffect(function () {
-    
-    wheelInit();
-  }, [newsegments]);
+ 
 
   React.useEffect(() => {
-    
+    const FROMSTORE  = localStorage.getItem("NORMALSPINSTORE")
+    if(startNormalSpin && !shouldWeSpin && JSON.parse(FROMSTORE)){
+      spinNormal()
+    }
+
     if(shouldWeSpin) {
+      NormalDelay = 0
+      setNormalStop(true)
       startNormalSpin = false
-      // NormalDelay = 0
-      // // newsegments_normal = []
-      angleCurrentNormal = 0
-      angleDeltaNormal = 0
-      maxSpeed = 0
         setSound(true)
         wheelInit();
-        spin();
+        spin()
         setShouldWeSpin(false);
-        // setNormalStart(false)
-     
-      
-      // setSound(false)
     }
     
-  }, [shouldWeSpin])
+  }, [shouldWeSpin,startNormalSpin])
 
   // React.useEffect(() => {
   //     wheelInit();
   // },[])
 
   var wheelInit = function wheelInit() {
+    const myimg = new Image
+    if(LogoImg!="" && LogoImg != null){
+      myimg.src = LogoImg
+    }
+    else{
+    myimg.src = "roundlogo.png"}
+
     initCanvas();
-    wheelDraw();
+    wheelDraw(myimg);
     // spinNormal()
   };
 
   var initCanvas = function initCanvas() {
     var canvas = document.getElementById('canvas');
     canvasContext = canvas.getContext('2d');
- 
+
+  }
 
   
-    // var background = new Image();
-    // background.src = "../wheel_frame.png";
-    // canvasContext.drawImage(background,100,100,4000,2770);  
 
-    // var spinBtn = document.getElementById('spinBtn');
-    // console.log("33333");
-    // spinBtn.addEventListener('click', spin, false);
-  };
-
-    function spinNormal() {
-    // console.log("spinning")
+  
+  if(!shouldWeSpin){
+    function   spinNormal() {
+    // console.log("THE SPINNING")
     
-    // isStarted = true;
-
     if (timerHandleNormal === 0) {
-      // spinStartNormal = new Date().getTime();
-      // console.log("WHEELSPEED",Math.PI / newsegments.length)
-      // maxSpeed = 0.1;
-      // framesNormal = 0;
-      
+ 
+      if(!shouldWeSpin){
+        setInterval(()=>onTimerTickNormal(), NormalDelay);
+      }
 
 
     }
-    if(!shouldWeSpin){
-    setInterval(onTimerTickNormal, NormalDelay);
-  }
-    // console.log("WHEELTimer",timerHandleNormal)
-    // console.log("WHEELontimertick",timerHandleNormal)
-
-
-
+ 
   };
+}
+  const counter = 1
 
   const count = 1
   const mainCount = 0
 
   function onTimerTickNormal() {
-    console.log("NormalWorking")
-    // performance.now()
-    // var duration = new Date().getTime() - spinStartNormal;
-    // console.log(`WHEELduration ${duration}`);
-    // framesNormal++;
-    console.log("WHEELtimer",timerDelay)
-      console.log("WHEELSpeed",maxSpeedNormal)
-      console.log("WHEELDelta",angleDeltaNormal)
-      console.log("WHEELCurrent",angleCurrentNormal)
+    // console.log("THE TICKNORMAL",NormalDelay)
+
+
     var ctx = canvasContext;  
     
     var lastAngle = angleCurrentNormal;
-    var len = newsegments_normal.length;
-    // console.log("WHEELSEGSSS",newsegments)
+    var len = newsegments.length;
     var PI2 = Math.PI * 2;
     ctx.lineWidth = 1;
     ctx.strokeStyle = primaryColor;
@@ -203,140 +174,52 @@ React.useEffect(()=>{
 const fixedNoofSeg = 8
 const fixedAngle = 4.8
 
-// console.log("WHEELsegs",newsegments)
+// // console.log("WHEELsegs",newsegments)
 const num = 0
 
     for (var i = 1; i <= len; i++) {
-      // console.log("WHEELlen")
+      // // console.log("WHEELlen")
       
       var angle = PI2 * (i / len) + angleCurrentNormal;
-      // console.log("WHEELangleangle",angle)
-      // console.log("WHEELin",i)
-      if(spinStart==0){
-      drawSegmentNormal(i - 1, lastAngle, angle);}
+      // // console.log("WHEELangleangle",angle)
+      // // console.log("WHEELin",i)
+      const FROMSTORE  = localStorage.getItem("NORMALSPINSTORE")
+    // console.log("qqqq",JSON.parse(FROMSTORE))
+      if(JSON.parse(FROMSTORE)){
+        if(startNormalSpin){
+          
+      drawSegmentNormal(i - 1, lastAngle, angle);
+    }
       lastAngle = angle;
     }
-    // console.log("WHEELnum",num)
+    // // console.log("WHEELnum",num)
 
     angleCurrentNormal+=maxSpeedNormal
-    // ctx.beginPath();
-    // ctx.arc(centerX, centerY, 50, 0, PI2, false);
-    // ctx.closePath();
-    // // ctx.fillStyle = primaryColor;
-    // ctx.lineWidth = 10;
-    // ctx.strokeStyle = contrastColor;
-    // ctx.fill();
-    // ctx.font = 'bold 1em ' + fontFamily;
-    // ctx.fillStyle = contrastColor;
-    // ctx.textAlign = 'center';
-    // // ctx.fillText(buttonText, centerX, centerY + 3);
-    // ctx.stroke();
-    // ctx.beginPath();
-    // ctx.arc(centerX, centerY, size, 0, PI2, false);
-    // ctx.closePath();
-    // ctx.lineWidth = 10;
-    // ctx.strokeStyle = primaryColor;
-    // ctx.stroke();
-    
-    // var duration = new Date().getTime() - spinStart;
-    // console.log(`duration ${duration}`);
-    // var progress = 0;
-    // var finished = false;
-    // console.log("WHEELmaxspeed",maxSpeedNormal)
-    // angleDeltaNormal = maxSpeedNormal
-
-    // if (duration < upTime) {
-      // console.log("WHEELLLLLLL",duration / upTime)
-      // progress = duration / upTime;
-      // // console.log(`progress ${progress}`)
-      // // console.log(`upTime ${upTime}`)
-      // angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2)
-    // } else {
-      // if (winningSegment) {
-      //   if (currentSegment === winningSegment && frames > newsegments.length) {
-      //     progress = duration / upTime;
-      //     angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2 + Math.PI / 2);
-      //     progress = 1;
-      //   } else {
-      //     progress = duration / downTime;
-      //     angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2 + Math.PI / 2);
-      //   }
-      // } else {
-        // progress = duration / downTime;
-        // angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2 + Math.PI / 2);
-      
-
-      // if (progress >= 1) finished = true;
-      // console.log(`progress ${progress}`);
-    // }
-
-    // angleCurrentNormal += angleDeltaNormal;
-    // console.log("angle+",angleCurrent)
+  
     while (angleCurrentNormal >= Math.PI * 2) {
       angleCurrentNormal -= Math.PI * 2;
-    // console.log("angle-",angleCurrentNormal)
+    // // console.log("angle-",angleCurrentNormal)
 
     }
 
-    // if (finished) {
-    //   setFinished(true);
-    //   onFinished(currentSegment);
-    //   clearInterval(timerHandle);
-    //   timerHandle = 0;
-    //   angleDelta = 0;
-    // }
+  
   };
 const fix = 8
   function drawSegmentNormal(key, lastAngle, angle) {
-    // setOldval[newsegments[0]]
-  //   function drawImageRot(img,x,y,width,height,deg){
-  //     ctx.save()
-  //     var rad = deg
-  //     ctx.translate(x + width / 2, y + height / 2);
-  //     ctx.rotate(rad);
-  //     ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height)
-  //     ctx.restore();
-  // }
-    
-  // if (angle==4.487989505128276){
-  //   console.log("WHEELan")
-  // }
+    // console.log("THE PROGRESS",upTime,downTime)
+
+
     var ctx = canvasContext;
-    // console.log("WHEELRemainsegs",remainingsegments)
-    var value = newsegments_normal[key];
-    // if(3 == Math.ceil(angle) || 3==Math.floor(angle) ){
-    // console.log("WHEELanglecount",value,key)
-    //     console.log("WHEELanglecountseg",count)
-    //     // newsegments[key] =lst[key] 
-    //     count+=1
-      
-    // }
-    // if(value=="Asif"){
-    //   console.log("WHEELpoint",angleCurrentNormal+8)
-    // }
-    // console.log("enter",entriesToShow>10)
-    if((Math.trunc(angleCurrentNormal)+6.02==6.02) && entriesToShow>10  ){
-      // if(value==newsegments[0]){
-      // console.log("WHEELname",key)
-      // newsegments[key] = `Asif${angleCurrentNormal.toFixed(2)}`
-      // newsegments.remove()
-      // newsegments.push(remainingsegments[0])
-      // if(count%33  ==1 ){
-        // newsegments[key]=newsegments[0]
-        // newsegments.shift()
-        // newsegments.push()
-        newsegments_normal[0] = remainingsegments_normal[Math.floor(Math.random() * remainingsegments_normal.length)]
-        newsegments_normal[1] = remainingsegments_normal[Math.floor(Math.random() * remainingsegments_normal.length)]
-        // newsegments[2] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
 
+    var value = newsegments[key];
+    // console.log("SEGSSSS",newsegments)
 
+    if((Math.trunc(angleCurrentNormal)+6.02==6.02) && entriesToShow<segments.length && entriesToShow>9  ){
+
+        newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
+        newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
         
-        // remainingsegments[count] = newsegments[key]
-        // if(value==oldval  ){
-        //   newsegments[mainCount] = oldval
-        // }
           mainCount+=1
-          
       // }
       if(mainCount>7){
         count=1
@@ -345,26 +228,8 @@ const fix = 8
       else{
         count+=1
       }
-
-        // }
-        // console.log("WHEELcounter",count%33,"maincount",mainCount)
-        // if(count/33>8){
-        //   count=1
-        // }
-        // if(count-33==count){
-          // mainCount+=1
-          // console.log("WHEELLL",count)
-        // }
-        // if(count>newsegments.length-1){
-        //   count=0
-        // }
-
-      // }
-      // console.log("WHEELcount",count)
-      // fix+=8
     }
   
-    // console.log("WHEELvalue",key)
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
@@ -376,18 +241,37 @@ const fix = 8
     ctx.stroke();
     ctx.save();
     ctx.translate(centerX, centerY);
-    // console.log("WHEELanglean",(lastAngle + angle) / 2)
     ctx.rotate((lastAngle + angle) / 2);
     ctx.fillStyle = contrastColor;
     ctx.font = 'bold 1em ' + fontFamily;
     ctx.fillText(value.substr(0, 21), size / 2 + 20, 0);
     
     ctx.restore();
+    function drawImageRot(img,x,y,width,height,deg){
+      ctx.save()
+      var rad = deg
+      ctx.translate(x + width / 2, y + height / 2);
+      ctx.rotate(rad);
+      ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height)
+      ctx.restore();
+  }
+    var img = new Image()
+    
+    if(LogoImg!="" && LogoImg != null){
+      img.src = LogoImg
+    }
+    else{
+    img.src = "roundlogo.png"}
+      drawImageRot(img,centerX-50,centerY-50,100,100,angleCurrentNormal)
+
+
+  }
     
   };
   function spin() {
+    
     startNormalSpin = false
-    console.log("spinning")
+    // console.log("spinning")
     isStarted = true;
 
     if (timerHandle === 0) {
@@ -399,18 +283,31 @@ const fix = 8
   };
 
   function onTimerTick() {
+    var myimg = new Image()
+    
+if(LogoImg!="" && LogoImg != null){
+  myimg.src = LogoImg
+}
+else{
+myimg.src = "roundlogo.png"}
+    maxSpeedNormal=0
+    timerDelayNormal = 0
+    NormalDelay = 0
+    angleDeltaNormal = 0
+    angleCurrentNormal=0
+    timerHandleNormal = 0
     frames++;
-    draw();
+    draw(myimg);
     var duration = new Date().getTime() - spinStart;
-    console.log(`duration ${duration}`);
+    // console.log(`duration ${duration}`);
     var progress = 0;
     var finished = false;
 
     if (duration < upTime) {
 
       progress = duration / upTime;
-      console.log(`progress ${progress}`)
-      console.log(`upTime ${upTime}`)
+      // console.log(`progress ${progress}`)
+      // console.log(`upTime ${upTime}`)
       angleDelta = maxSpeed * Math.sin(progress * Math.PI / 2)
     } else {
       if (winningSegment) {
@@ -428,7 +325,7 @@ const fix = 8
       }
 
       if (progress >= 1) finished = true;
-      console.log(`progress ${progress}`);
+      // console.log(`progress ${progress}`);
     }
 
     angleCurrent += angleDelta;
@@ -446,21 +343,23 @@ const fix = 8
     }
   };
 
-  var wheelDraw = function wheelDraw() {
+  var wheelDraw = function wheelDraw(myimg) {
     clear();
-    drawWheel();
+    drawWheel(myimg);
     drawNeedle();
   };
 
-  var draw = function draw() {
+  var draw = function draw(myimg) {
     clear();
-    drawWheel();
+    drawWheel(myimg);
     drawNeedle();
   };
 
-  function drawSegment(key, lastAngle, angle) {
-
+  function drawSegment(key, lastAngle, angle,myimg) {
+    var ctx = canvasContext;
+   
     function drawImageRot(img,x,y,width,height,deg){
+console.log("ROUNDDDDD",img)
       ctx.save()
       var rad = deg
       ctx.translate(x + width / 2, y + height / 2);
@@ -468,23 +367,49 @@ const fix = 8
       ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height)
       ctx.restore();
   }
-    var img = new Image()
-    
-    if(LogoImg!="" && LogoImg != null){
-      img.src = LogoImg
-    }
-    else{
-    img.src = "roundlogo.png"}
-    img.onload = function() {
-      drawImageRot(img,centerX-50,centerY-50,100,100,angle)
 
-  };
-    var ctx = canvasContext;
+
+    
+
+    // }
+  //   var ctx = canvasContext
+  //   function drawImageRot(img,x,y,width,height,deg){
+  //     // ctx.save()
+  //     var rad = deg
+  //     ctx.translate(x + width / 2, y + height / 2);
+  //     ctx.rotate(rad);
+  //     ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height)
+  //     // ctx.globalCompositeOperation='destination-over'
+
+  //     ctx.restore();
+  //   }
+  //   var ctx = canvasContext;
+  //   var img = new Image()
+      
+  //   if(LogoImg!="" && LogoImg != null){
+  //     img.src = LogoImg
+  //   }
+  //   else{
+  //   img.src = "roundlogo.png"
+    
+  
+  // }
+  //   // var imgLoaded = 0
+  //   // if(imgLoaded==0){
+  //   img.onload = function() {
+  //     drawImageRot(img,centerX-50,centerY-50,100,100,angleCurrent)
+  //     // imgLoaded+=1
+
+  // }
+
+
+// }
+
     var value = newsegments[key];
-    if((Math.trunc(angleCurrent)+6.02==6.02 || Math.trunc(angleCurrent)+6.03==6.03) && entriesToShow>10  ){
+    if((Math.trunc(angleCurrent)+6.02==6.02 || Math.trunc(angleCurrent)+6.03==6.03) && entriesToShow<segments.length && entriesToShow>9  ){
     newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
     newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
-    // console.log("WHEELvalue",value)
+    
   }
     ctx.save();
     ctx.beginPath();
@@ -502,10 +427,14 @@ const fix = 8
     ctx.font = 'bold 1em ' + fontFamily;
     ctx.fillText(value.substr(0, 21), size / 2 + 20, 0);
     ctx.restore();
+    drawImageRot(myimg,centerX-50,centerY-50,100,100,angleCurrent)
+
+    
+
     
   };
 
-  var drawWheel = function drawWheel() {
+  var drawWheel = function drawWheel(myimg) {
     var ctx = canvasContext;
 
     // var Wheelimg = new Image()
@@ -527,19 +456,30 @@ const fix = 8
     
 const fixedNoofSeg = 8
 const fixedAngle = 4.8
-console.log("WHEELsegs",newsegments)
+// console.log("WHEELsegs",newsegments)
+// var img = new Image()
+    
+// if(LogoImg!="" && LogoImg != null){
+//   img.src = LogoImg
+// }
+// else{
+// img.src = "roundlogo.png"}
+myimg.onload =function(){
+
     for (var i = 1; i <= len; i++) {
+    
       var angle = PI2 * (i / len) + angleCurrent;
-      // console.log("WHEELangle",angleCurrent)
-      
-      drawSegment(i - 1, lastAngle, angle);
+      console.log("ROUNDDDDDED",myimg)
+     
+      drawSegment(i - 1, lastAngle, angle,myimg);
       lastAngle = angle;
     }
+  
     ctx.beginPath();
     ctx.arc(centerX, centerY, 50, 0, PI2, false);
     ctx.closePath();
     // ctx.fillStyle = primaryColor;
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 10;}
     ctx.strokeStyle = contrastColor;
     ctx.fill();
     ctx.font = 'bold 1em ' + fontFamily;
@@ -562,7 +502,7 @@ console.log("WHEELsegs",newsegments)
     
     var change;
     var ArrowPos = ""
-    console.log("ARROW",ArrowPos)
+    // console.log("ARROW",ArrowPos)
     if(localStorage.getItem("ArrowPosition")!==null){
       ArrowPos=localStorage.getItem("ArrowPosition")
     }
@@ -633,7 +573,7 @@ else if(ArrowPos=="At-3"){
 }
 
 
-    // console.log("ARRR",change)
+    // // console.log("ARRR",change)
     // ctx.lineWidth = 1;
     // ctx.strokeStyle = contrastColor;
     // ctx.fileStyle = contrastColor;

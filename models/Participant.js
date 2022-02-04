@@ -4,7 +4,9 @@ const ParticipantSchema = new mongoose.Schema({
   name: {type:String},
 repeatation:{type:Number,default:1},
 lst:{type:Array},
-SimpleList:{type:Array}
+SimpleList:{type:Array},
+UpdateArray:{type:Array},
+UserId:{type:String}
 
 })
 
