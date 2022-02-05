@@ -25,10 +25,9 @@ import {apiUrl} from "../utils"
 // http://localhost:3000/api/participants
 // http://localhost:3000/api/wheelSpinTimes
 export const getStaticProps = async () => {
-  const server = process.env.NEXT_PUBLIC_API_BASE;
-  const res = await fetch("https://potofnames.com/api/participants");
+  const res = await fetch("http://localhost:3000/api/participants");
   const data = await res.json();
-  const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
+  const timesres = await fetch("http://localhost:3000/api/wheelSpinTimes");
   const times = await timesres.json()
   const timesData = times[0].times
   // if(localStorage.getItem("UserId")!==null){
@@ -48,20 +47,13 @@ export default function Home({ participants,Wheeltimes }) {
   // const audio = new Audio("/mixkit-clapping-male-crowd-439.wav")
 
   const router = useRouter();
-  console.log("location", router.pathname);
+  // console.log("location", router.pathname);
   const [modalIsOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const [webState, setWebState] = useState({ items: [], seg: [] });
   // const [showWinnerModal, setshowWinnerModal] = useState(false);
   const [shouldWeSpin, setShouldWeSpin] = useState(false);
   const [soundplay, setsoundplay] = useState(false);
-  const customStyles = {
-    barCompleted: {
-      backgroundColor:"blue"
-      
-    },
-    
-  };
   const [showdivs, setshowdivs] = useState("block");
   const [thewinner, setthewinner] = useState("");
   const [enableFullScreen, setenableFullScreen] = useState(false);
@@ -93,44 +85,24 @@ export default function Home({ participants,Wheeltimes }) {
   const [ArrowImage,setArrowImage] = useState("arrow")
   const [showCover,setshowCover] = useState(false)
   const [startNormalSpin,setstartNormalSpin] = useState(false)
-  const [TextAreaParticipant,setTextAreaParticipant] = useState("")
-  const [TextAreaParticipantArray,setTextAreaParticipantArray] = useState([])
-  const [TextAreaParticipantArrayNames,setTextAreaParticipantArrayNames] = useState([])
   const [TextAreaParticipantArrayNew,setTextAreaParticipantArrayNew] = useState("")
   const [UserId,setUserId] = useState("")
   const [timer, setTimer] = useState(null)
   const [changed, setChanged] = useState(false)
-
-// useEffect(async()=>{
-//   tempParticipants = [
-//     { name: "Asif", repeatation: 1 },
-//     { name: "Jami", repeatation: 1 },
-//     { name: "Zahid", repeatation: 1 },
-//     { name: "Khalid", repeatation: 1 },
-//     { name: "Kayani", repeatation: 1 },
-//     { name: "Mahir", repeatation: 1 },
-//     { name: "Shehzad", repeatation: 1 },
-//     { name: "Aslam", repeatation: 1 }
-//   ];
-//     const resAll = await fetch(apiUrl("/api/participants"))
-//     const participants = await resAll.json();
-//     const AllPart = [...participants,...tempParticipants]
-//   console.log("ALLLLKSKLSCNSC",participants)
-//       let temp = [];
-//         AllPart.map((participant) => {
-//           temp.push(participant.name);
-//         });
-//         setWebState({ items: [AllPart], seg: temp });
-//       }
-    
-// ,[changed])
-
+  const [dummyPartcipants, setdummyPartcipants] = useState([ { name: "Asif", repeatation: 1 },
+  { name: "Jami", repeatation: 1 },
+  { name: "Zahid", repeatation: 1 },
+  { name: "Khalid", repeatation: 1 },
+  { name: "Kayani", repeatation: 1 },
+  { name: "Mahir", repeatation: 1 },
+  { name: "Shehzad", repeatation: 1 },
+  { name: "Aslam", repeatation: 1 }])
 
  useEffect(()=>{
    if(localStorage.getItem("UserId")==null){
    localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
    }
-   console.log("USERID",localStorage.getItem("UserId"))
+   // console.log("USERID",localStorage.getItem("UserId"))
 
    localStorage.setItem("NORMALSPINSTORE",true)
 
@@ -139,17 +111,23 @@ export default function Home({ participants,Wheeltimes }) {
   useEffect(()=>{
     const AllDataParticipants=async()=>{
       const arrNames = []
-      const res = await fetch("https://potofnames.com/api/participants");
+      const res = await fetch("http://localhost:3000/api/participants");
       const data = await res.json();
       // await setTextAreaParticipantArray(data)
+      let newData = data.filter(function(value) {
+        return value.UserId >= localStorage.getItem("UserId"); });
+        // if(newData.length>=1){
+        //   setdummyPartcipants([])
+        // }
+        // newData.push(...dummyPartcipants)
   
-  for (var i = 0; i < data.length; i++) {
-    arrNames.push(data[i].name)
+  for (var i = 0; i < newData.length; i++) {
+    arrNames.push(newData[i].name)
   }
-      await setTextAreaParticipantArrayNames(arrNames)
+  // arrNames.push(...dummyPartcipants.name)
       const ForTextArea = arrNames.join("\n")
   await setTextAreaParticipantArrayNew(ForTextArea)
-// console.log("ALL",arrNames)
+// // console.log("ALL",arrNames)
     }
     AllDataParticipants()},[webState])
 
@@ -164,9 +142,9 @@ export default function Home({ participants,Wheeltimes }) {
 
 useEffect(()=>{
   
-  console.log("WHEELCalled")
-  console.log("WheelShowEntires",EntriesToShow)
-  console.log("qwqwqw", JSON.parse(localStorage.getItem("ShowParticipants")))
+  // console.log("WHEELCalled")
+  // console.log("WheelShowEntires",EntriesToShow)
+  // console.log("qwqwqw", JSON.parse(localStorage.getItem("ShowParticipants")))
   if(localStorage.getItem("ShowParticipants")!==null){
     setShowParticipants(JSON.parse(localStorage.getItem("ShowParticipants")))
   }
@@ -188,12 +166,12 @@ useEffect(()=>{
     }
 
   }
-  console.log("ENTRIES",EntriesToShow)
+  // console.log("ENTRIES",EntriesToShow)
 
 },[])
 
 useEffect(()=>{
-  console.log("SEGCOLORS",localStorage.getItem("SegmentColor"))
+  // console.log("SEGCOLORS",localStorage.getItem("SegmentColor"))
   if(localStorage.getItem("SegmentColor")!==null){
     setSegmentColor(localStorage.getItem("SegmentColor"))
   }
@@ -204,9 +182,9 @@ useEffect(()=>{
   gettingArrowImage()
   setremainingEntries(totalEntries-webState.items.length)
   setspinWheelTimes(Wheeltimes)
-  console.log("GGGGG",spinWheelTimes)
-  console.log("OO",localStorage.getItem("WheelImage")!==undefined)
-console.log("WWWW",wheelImg)
+  // console.log("GGGGG",spinWheelTimes)
+  // console.log("OO",localStorage.getItem("WheelImage")!==undefined)
+// console.log("WWWW",wheelImg)
   if(localStorage.getItem("WheelImage")!==null){
     setwheelImg(localStorage.getItem("WheelImage"))
   }
@@ -215,7 +193,7 @@ console.log("WWWW",wheelImg)
 
 
 const gettingArrowImage = async()=>{
-  console.log("OOOOOOOOO",await localStorage.getItem("ArrowPosition"))
+  // console.log("OOOOOOOOO",await localStorage.getItem("ArrowPosition"))
   if(await localStorage.getItem("ArrowPosition")!==null){
     setArrowPos(await localStorage.getItem("ArrowPosition"))
   }
@@ -238,7 +216,7 @@ const gettingArrowImage = async()=>{
   `;
 
   var itemsForPot = [...webState.items]
-  console.log("ITEMSSSSS",itemsForPot)
+  // console.log("ITEMSSSSS",itemsForPot)
   function shuffleArray(array) {
     var array1 = array.items;
     var array2 = array.seg;
@@ -263,17 +241,17 @@ const gettingArrowImage = async()=>{
   }
 
   if (session) {
-    console.log(`You're signed in`);
-    console.log(session);
+    // console.log(`You're signed in`);
+    // console.log(session);
   } else {
-    console.log(`You are signed out`);
+    // console.log(`You are signed out`);
   }
   function openModal() {
     setsoundplay(false);
     setIsOpen(true);
   }
 
-// console.log("LLLLL",participants)
+// // console.log("LLLLL",participants)
 
   function closeModal() {
     setIsOpen(false);
@@ -282,7 +260,7 @@ const gettingArrowImage = async()=>{
 
   const getThreeDMode = (event) => {
     setThreeDMode(event.target.value);
-    console.log(threeDMode);
+    // console.log(threeDMode);
   };
 
   const settheShouldWeSpin = async () => {
@@ -293,7 +271,7 @@ const gettingArrowImage = async()=>{
     const timesresget = await fetch(apiUrl("/api/wheelSpinTimes"));
   const times = await timesresget.json();
   var timesData  = times[0].times
-  console.log("TTTTTTTTT",timesData)
+  // console.log("TTTTTTTTT",timesData)
     const timerespost = await fetch(apiUrl("/api/wheelSpinTimes")
     , {
       method: "POST",
@@ -301,34 +279,34 @@ const gettingArrowImage = async()=>{
       body: JSON.stringify({times:timesData+1}),
     });
     const time = await timerespost.json();
-    console.log("TTTT",time.addWheelSpinTimes)
+    // console.log("TTTT",time.addWheelSpinTimes)
     setspinWheelTimes(timesData+1)
     
-    console.log("ssslocal", ! localStorage.getItem("SpinTime")==null);
+    // console.log("ssslocal", ! localStorage.getItem("SpinTime")==null);
     if (! localStorage.getItem("SpinTime")===null ) {
-      console.log("sssSpinTime", IF);
+      // console.log("sssSpinTime", IF);
       await setSpinTime(parseInt(localStorage.getItem("SpinTime")));
     }
-    console.log("applausinggg", applausing);
+    // console.log("applausinggg", applausing);
     setShouldWeSpin(true);
     setsoundplay(true);
-    console.log("sssssssreturnedspin", spinTime);
-    console.log("sssssssentries", totalEntries);
+    // console.log("sssssssreturnedspin", spinTime);
+    // console.log("sssssssentries", totalEntries);
   },100)
   };
 
   const togglePotWheel = (event, value) => {
-    console.log(value);
+    // console.log(value);
     setGameType(value);
   };
   const shakeBtn = async () => {
     if (!localStorage.getItem("ShakeTime") === null) {
       await setShakeTime(parseInt(localStorage.getItem("ShakeTime")));
     }
-    console.log("shake", shakeTime);
+    // console.log("shake", shakeTime);
     const random = Math.floor(Math.random() * webState.seg.length);
-    console.log(random, webState.seg[random]);
-    console.log(webState.seg);
+    // console.log(random, webState.seg[random]);
+    // console.log(webState.seg);
     setShakeAnimateClass("shake-animation");
     setTimeout(function () {
       onFinished(webState.seg[random]);
@@ -340,39 +318,27 @@ const gettingArrowImage = async()=>{
     const CSRFToken = getCsrfToken().then((CSRF)=>setcsrfToken(CSRF))
     
 
-    // console.log("CSRF:",CSRFToken)
-    console.log("MMMMMMM",webState)
+    // // console.log("CSRF:",CSRFToken)
+    // console.log("MMMMMMM",webState)
 
     if (!localStorage.getItem("ShowWinnerModalSettings") === null) {
       setshowWinnerModalSettings(false);
     }
+    let newparticipants = participants.filter(function(value) {
+      return value.UserId >= localStorage.getItem("UserId"); });
 
     localStorage.setItem(
-      "ALLPARTICICPANTS",
+      "ALLPARTICPANTS",
       JSON.stringify([
-        { name: "Asif", repeatation: 1 },
-        { name: "Jami", repeatation: 1 },
-        { name: "Zahid", repeatation: 1 },
-        { name: "Khalid", repeatation: 1 },
-        { name: "Kayani", repeatation: 1 },
-        { name: "Mahir", repeatation: 1 },
-        { name: "Shehzad", repeatation: 1 },
-        { name: "Aslam", repeatation: 1 },
-        ,...participants])
+        ...dummyPartcipants
+        ,...newparticipants])
     );
 
     if (!localStorage.getItem("ALLPARTICIPANTS") === null) {
       tempParticipants = JSON.parse(localStorage.getItem("ALLPARTICIPANTS"));
     } else {
       tempParticipants = [
-        { name: "Asif", repeatation: 1 },
-        { name: "Jami", repeatation: 1 },
-        { name: "Zahid", repeatation: 1 },
-        { name: "Khalid", repeatation: 1 },
-        { name: "Kayani", repeatation: 1 },
-        { name: "Mahir", repeatation: 1 },
-        { name: "Shehzad", repeatation: 1 },
-        { name: "Aslam", repeatation: 1 },...participants
+       ...dummyPartcipants,...newparticipants
       ];
     }
 
@@ -380,13 +346,13 @@ const gettingArrowImage = async()=>{
       setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
 
-    // console.log("Entries",localStorage.getItem("Entries") !== null);
+    // // console.log("Entries",localStorage.getItem("Entries") !== null);
     let temp = [];
     if (session) {
-      participants.map((participant) => {
+      newparticipants.map((participant) => {
         temp.push(participant.name);
       });
-      setWebState({ items: [...participants], seg: temp });
+      setWebState({ items: [...newparticipants], seg: temp });
     } else {
       let tempo = [];
       tempParticipants.map((tempParticipant) => {
@@ -397,18 +363,10 @@ const gettingArrowImage = async()=>{
     }
   }, [participants, session, totalEntries]);
 
-  useEffect(() => {
-    // setWebState(webState)
-    console.log("webstate items length", webState.seg);
-    console.log("Coming from useEffects");
-    console.log("apppppplause", localStorage.getItem("Applause"));
-    console.log("My applausing", applausing);
-  }, [webState, gameType]);
 
-  
   for (let i = 0; i < webState.seg.length; i++) {
     if (i % 2 === 0) {
-      console.log("SSEGMENT",SegmentColor)
+      // console.log("SSEGMENT",SegmentColor)
       if(SegmentColor=="#1784bf"){segCol.push("#1784bf")}
       else if(SegmentColor=="#29f930"){segCol.push("#29f930")}
       else if(SegmentColor=="#de1d1d"){segCol.push("#de1d1d")}
@@ -432,11 +390,11 @@ const gettingArrowImage = async()=>{
 
 
   useEffect(() => {
-    // console.log("pppppp", localStorage.getItem("ShowParticipants"));
+    // // console.log("pppppp", localStorage.getItem("ShowParticipants"));
     // if (localStorage.getItem("ShowParticipants") !== null) {
     //   setShowParticipants(true);
     // }
-    console.log("aaaa", showParticipants);
+    // console.log("aaaa", showParticipants);
     const segarr = [];
     const newdata = [];
     const data = JSON.parse(localStorage.getItem("csvdata"));
@@ -444,18 +402,18 @@ const gettingArrowImage = async()=>{
       for (var i = 0; i < data.length; i++) {
         newdata.push({ name: Object.values(data[i])[0], repeatation: 1 });
         segarr.push(Object.values(data[i])[0]);
-        // console.log("sk",Object.values(data[i])[0])
+        // // console.log("sk",Object.values(data[i])[0])
       }
 
-      console.log("skdatacsv", newdata);
-      console.log("skwebstate", webState);
+      // console.log("skdatacsv", newdata);
+      // console.log("skwebstate", webState);
     }
 
     setWebState({
       items: [...webState.items, ...newdata],
       seg: [...webState.seg, ...segarr],
     });
-    console.log("sknewwebstate", webState);
+    // console.log("sknewwebstate", webState);
   }, [participants]);
 
   const onFinished = (winner) => {
@@ -470,7 +428,7 @@ const gettingArrowImage = async()=>{
     setthewinner(winner);
     setsoundplay(true);
     openModal();
-    console.log(winner);
+    // console.log(winner);
     // alert(winner);
   };
 
@@ -519,12 +477,12 @@ const gettingArrowImage = async()=>{
     const hello = "hello";
     const more = window.document.getElementById("moreParticpants");
     const arr = Array(parseInt(more.value)).fill(hello);
-    console.log("My participant", event.target.participantName.value);
-    console.log("participant times", more.value);
+    // console.log("My participant", event.target.participantName.value);
+    // console.log("participant times", more.value);
     if (!localStorage.getItem("Entries") === null) {
       await setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
-      console.log("AAAAAA",webState.items.length)
+      // console.log("AAAAAA",webState.items.length)
     if (webState.items.length < totalEntries) {
 
       const res = await fetch(  apiUrl("/api/participants")
@@ -540,21 +498,21 @@ const gettingArrowImage = async()=>{
         method: "POST",
       });
       const newParticipant = await res.json();
-
+// // console.log("ALLLLLLLLLLLLL",newParticipant)
       const segarr = [];
       for (var i = 0; i < newParticipant.participantArray.length; i++) {
         segarr.push(newParticipant.participantArray[0].name);
       }
-      console.log("newnewparticipants", newParticipant.participantArray);
+      // // console.log("newnewparticipants", newParticipant.participantArray);
       setWebState({
         items: [...webState.items, ...newParticipant.participantArray],
         seg: [...webState.seg, ...segarr],
       });
       //   for(var i=0;i<newParticipant.participantArray.length;i++){
 
-      //   console.log("sxsxsxsx",newParticipant.participantArray[i])
+      //   // console.log("sxsxsxsx",newParticipant.participantArray[i])
       // }
-      // console.log("addsvsvsldsdls", newParticipant.addParticipant);
+      // // console.log("addsvsvsldsdls", newParticipant.addParticipant);
     } else {
       alert("You can't add more.");
     }
@@ -562,7 +520,7 @@ const gettingArrowImage = async()=>{
   };
 
   const ADDPARTICIPANT=async(Arr)=>{
-    console.log("ALLLLLLLLLLLLLLLLLLL",Arr)
+    // console.log("ALLLLLLLLLLLLLLLLLLL",Arr)
     const res = await fetch(apiUrl("/api/participants")
     , {
       body: JSON.stringify({
@@ -578,7 +536,7 @@ const gettingArrowImage = async()=>{
 //     await res.json().then(async()=>{
 //     const resAll = await fetch(apiUrl("/api/participants"))
 //   const participants = await resAll.json();
-// console.log("ALLLLKSKLSCNSC",participants)
+// // console.log("ALLLLKSKLSCNSC",participants)
 //     let temp = [];
 //       participants.map((participant) => {
 //         temp.push(participant.name);
@@ -596,7 +554,7 @@ const gettingArrowImage = async()=>{
     if (!localStorage.getItem("Entries") === null) {
       await setTotalEntries(parseInt(localStorage.getItem("Entries")));
     }
-      // console.log("AAAAAA",webState)
+      // // console.log("AAAAAA",webState)
     if (webState.items.length < totalEntries) {
       // var myresponse;
 
@@ -606,13 +564,14 @@ const gettingArrowImage = async()=>{
           
    ,1000)
   async function callToDelete (){
+    setdummyPartcipants([])
     const delres = await  fetch(apiUrl("/api/participants")
     , {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({UpdateArray:NewArr,UserId:localStorage.getItem("UserId")}),
         })
-        console.log("ALLLLresponse",delres)
+        // console.log("ALLLLresponse",delres)
         delres.json().then(()=>{
   ADDPARTICIPANT(NewArr)
 
@@ -633,8 +592,8 @@ const gettingArrowImage = async()=>{
 
   const deleteParticipant = async (deleleId, index) => {
     const deletedVal = webState.items[index];
-    console.log("Delete function data");
-    console.log(deletedVal);
+    // console.log("Delete function data");
+    // console.log(deletedVal);
 
     const res = await fetch(  apiUrl("/api/participants")
 , {
@@ -649,7 +608,7 @@ const gettingArrowImage = async()=>{
       seg: webState.seg.filter((checkAdult, i) => i !== index),
     });
 
-    console.log(delParticipant);
+    // console.log(delParticipant);
   };
 
 
@@ -662,19 +621,19 @@ const gettingArrowImage = async()=>{
       for (var i = 0; i < data.length; i++) {
         newdata.push({name:Object.values(data[i])[0],repeatation:1})
         segarr.push(Object.values(data[i])[0]);
-        // console.log("sk",Object.values(data[i])[0])
+        // // console.log("sk",Object.values(data[i])[0])
       }
 
-      console.log("skdatacsv",newdata)
-      console.log("skwebstate",webState)}
+      // console.log("skdatacsv",newdata)
+      // console.log("skwebstate",webState)}
 
     setWebState({
       items: [...webState.items, ...newdata],
       seg: [...webState.seg, ...segarr],
     })
-    console.log("sknewwebstate",webState)
+    // console.log("sknewwebstate",webState)
 
-  },[]);
+  }},[]);
   useEffect(() => {
     var res;
     var user = "NO";
@@ -686,7 +645,7 @@ const gettingArrowImage = async()=>{
         .then((AllUsers) => {
           for (var i = 0; i < AllUsers.length; i++) {
             if (AllUsers[i].email == session.user.email) {
-              console.log("IFSSSS");
+              // console.log("IFSSSS");
               user = AllUsers[i];
               break;
             }
@@ -711,12 +670,6 @@ const gettingArrowImage = async()=>{
     }
   }, [session]);
 
-  // const callLogin=()=>{
-  //   console.log("FUNCTIONTOCALLLOGIN")
-  //   return(
-  //     <Login/>
-  //   )
-  // }
 
   return (
     <div id="FULLSCREEN" className="container container-sm container-md mb-5">
@@ -736,9 +689,6 @@ const gettingArrowImage = async()=>{
               </a>
               <div style={{ marginLeft: "10%" }} className="d-flex">
                 <div className="navbar-nav">
-                  {/* <a className="nav-link active px-4" aria-current="page" href="#">SETTING</a> */}
-
-                  {/* {!enableFullScreen?} */}
                   <button
                     hidden={enableFullScreen}
                     type="button"
@@ -801,9 +751,7 @@ const gettingArrowImage = async()=>{
                       SPIN
                     </button>
                   )}
-                  {/* <button hidden={!enableFullScreen} onClick={shakeBtn} type="button" className="active px-4 nav-link btn btn-link" onClick={()=>router.push("/settings")}>
-                  SHAKE
-                    </button> */}
+                 
                   <button
                     type="button"
                     className="px-4 nav-link btn btn-link"
@@ -812,15 +760,13 @@ const gettingArrowImage = async()=>{
                     Full Screen
                   </button>
                   <div style={{marginTop:"2%"}}>Wheel Spinned={spinWheelTimes}</div>
-                  {/* <div style={{marginTop:"2%",marginLeft:"1%"}}>Entries Left={remainingEntries}</div> */}
-                </div>
+                  </div>
               </div>
             </div>
           </nav>
         </div>
       </header>
-      {/* <Header onLogoutClick={() => signOut()} session={session} /> */}
-      <main>
+       <main>
         <div id="ForFullScreen">
           {modalIsOpen ? (
             <Confetti
@@ -862,7 +808,6 @@ const gettingArrowImage = async()=>{
           </Modal>:null}
 
           <div className="row justify-content-center">
-            {console.log("pap", showParticipants)}
             {showParticipants?
             <div
             style={{ marginLeft: "5%", fontSize: "25px" }}
@@ -881,11 +826,9 @@ const gettingArrowImage = async()=>{
           </div>:null}
             
             <div className="col-6 col-md-6 col-lg-6 ForSide">
-              {console.log("III",webState.seg.length,gameType)}
               {webState.seg.length > 0 && gameType == "wheel" && (
                 <div>
-                  {console.log("OOOO",ArrowPos)}
-                  {ArrowPos=="At-12"?<img  style={{zIndex:9999,marginTop: "-35px",marginLeft: "290px",width:"100px"}}
+                   {ArrowPos=="At-12"?<img  style={{zIndex:9999,marginTop: "-35px",marginLeft: "290px",width:"100px"}}
                     src={`/${ArrowImage}.png`}
                     className="position-absolute"
                   />:null}
@@ -914,8 +857,7 @@ const gettingArrowImage = async()=>{
                     src={`/${wheelImg}.png`}
                     className="position-absolute wheel_frame threeDRotate"
                   />
-                  {console.log("WHEELSEGSSS",webState.seg)}
-                  {/* {setstartNormalSpin(false)} */}
+                
                   <WheelComponent
                     segments={webState.seg}
                     segColors={segCol}
@@ -1232,7 +1174,6 @@ const gettingArrowImage = async()=>{
             {webState.items.map((item, index) => (
               // eslint-disable-next-line react/jsx-key
               <div key={index} className="col-6 col-md-6">
-                {console.log("coming", item)}
                 <div className="card mb-3 name-card">
                   <div
                     className="row g-0"
@@ -1278,13 +1219,12 @@ const gettingArrowImage = async()=>{
             SettingShowConfetti={(e)=>setshowConfetti(e)}
             SettingShowParticipants={(e)=>setShowParticipants(e)}
             SettingWheelImage={(e)=>setwheelImg(e)}
-            SettingApplausing={(e)=>console.log("dddddd",e)}
+            SettingApplausing={(e)=>setApplausing(e)}
             SettingShowWinnerModal={(e)=>setshowWinnerModalSettings(e)}
             SettingSegmentColor={(e)=>setSegmentColor(e)}
             SettingArrowImage={(e)=>setArrowImage(e)}
             Settingstate={(data)=>setshowSettingsModal(data)}/>
             :null}
-{console.log("MMODAL",EntriesToShow)}
             
 
             <div
@@ -1331,55 +1271,7 @@ const gettingArrowImage = async()=>{
                             </div>
                           </div>
                         </div>
-                        {/* <div className="row my-4">
-                          <div className="col-3">
-                            <strong># OF ENTRIES</strong>
-                          </div>
-                          <div className="col-8">
-                            <input
-                              type="range"
-                              min="1"
-                              max="225"
-                              className="range"
-                              defaultValue="100"
-                              onChange={getEntriesValue}
-                            />
-                          </div>
-                          <div className="col-1">{totalEntries}</div>
-                        </div>
-                  
-                        <div className="row my-4">
-                          <div className="col-3">
-                            <strong>SPIN TIME</strong>
-                          </div>
-                          <div className="col-8">
-                            <input
-                              type="range"
-                              min="3"
-                              max="180"
-                              className="range"
-                              defaultValue="3"
-                              onChange={getSpinTime}
-                            />
-                          </div>
-                          <div className="col-1">{spinTime}</div>
-                        </div>
-                        <div className="row my-4">
-                          <div className="col-3">
-                            <strong>SHAKE TIME</strong>
-                          </div>
-                          <div className="col-8">
-                            <input
-                              type="range"
-                              min="3"
-                              max="180"
-                              className="range"
-                              defaultValue="3"
-                              onChange={getShakeTime}
-                            />
-                          </div>
-                          <div className="col-1">{shakeTime}</div>
-                        </div>*/}
+                     
                       </div>
                     </div>
                   </div>

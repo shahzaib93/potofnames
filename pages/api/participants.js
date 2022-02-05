@@ -2,10 +2,6 @@ import dbConnect from '../../utils/dbConnect'
 import Participant from '../../models/Participant'
 
 export default async function handler (req, res) {
-  // if(localStorage.getItem("UserId")!==null){
-  //   localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
-  //   }
-  //   console.log("USERID",localStorage.getItem("UserId"))
   const { method } = req
   await dbConnect()
   switch (method) {
@@ -39,13 +35,7 @@ export default async function handler (req, res) {
           })
             // console.log("LOOP")
           } }
-          // const response  = UpdatedArray
-          // if(UpdatedArray!=[]){
-          // console.log("MyPPPPP",UpdatedArray)}
           res.status(201).json({ success: true })
-
-          
-          
         }
 
         if(req.body.lst){
@@ -88,12 +78,6 @@ export default async function handler (req, res) {
         for(var i=1;i<req.body.repeatation+1;i++){
           participantArray.push({UserId:req.body.UserId,name:addParticipant.name,repeatation:i,_id:addParticipant._id})
         }}
-  // console.log("kxnsxnsxnx",participantArray)
-  // for (var i=0;i<participantArray.length;i++){
-  //       participantArray[i].save(function (err) {
-  //           if (err) return handleError(err);
-  //           // saved!
-  //       })}
   addParticipant.save()
         console.log("final",addParticipant)
         res.status(201).json({participantArray})}
