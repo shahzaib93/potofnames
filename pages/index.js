@@ -22,8 +22,6 @@ import Signup from "./components/signup";
 import Login from "./components/login";
 import Settings from "./components/settings";
 import {apiUrl} from "../utils"
-// http://localhost:3000/api/participants
-// http://localhost:3000/api/wheelSpinTimes
 export const getStaticProps = async () => {
   const res = await fetch("https://potofnames.com/api/participants");
   const data = await res.json();
