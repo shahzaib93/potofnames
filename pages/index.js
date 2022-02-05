@@ -25,9 +25,9 @@ import {apiUrl} from "../utils"
 // http://localhost:3000/api/participants
 // http://localhost:3000/api/wheelSpinTimes
 export const getStaticProps = async () => {
-  const res = await fetch("http://localhost:3000/api/participants");
+  const res = await fetch("https://potofnames.com/api/participants");
   const data = await res.json();
-  const timesres = await fetch("http://localhost:3000/api/wheelSpinTimes");
+  const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
   const times = await timesres.json()
   const timesData = times[0].times
   // if(localStorage.getItem("UserId")!==null){
@@ -111,7 +111,7 @@ export default function Home({ participants,Wheeltimes }) {
   useEffect(()=>{
     const AllDataParticipants=async()=>{
       const arrNames = []
-      const res = await fetch("http://localhost:3000/api/participants");
+      const res = await fetch("https://potofnames.com/api/participants");
       const data = await res.json();
       // await setTextAreaParticipantArray(data)
       let newData = data.filter(function(value) {
