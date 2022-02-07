@@ -54,6 +54,7 @@ export default async function handler (req, res) {
             ListArray.push(SimpleaddParticipant)
           }
           const response  = ListArray
+          // console.log("MyPPPPP",response)
           res.status(201).json({response})
           
 
@@ -91,7 +92,7 @@ export default async function handler (req, res) {
         if(req.body.UpdateArray){
           console.log("BBB",req.body.UserId)
             console.log("ARRAY",req.body.UpdateArray)
-            await Participant.deleteMany({UserId:req.body.UserId}).then(function(){
+            await Participant.deleteMany({}).then(function(){
               console.log("Data deleted"); // Success
               
         res.status(201).json({ success: true })

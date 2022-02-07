@@ -37,6 +37,7 @@ var WheelComponent = function WheelComponent(_ref) {
 
   if(entriesToShow+1<segments.length && entriesToShow>9){
     newsegments = segments.slice(0,entriesToShow)
+
        remainingsegments = segments.slice(entriesToShow+1,segments.length)
      
      }
@@ -84,10 +85,10 @@ var WheelComponent = function WheelComponent(_ref) {
 
   React.useEffect(()=>
   {
-    // console.log("NEWSEGS",newsegments)
+    console.log("NEWSEGS",newsegments)
     wheelInit()
     // spinNormal()
-  // console.log("CALEED")
+  console.log("CALEED")
   },
   [newsegments]);
 
@@ -120,12 +121,16 @@ console.log("RunNormal")
       setNormalStop(true)
       startNormalSpin = false
         setSound(true)
-        // wheelInit();
+        wheelInit();
         spin()
         setShouldWeSpin(false);
     }
     
   }, [shouldWeSpin,startNormalSpin])
+
+  // React.useEffect(() => {
+  //     wheelInit();
+  // },[])
 
   var wheelInit = function wheelInit() {
     

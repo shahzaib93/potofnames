@@ -579,7 +579,7 @@ console.log("PART",newParticipant.participantArray)
         })
         delres.json().then(()=>{
         console.log("ALLLLresponse",NewArr)
-        // ADDPARTICIPANT(NewArr)
+        ADDPARTICIPANT(NewArr)
 
         })
   }
