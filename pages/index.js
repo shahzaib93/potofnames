@@ -112,6 +112,9 @@ export default function Home({ participants,Wheeltimes }) {
  },[])
 
   useEffect(()=>{
+    if( localStorage.getItem("UserId")==null){
+      localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
+      }
     const AllDataParticipants=async()=>{
       const arrNames = []
       const res = await fetch(apiUrl("/api/participants"));
