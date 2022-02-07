@@ -579,12 +579,7 @@ console.log("PART",newParticipant.participantArray)
         })
         delres.json().then(()=>{
         console.log("ALLLLresponse",NewArr)
-        setTimeout(()=>{
-          ADDPARTICIPANT(NewArr)
-
-        },1000)
-
-         
+        ADDPARTICIPANT(NewArr)
 
         })
   }
