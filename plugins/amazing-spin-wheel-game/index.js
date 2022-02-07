@@ -33,24 +33,14 @@ var WheelComponent = function WheelComponent(_ref) {
   var isStarted = false;
   var newsegments = segments
   var  remainingsegments = segments
-  var newsegments = segments
-  var  remainingsegments = segments
 
-  React.useEffect(()=>
-  wheelInit(),
-  [newsegments]);
 
-  React.useEffect(()=>{
-    if(entriesToShow<segments.length && entriesToShow>9){
-      newsegments = segments.slice(0,entriesToShow)
-      newsegments = segments.slice(0,entriesToShow)
-      
-         remainingsegments = segments.slice(entriesToShow+1,segments.length)
-         remainingsegments = segments.slice(entriesToShow+1,segments.length)
+  if(entriesToShow+1<segments.length && entriesToShow>9){
+    newsegments = segments.slice(0,entriesToShow)
+       remainingsegments = segments.slice(entriesToShow+1,segments.length)
      
-       
-       }
-  },[entriesToShow])
+     }
+
   var NormalDelay = 100
 
     // // console.log("ENTRIESSSSS",newsegments)
@@ -92,9 +82,36 @@ var WheelComponent = function WheelComponent(_ref) {
 
  
 
+  React.useEffect(()=>
+  {
+    // console.log("NEWSEGS",newsegments)
+    wheelInit()
+    // spinNormal()
+  // console.log("CALEED")
+  },
+  [newsegments]);
+
+
+  React.useEffect(()=>{
+    // window.location.reload()
+    
+    if(entriesToShow+1<segments.length && entriesToShow>9){
+      newsegments = segments.slice(0,entriesToShow)
+      
+         remainingsegments = segments.slice(entriesToShow+1,segments.length)
+     
+       
+       }
+    console.log("SEGMENTS",segments,newsegments,entriesToShow)
+
+  },[entriesToShow,newsegments,segments])
+
+  const FROMSTORE  = localStorage.getItem("NORMALSPINSTORE")
+
   React.useEffect(() => {
-    const FROMSTORE  = localStorage.getItem("NORMALSPINSTORE")
+    
     if(startNormalSpin && !shouldWeSpin && JSON.parse(FROMSTORE)){
+console.log("RunNormal")
       spinNormal()
     }
 
@@ -103,7 +120,7 @@ var WheelComponent = function WheelComponent(_ref) {
       setNormalStop(true)
       startNormalSpin = false
         setSound(true)
-        wheelInit();
+        // wheelInit();
         spin()
         setShouldWeSpin(false);
     }
@@ -115,6 +132,7 @@ var WheelComponent = function WheelComponent(_ref) {
   // },[])
 
   var wheelInit = function wheelInit() {
+    
     const myimg = new Image
     if(LogoImg!="" && LogoImg != null){
       myimg.src = LogoImg
@@ -124,6 +142,7 @@ var WheelComponent = function WheelComponent(_ref) {
 
     initCanvas();
     wheelDraw(myimg);
+    
     // spinNormal()
   };
 
@@ -137,9 +156,10 @@ var WheelComponent = function WheelComponent(_ref) {
 
   
   if(!shouldWeSpin){
-    function   spinNormal() {
-    // // console.log("THE SPINNING")
+
+  var spinNormal = function spinNormal() {
     
+    // console.log("NORMALLY",NormalDelay,angleCurrentNormal,angleDeltaNormal)
     if (timerHandleNormal === 0) {
  
       if(!shouldWeSpin){
@@ -157,6 +177,7 @@ var WheelComponent = function WheelComponent(_ref) {
   const mainCount = 0
 
   function onTimerTickNormal() {
+    
     // // console.log("THE TICKNORMAL",NormalDelay)
 
 
@@ -206,15 +227,14 @@ const num = 0
   };
 const fix = 8
   function drawSegmentNormal(key, lastAngle, angle) {
-    // // console.log("THE PROGRESS",upTime,downTime)
-
+    
 
     var ctx = canvasContext;
 
     var value = newsegments[key];
     // // console.log("SEGSSSS",newsegments)
 
-    if((Math.trunc(angleCurrentNormal)+6.02==6.02) && entriesToShow<segments.length && entriesToShow>9  ){
+    if((Math.trunc(angleCurrentNormal)+6.02==6.02) && entriesToShow+1<segments.length && entriesToShow>9  ){
 
         newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
         newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
@@ -371,46 +391,13 @@ myimg.src = "roundlogo.png"}
 
     
 
-    // }
-  //   var ctx = canvasContext
-  //   function drawImageRot(img,x,y,width,height,deg){
-  //     // ctx.save()
-  //     var rad = deg
-  //     ctx.translate(x + width / 2, y + height / 2);
-  //     ctx.rotate(rad);
-  //     ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height)
-  //     // ctx.globalCompositeOperation='destination-over'
-
-  //     ctx.restore();
-  //   }
-  //   var ctx = canvasContext;
-  //   var img = new Image()
-      
-  //   if(LogoImg!="" && LogoImg != null){
-  //     img.src = LogoImg
-  //   }
-  //   else{
-  //   img.src = "roundlogo.png"
-    
-  
-  // }
-  //   // var imgLoaded = 0
-  //   // if(imgLoaded==0){
-  //   img.onload = function() {
-  //     drawImageRot(img,centerX-50,centerY-50,100,100,angleCurrent)
-  //     // imgLoaded+=1
-
-  // }
-
-
-// }
-
     var value = newsegments[key];
-    if((Math.trunc(angleCurrent)+6.02==6.02 || Math.trunc(angleCurrent)+6.03==6.03) && entriesToShow<segments.length && entriesToShow>9  ){
+    if((Math.trunc(angleCurrent)+6.02==6.02 || Math.trunc(angleCurrent)+6.03==6.03) && entriesToShow+1<segments.length && entriesToShow>9  ){
     newsegments[0] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
     newsegments[1] = remainingsegments[Math.floor(Math.random() * remainingsegments.length)]
     
   }
+  console.log("Value",value.substr(0,21))
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);

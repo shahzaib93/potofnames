@@ -28,13 +28,6 @@ export const getStaticProps = async () => {
   const timesres = await fetch("https://potofnames.com/api/wheelSpinTimes");
   const times = await timesres.json()
   const timesData = times[0].times
-  // if(localStorage.getItem("UserId")!==null){
-  //   localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
-  //   }
-  // const fragmentsColor;
-  // if(localStorage.getItem("SegmentColor")!==null){
-  //   fragmentsColor=localStorage.getItem("SegmentColor")
-  // }
 
   return {
     props: { participants: data,Wheeltimes:timesData },
@@ -87,29 +80,42 @@ export default function Home({ participants,Wheeltimes }) {
   const [UserId,setUserId] = useState("")
   const [timer, setTimer] = useState(null)
   const [changed, setChanged] = useState(false)
-  const [dummyPartcipants, setdummyPartcipants] = useState([ { name: "Asif", repeatation: 1 },
-  { name: "Jami", repeatation: 1 },
-  { name: "Zahid", repeatation: 1 },
-  { name: "Khalid", repeatation: 1 },
-  { name: "Kayani", repeatation: 1 },
-  { name: "Mahir", repeatation: 1 },
-  { name: "Shehzad", repeatation: 1 },
-  { name: "Aslam", repeatation: 1 }])
-
  useEffect(()=>{
-   if(localStorage.getItem("UserId")==null){
+   if( localStorage.getItem("UserId")==null){
    localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
    }
-   // console.log("USERID",localStorage.getItem("UserId"))
-
    localStorage.setItem("NORMALSPINSTORE",true)
+   console.log("DUMMYYYYYYYYYY",localStorage.getItem("DUMMY"))
+   if(localStorage.getItem("DUMMY")!="Already stored")
+   {
+   async function CallDummy(){
+    localStorage.setItem("DUMMY",JSON.stringify([ "Asif","Jami","Zahid","Khalid","Kayani","Mahir","Shehzad","Aslam"]))
+    const mydummy = await JSON.parse(localStorage.getItem("DUMMY"))
 
+    const dummyres = await fetch(apiUrl("/api/participants")
+       , {
+         body: JSON.stringify({
+           // name: Array(parseInt(more.value)).fill(event.target.participantName.value)
+           SimpleList:mydummy,
+           repeatation: 1,
+           UserId:localStorage.getItem("UserId")
+         }),
+         headers: { "Content-Type": "application/json" },
+         method: "POST",
+       });
+      await localStorage.setItem("DUMMY","Already stored")
+ 
+   }
+   CallDummy()
+   window.location.reload()
+  }
+   
  },[])
 
   useEffect(()=>{
     const AllDataParticipants=async()=>{
       const arrNames = []
-      const res = await fetch("https://potofnames.com/api/participants");
+      const res = await fetch(apiUrl("/api/participants"));
       const data = await res.json();
       // await setTextAreaParticipantArray(data)
       let newData = data.filter(function(value) {
@@ -136,6 +142,9 @@ export default function Home({ participants,Wheeltimes }) {
   if(shouldWeSpin){
       setstartNormalSpin(false)
   }
+  
+  setWebState(webState)
+
     },[webState])
 
 useEffect(()=>{
@@ -156,13 +165,22 @@ useEffect(()=>{
     setshowConfetti(JSON.parse(localStorage.getItem("ShowConfetti")))
   }
   if(localStorage.getItem("EntriesToShow")!==null){
+    if(JSON.parse(localStorage.getItem("EntriesToShow"))>10){
     
     setEntriesToShow(JSON.parse(localStorage.getItem("EntriesToShow")))
     localStorage.setItem("ShowCover",true)
-    if(localStorage.getItem("ShowCover")!==null){
+  
       setshowCover(JSON.parse(localStorage.getItem("ShowCover")))
-    }
+    
+  }
+  else{
+    localStorage.setItem("ShowCover",false)
+  
+    setshowCover(false)
+  
+  }
 
+ 
   }
   // console.log("ENTRIES",EntriesToShow)
 
@@ -328,15 +346,13 @@ const gettingArrowImage = async()=>{
     localStorage.setItem(
       "ALLPARTICPANTS",
       JSON.stringify([
-        ...dummyPartcipants
         ,...newparticipants])
     );
 
     if (!localStorage.getItem("ALLPARTICIPANTS") === null) {
       tempParticipants = JSON.parse(localStorage.getItem("ALLPARTICIPANTS"));
     } else {
-      tempParticipants = [
-       ...dummyPartcipants,...newparticipants
+      tempParticipants = [...newparticipants
       ];
     }
 
@@ -497,28 +513,29 @@ const gettingArrowImage = async()=>{
       });
       const newParticipant = await res.json();
 // // console.log("ALLLLLLLLLLLLL",newParticipant)
+console.log("PART",newParticipant.participantArray)
+
       const segarr = [];
       for (var i = 0; i < newParticipant.participantArray.length; i++) {
         segarr.push(newParticipant.participantArray[0].name);
       }
       // // console.log("newnewparticipants", newParticipant.participantArray);
-      setWebState({
+     await setWebState({
         items: [...webState.items, ...newParticipant.participantArray],
         seg: [...webState.seg, ...segarr],
       });
-      //   for(var i=0;i<newParticipant.participantArray.length;i++){
+      window.location.reload()
 
-      //   // console.log("sxsxsxsx",newParticipant.participantArray[i])
-      // }
-      // // console.log("addsvsvsldsdls", newParticipant.addParticipant);
+
+
     } else {
       alert("You can't add more.");
     }
     event.target.participantName.value = "";
+
   };
 
   const ADDPARTICIPANT=async(Arr)=>{
-    // console.log("ALLLLLLLLLLLLLLLLLLL",Arr)
     const res = await fetch(apiUrl("/api/participants")
     , {
       body: JSON.stringify({
@@ -530,17 +547,10 @@ const gettingArrowImage = async()=>{
       headers: { "Content-Type": "application/json" },
       method: "POST",
     });
+
     setChanged(true)
-//     await res.json().then(async()=>{
-//     const resAll = await fetch(apiUrl("/api/participants"))
-//   const participants = await resAll.json();
-// // console.log("ALLLLKSKLSCNSC",participants)
-//     let temp = [];
-//       participants.map((participant) => {
-//         temp.push(participant.name);
-//       });
-//       setWebState({ items: [...participants], seg: temp });
-//     })
+    window.location.reload()
+    
   }
 
   const handleChangeParticipant=async(event)=>{
@@ -562,16 +572,20 @@ const gettingArrowImage = async()=>{
           
    ,1000)
   async function callToDelete (){
-    setdummyPartcipants([])
     const delres = await  fetch(apiUrl("/api/participants")
     , {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({UpdateArray:NewArr,UserId:localStorage.getItem("UserId")}),
         })
-        // console.log("ALLLLresponse",delres)
         delres.json().then(()=>{
-  ADDPARTICIPANT(NewArr)
+        console.log("ALLLLresponse",NewArr)
+        setTimeout(()=>{
+          ADDPARTICIPANT(NewArr)
+
+        },1000)
+
+         
 
         })
   }
@@ -605,7 +619,7 @@ const gettingArrowImage = async()=>{
       items: webState.items.filter((checkAdult, i) => i !== index),
       seg: webState.seg.filter((checkAdult, i) => i !== index),
     });
-
+    window.location.reload()
     // console.log(delParticipant);
   };
 

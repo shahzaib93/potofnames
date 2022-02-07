@@ -48,7 +48,7 @@ export default async function handler (req, res) {
         const ListArray = []
         if(req.body.SimpleList){
           for(var i=0;i<req.body.SimpleList.length;i++){
-            // console.log("BBB",req.body.SimpleList[i])
+            console.log("BBB",req.body.SimpleList[i])
             var SimpleaddParticipant = new Participant({UserId:req.body.UserId,name:req.body.SimpleList[i],repeatation:1});
             SimpleaddParticipant.save()
             ListArray.push(SimpleaddParticipant)
