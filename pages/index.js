@@ -35,7 +35,6 @@ export const getStaticProps = async () => {
 };
 
 export default function Home({ participants,Wheeltimes }) {
-  // const audio = new Audio("/mixkit-clapping-male-crowd-439.wav")
 
   const router = useRouter();
   // console.log("location", router.pathname);

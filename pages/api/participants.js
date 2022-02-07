@@ -54,7 +54,6 @@ export default async function handler (req, res) {
             ListArray.push(SimpleaddParticipant)
           }
           const response  = ListArray
-          // console.log("MyPPPPP",response)
           res.status(201).json({response})
           
 

@@ -127,10 +127,6 @@ console.log("RunNormal")
     
   }, [shouldWeSpin,startNormalSpin])
 
-  // React.useEffect(() => {
-  //     wheelInit();
-  // },[])
-
   var wheelInit = function wheelInit() {
     
     const myimg = new Image
