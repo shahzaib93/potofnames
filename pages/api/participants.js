@@ -92,7 +92,7 @@ export default async function handler (req, res) {
         if(req.body.UpdateArray){
           console.log("BBB",req.body.UserId)
             console.log("ARRAY",req.body.UpdateArray)
-            await Participant.deleteMany({}).then(function(){
+            await Participant.deleteMany({UserId:req.body.UserId}).then(function(){
               console.log("Data deleted"); // Success
               
         res.status(201).json({ success: true })
