@@ -610,13 +610,12 @@ console.log("PART",newParticipant.participantArray)
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(deleleId),
     });
-    const delParticipant = await res.json();
+    // const delParticipant = await res.json();
   
-    setWebState({
-      items: webState.items.filter((checkAdult, i) => i !== index),
-      seg: webState.seg.filter((checkAdult, i) => i !== index),
-    });
-    window.location.reload()
+    await res.json().then(()=>{
+      window.location.reload()
+
+    })
     // console.log(delParticipant);
   };
 
