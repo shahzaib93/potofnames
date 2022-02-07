@@ -85,7 +85,7 @@ export default function Home({ participants,Wheeltimes }) {
    }
    localStorage.setItem("NORMALSPINSTORE",true)
    console.log("DUMMYYYYYYYYYY",localStorage.getItem("DUMMY"))
-   if(localStorage.getItem("DUMMY")!="Already stored")
+   if(localStorage.getItem("DUMMY")!="Already stored" && localStorage.getItem("DUMMY")==null)
    {
    async function CallDummy(){
     localStorage.setItem("DUMMY",JSON.stringify([ "Asif","Jami","Zahid","Khalid","Kayani","Mahir","Shehzad","Aslam"]))
@@ -579,7 +579,7 @@ console.log("PART",newParticipant.participantArray)
         })
         delres.json().then(()=>{
         console.log("ALLLLresponse",NewArr)
-        ADDPARTICIPANT(NewArr)
+        // ADDPARTICIPANT(NewArr)
 
         })
   }
