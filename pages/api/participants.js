@@ -37,14 +37,6 @@ export default async function handler (req, res) {
           } }
           res.status(201).json({ success: true })
         }
-
-        if(req.body.lst){
-          for(var i=0;i<req.body.lst.length;i++){
-            console.log("BBB",Object.values(req.body.lst[i]))
-            var lstaddParticipant = new Participant({UserId:req.body.UserId,name:Object.values(req.body.lst[i])[0],repeatation:Object.values(req.body.lst[i])[1]});
-            lstaddParticipant.save()
-          }
-        }
         const ListArray = []
         if(req.body.SimpleList){
           for(var i=0;i<req.body.SimpleList.length;i++){
@@ -61,23 +53,20 @@ export default async function handler (req, res) {
         }
         else{
         var addParticipant = new Participant(req.body);
-        // console.log("body",req.body)
-
-        // console.log("add",addParticipant)
-
         var participantArray = []
-        if(req.body.name.includes(",")){
-          // console.log("SPLITTED")
-          var SPLIT = addParticipant.name.split(",")
-          for (var i=1;i<SPLIT.length+1;i++){
-            participantArray.push({UserId:req.body.UserId,name:SPLIT[i-1],repeatation:addParticipant.repeatation,_id:addParticipant._id})
-          }
-          console.log("pppp",participantArray)
-        }
-        else{
-        for(var i=1;i<req.body.repeatation+1;i++){
-          participantArray.push({UserId:req.body.UserId,name:addParticipant.name,repeatation:i,_id:addParticipant._id})
-        }}
+        // if(req.body.name.includes(",")){
+        //   // console.log("SPLITTED")
+        //   var SPLIT = addParticipant.name.split(",")
+        //   for (var i=1;i<SPLIT.length+1;i++){
+        //     participantArray.push({UserId:req.body.UserId,name:SPLIT[i-1],repeatation:addParticipant.repeatation,_id:addParticipant._id})
+        //   }
+        //   console.log("pppp",participantArray)
+        // }
+        // else{
+        // for(var i=1;i<req.body.repeatation+1;i++){
+        //   participantArray.push({UserId:req.body.UserId,name:addParticipant.name,repeatation:i,_id:addParticipant._id})
+        // }}
+        participantArray.push(addParticipant)
   addParticipant.save()
         console.log("final",addParticipant)
         res.status(201).json({participantArray})}

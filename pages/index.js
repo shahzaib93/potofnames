@@ -16,6 +16,7 @@ import {
   faPinterestP,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
+
 import Confetti from "react-confetti";
 import Modal from "react-modal";
 import Signup from "./components/signup";
@@ -30,7 +31,7 @@ export const getStaticProps = async () => {
   const timesData = times[0].times
 
   return {
-    props: { participants: data,Wheeltimes:timesData },
+    props: { participants: data,Wheeltimes:timesData}
   };
 };
 
@@ -84,13 +85,20 @@ export default function Home({ participants,Wheeltimes }) {
    localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
    }
    localStorage.setItem("NORMALSPINSTORE",true)
-   console.log("DUMMYYYYYYYYYY",localStorage.getItem("DUMMY"))
+  //  let newparticipantsEffect = participants.filter(function(value) {
+  //   return value.UserId == localStorage.getItem("UserId"); });
+   console.log("USER",localStorage.getItem("UserId"))
+   console.log("DUMMYYYYYYYYYY", localStorage.getItem("DUMMY")!="Already stored" && localStorage.getItem("DUMMY")==null)
+  //  console.log("part",newparticipantsEffect==[])
+
    if(localStorage.getItem("DUMMY")!="Already stored" && localStorage.getItem("DUMMY")==null)
    {
+  CallDummy()
    async function CallDummy(){
-    localStorage.setItem("DUMMY",JSON.stringify([ "Asif","Jami","Zahid","Khalid","Kayani","Mahir","Shehzad","Aslam"]))
-    const mydummy = await JSON.parse(localStorage.getItem("DUMMY"))
-
+     const mydummy  = [ "Asif","Jami","Zahid","Khalid","Kayani","Mahir","Shehzad","Aslam"]
+    localStorage.setItem("DUMMY",JSON.stringify(mydummy))
+    const mydummylist = await JSON.parse(localStorage.getItem("DUMMY"))
+console.log("CALLLEEDD")
     const dummyres = await fetch(apiUrl("/api/participants")
        , {
          body: JSON.stringify({
@@ -102,11 +110,20 @@ export default function Home({ participants,Wheeltimes }) {
          headers: { "Content-Type": "application/json" },
          method: "POST",
        });
+       console.log("JKBDKCBKDBC",dummyres.json().response)
       await localStorage.setItem("DUMMY","Already stored")
- 
+      const res = await fetch(apiUrl("/api/participants"));
+      const data = await res.json();
+      // await setTextAreaParticipantArray(data)
+      const UserId = await localStorage.getItem("UserId");
+       let  newDataEffect = data.filter(async function (value) {
+         return value.UserId == UserId });
+        let tempoEffect=[]
+        await newDataEffect.map((tempParticipant) => {
+          tempoEffect.push(tempParticipant.name);
+        });
+        setWebState({ items: [...newDataEffect], seg: [...tempoEffect] });
    }
-   CallDummy()
-   window.location.reload()
   }
    
  },[])
@@ -115,13 +132,17 @@ export default function Home({ participants,Wheeltimes }) {
     if( localStorage.getItem("UserId")==null){
       localStorage.setItem("UserId",Math.floor(Math.random() * 100)+"user"+Math.floor(Math.random() * 100))
       }
+   console.log("USER",localStorage.getItem("UserId"))
+
     const AllDataParticipants=async()=>{
       const arrNames = []
       const res = await fetch(apiUrl("/api/participants"));
       const data = await res.json();
+      const UserId = await localStorage.getItem("UserId")
       // await setTextAreaParticipantArray(data)
+      // console.log("EQUAL",data[0].UserId,UserId,data[0].UserId==UserId)
       let newData = data.filter(function(value) {
-        return value.UserId >= localStorage.getItem("UserId"); });
+        return value.UserId == UserId });
         // if(newData.length>=1){
         //   setdummyPartcipants([])
         // }
@@ -332,7 +353,7 @@ const gettingArrowImage = async()=>{
       setShakeAnimateClass("");
     }, shakeTime * 1000);
   };
-  useEffect(() => {
+  useEffect(async() => {
     const CSRFToken = getCsrfToken().then((CSRF)=>setcsrfToken(CSRF))
     
 
@@ -342,8 +363,9 @@ const gettingArrowImage = async()=>{
     if (!localStorage.getItem("ShowWinnerModalSettings") === null) {
       setshowWinnerModalSettings(false);
     }
+    const UserId= await localStorage.getItem("UserId");
     let newparticipants = participants.filter(function(value) {
-      return value.UserId >= localStorage.getItem("UserId"); });
+      return value.UserId == UserId });
 
     localStorage.setItem(
       "ALLPARTICPANTS",
@@ -527,9 +549,6 @@ console.log("PART",newParticipant.participantArray)
         seg: [...webState.seg, ...segarr],
       });
       window.location.reload()
-
-
-
     } else {
       alert("You can't add more.");
     }
@@ -551,7 +570,12 @@ console.log("PART",newParticipant.participantArray)
     });
 
     setChanged(true)
-    window.location.reload()
+    // console.log("kjdldbdvdnv;dvdkvdvn",res.json())
+    res.json().then(()=>{
+      window.location.reload()
+    })
+    // setTimeout(()=>{window.location.reload()
+    // },500)
     
   }
 
